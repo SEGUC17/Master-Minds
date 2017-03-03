@@ -1,0 +1,14 @@
+<h2 class="page-header">Add Works</h2>
+<h5>Name : {{user1.name}}</h5>
+<h5>Email : {{user1.email}}</h5>
+<div class = "form-group">
+    {{#each user1.works}}
+        <div class = "form-group">{{this}}</div>
+    {{/each}}
+</div>
+<form method="post" action="/users/addwork">
+    <label>Link</label>
+    <input type="text" class="form-control" name="Link" placeholder="Link">
+  </div>
+  <button type="submit" class="btn btn-default">Add</button>
+</form>
