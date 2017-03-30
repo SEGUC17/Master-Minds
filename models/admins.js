@@ -1,11 +1,12 @@
+//Require dependencies
 var mongoose = require('mongoose');
 
-// Admin Schema
+//Admin schema
 var AdminSchema = mongoose.Schema({
     username: String,
     password: String,
     email: String,
-    emails: [{ email: String, Description: String }],
 });
 
+//Export schema
 var Admin = module.exports = mongoose.model('admins', AdminSchema);
