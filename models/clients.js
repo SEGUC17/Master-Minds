@@ -7,7 +7,7 @@ var ClientSchema = mongoose.Schema({
     username: String,
     fullName: String,
     address: String,
-    profile_pic: img, //we should look into this
+//    profile_pic: img, //we should look into this
     phone_number: String,
     ban: Boolean,
     liked: [{ Business_names: String }],
@@ -15,4 +15,4 @@ var ClientSchema = mongoose.Schema({
     Services_ratings: [{ Service_name: String, Service_Rating: Number }]
 });
 
-var Client = module.exports = mongoose.model('Client', ClientSchema);
+var Client = module.exports = mongoose.model('clients', ClientSchema);
