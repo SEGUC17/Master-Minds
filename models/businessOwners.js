@@ -26,7 +26,7 @@ var BusinessSchema = mongoose.Schema({
         promotion_offer : Number,   //Percentage dicount on service
         service_rating : [{rating : Number}],   //Array of ratings to get average
         service_reviews : [{review : String}],   //Array of reviews
-        type_flag : Boolean    //Whether sevice type is time-based (true) or product-based (false)
+        type_flag : Boolean,    //Whether sevice type is time-based (true) or product-based (false)
         available_flag : Boolean    //Whether service is available or not
     }] 
 });
