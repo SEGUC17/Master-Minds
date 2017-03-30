@@ -4,7 +4,8 @@ var mongoose = require('mongoose');
 var AdminSchema = mongoose.Schema({
     username: String,
     password: String,
-    email: String
+    email: String,
+    emails: [{ email: String, Description: String }],
 });
 
-var Admin = module.exports = mongoose.model('Admin', AdminSchema);
+var Admin = module.exports = mongoose.model('admins', AdminSchema);
