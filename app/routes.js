@@ -1,11 +1,11 @@
-// require dependincies 
+//Require dependencies 
+var fs = require('fs');
 var express = require('express');
 var router = express.Router();
 var homepageController = require('./controllers/hompageController');
 
-// add routes
+//Add routes
 router.get('/', homepageController.test);
 
-// export router
-
+//Export router
 module.exports = router;
