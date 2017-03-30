@@ -3,7 +3,7 @@ var express = require('express');
 var router = require('./app/routes');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var DB_URI = "mongodb://localhost:27017/portfolio";
+var DB_URI = "mongodb://localhost:27017/BreakOut";
 
 var app = express();
 
