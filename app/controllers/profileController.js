@@ -42,7 +42,9 @@ let profileController = {
         user.address = address;
         // user.profile_pic = profile_pic;
         user.phone_number = phone_number;
-        user.fullname = fullname;
+        user.fullName = fullname;
+        console.log(fullname);
+        console.log(user);
 
         user.save(function (err, editUser){
             if(err){
