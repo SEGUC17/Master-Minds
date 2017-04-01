@@ -4,10 +4,13 @@
   "description": "project for the secourse",
   "main": "server.js",
   "dependencies": {
+    "bcrypt": "^1.0.2",
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
     "fs": "0.0.1-security",
-    "mongoose": "^4.9.2"
+    "mongoose": "^4.9.2",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {},
   "scripts": {
