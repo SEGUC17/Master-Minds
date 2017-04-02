@@ -1,0 +1,42 @@
+{
+  "name": "masterminds",
+  "version": "1.0.0",
+  "description": "project for the secourse",
+  "main": "server.js",
+  "dependencies": {
+  
+    "body-parser": "^1.17.1",
+    "connect-flash": "^0.1.1",
+    "express": "^4.15.2",
+    "express-messages": "^1.0.1",
+    "express-validator": "^3.1.2",
+    "fs": "0.0.1-security",
+    "mongoose": "^4.9.2",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GenedyMohamed/MasterMinds.git"
+  },
+  "keywords": [
+    "master",
+    "minds",
+    "se",
+    "course",
+    "website",
+    "mean",
+    "stack"
+  ],
+  "author": "genedy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GenedyMohamed/MasterMinds/issues"
+  },
+  "homepage": "https://github.com/GenedyMohamed/MasterMinds#readme"
+}
