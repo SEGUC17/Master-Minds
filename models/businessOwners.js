@@ -1,15 +1,16 @@
 //Require dependencies
 var mongoose = require('mongoose');
+var bcrypt = require('bcrypt-nodejs');
 
 //Business owner Schema
 var BusinessSchema = mongoose.Schema({
     personal_email: { type: String, required: true, unique: true },
-    password: String,
+    password: { type: String, required: true },
     address: String,
     fullname: String,
     business_name: { type: String, required: true, unique: true },
     business_description: String,
-    business_emails: [{ email: String, Description: String }],  //Business emails with description each
+    business_emails: [{ email: String}],
     business_logo: { data: Buffer, contentType: String },
     associated_bank : String,   //The bank the business deals with
     business_website : String,
@@ -31,5 +32,12 @@ var BusinessSchema = mongoose.Schema({
     }] 
 });
 
+BusinessSchema.methods.encryptPassword = function(password) {
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(5), null);  
+};
+
+BusinessSchema.methods.validPassword = function(password) {
+  return bcrypt.compareSync(password, this.password);  
+};
 //Export Schema
 var Business = module.exports = mongoose.model('businesses', BusinessSchema);

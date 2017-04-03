@@ -12,6 +12,7 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(express.static(__dirname+ '/public'));
 mongoose.Promise = global.Promise;
 mongoose.connect(DB_URI);
+app.use('./passport');
 app.use(router);
 
 
