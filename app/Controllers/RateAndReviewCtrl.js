@@ -221,7 +221,7 @@ exports.Post_Review_Service(req,res) = function(req,res)
     }
   }
 */
-exports.Post_Rate_Business(req,res) = function(req,res)
+exports.Post_Rate_Business= function(req,res)
 {
   var business = require('mongoose').model('businesses');
   var req_business = req.param('business');
@@ -244,7 +244,7 @@ exports.Post_Rate_Business(req,res) = function(req,res)
                   "rate":req.body.rating;
                 };
                 var ffound = 0;
-                for(int i=0;i<obj_rate.length;i++)
+                for(var i=0;i<obj_rate.length;i++)
                 {
                   if(obj_rate[i].username==new_rate.clinet_username)
                   {ffound=1;
@@ -258,7 +258,7 @@ exports.Post_Rate_Business(req,res) = function(req,res)
           });
 }
 
-exports.Post_Review_Business(req,res) = function(req,res)
+exports.Post_Review_Business = function(req,res)
 {
   var business = require('mongoose').model('businesses');
   var req_business = req.param('business');
@@ -287,7 +287,7 @@ exports.Post_Review_Business(req,res) = function(req,res)
           });
 }
 
-exports.Post_Rate_Service(req,res)= function(req,res)
+exports.Post_Rate_Service= function(req,res)
 {
   var business = require('mongoose').model('businesses');
   var req_business = req.pram('business');
@@ -307,11 +307,11 @@ exports.Post_Rate_Service(req,res)= function(req,res)
             else
             { var ffound=0;
               var obj_ser = found_business.services;
-                for(int i=0;i<obj_ser.length;i++)
+                for(var i=0;i<obj_ser.length;i++)
                 { var obj_ser_name=obj_ser[i];
                   if(obj_ser_name.service_name==req_service)
                   { var obj_ser_rating= obj_ser[i].service_rating;
-                    for(int j=0;j<obj_ser_rating.length;j++)
+                    for(var j=0;j<obj_ser_rating.length;j++)
                     {
                       var obj_ser_rating_1= obj_ser_rating[i];
                       if(obj_ser_rating_1.clinet_username==req.user.username)
@@ -335,7 +335,7 @@ exports.Post_Rate_Service(req,res)= function(req,res)
 
 }
 
-exports.Post_Review_Service(req,res)= function(req,res)
+exports.Post_Review_Service= function(req,res)
 {
   var business = require('mongoose').model('businesses');
   var req_business = req.pram('business');
@@ -355,7 +355,7 @@ exports.Post_Review_Service(req,res)= function(req,res)
             else
             { var ffound=0;
               var obj_ser = found_business.services;
-                for(int i=0;i<obj_ser.length;i++)
+                for(var i=0;i<obj_ser.length;i++)
                 { var obj_ser_name=obj_ser[i];
                   if(obj_ser_name.service_name==req_service)
                   {
@@ -373,3 +373,208 @@ exports.Post_Review_Service(req,res)= function(req,res)
           });
 
 }
+
+//new stuff from bulldozer
+exports.Get_Rate_Business= function(req,res)
+{
+   var business = require('mongoose').model('businesses');
+   var req_business = req.param('business');
+
+    business.find({'business_name':req_business},function(err,found_business)
+    {
+        if(err)
+        {
+          console.log(401);
+          res.status(401).send('error happend while looking for the business in the Get_Rate_Business');
+        }
+        else if(!found_business)
+        {
+          console.log(401);
+          res.status(401).send('no business found error happend in the Get_Rate_Busines');
+        }
+        else
+        { var rates = found_business.business_rating;
+          var total =0;
+            for(var i=0;i<rates.length;i++)
+            {
+              total+= rates[i].rating;
+            }
+          var  total /= rates.length;
+          console.log(200);
+          res.status(200).send(total);
+        };
+
+})
+exports.Get_Rate_Service= function(req,res)
+{
+  var business = require('mongoose').model('businesses');
+  var req_service = req.param('service');
+  service.find({'service_name':req_service},function(err,found_service)
+    {
+        if(err)
+        {
+          console.log(401);
+          res.status(401).send('error happend while looking for the service in the Get_Rate_Service');
+        }
+        else if(!found_service)
+        {
+          console.log(401);
+          res.status(401).send('no service found error happend in the Get_Rate_Service');
+        }
+        else
+          { var rates = found_service.service_rating;
+          var total =0;
+            for(var i=0;i<rates.length;i++)
+            {
+              total+= rates[i].rating;
+            }
+          var  total /= rates.length;
+          console.log(200);
+          res.status(200).send(total);
+        };
+  
+})
+exports.Get_Review_Business= function(req,res)
+{
+  var business = require('mongoose').model('businesses');
+  var req_business = req.param('business');
+
+   business.find({'business_name':req_business },function(err,found_business)
+   {
+       if(err)
+       {
+         console.log(401);
+         res.status(401).send('error happend while looking for the business in the Get_Review_Business');
+       }
+       else if(!found_business)
+       {
+         console.log(401);
+         res.status(401).send('no business found error happend in the  Get_Review_Business');
+       }
+       else
+       { var reviews = found_business.business_reviews;
+         var total ="";
+           for(var i=0;i<rates.length;i++)
+           {
+             total.concat(rates[i].review) ;
+             total.concat("\n");
+           }
+         console.log(200);
+         res.status(200).send(total);
+       };
+
+})
+exports.Get_Review_Service= function(req,res)
+{
+  var service = require('mongoose').model('service');
+  var req_service = req.param('service');
+  service.find({'service_name':req_service },function(err,found_service)
+   {
+        if(err)
+       {
+         console.log(401);
+         res.status(401).send('error happend while looking for the service in the Get_Review_Service');
+       }
+       else if(!found_service)
+       {
+         console.log(401);
+         res.status(401).send('no service found error happend in the  Get_Review_Service');
+       }
+       else
+       { var reviews = found_service.service_reviews;
+         var total ="";
+           for(var i=0;i<rates.length;i++)
+           {
+             total.concat(rates[i].review) ;
+             total.concat("\n");
+           }
+         console.log(200);
+         res.status(200).send(total);
+       };
+})
+exports.Get_Review_Numbered_Business = function(req,res)
+{
+  var business = require('mongoose').model('businesses');
+  var req_business = req.param('business');
+  var req_number =req.param('number_of_reviews_per_page');
+  var req_page = req.param('page_number');
+   business.find({'business_name':req_business },function(err,found_business)
+   {
+       if(err)
+       {
+         console.log(401);
+         res.status(401).send('error happend while looking for the business in the Get_Review_Numbered_Business');
+       }
+       else if(!found_business)
+       {
+         console.log(401);
+         res.status(401).send('no business found error happend in the  Get_Review_Numbered_Business');
+       }
+       else
+       { var reviews = found_business.business_reviews;
+         var total ="";
+           for(var i=req_page*req_number;i<(req_page*req_number+req_number)&&i<rates.length;i++)
+           {
+             total.concat(rates[i].review) ;
+             total.concat("\n");
+           }
+         console.log(200);
+         res.status(200).send(total);
+       };
+})
+exports.Get_Review_Numbered_Service = function(req,res)
+{
+var business = require('mongoose').model('businesses');
+  var req_business=req.param('business');
+  var req_service = req.param('service');
+  var req_number =req.param('number_of_reviews_per_page');
+  var req_page = req.param('page_number');
+   business.find({'business_name':,services:{'service_name':req_service }},function(err,found_service)
+   {
+       if(err)
+       {
+         console.log(401);
+         res.status(401).send('error happend while looking for the service in the Get_Review_Numbered_Service');
+       }
+       else if(!found_service)
+       {
+         console.log(401);
+         res.status(401).send('no service found error happend in the  Get_Review_Numbered_Service');
+       }
+       else
+       { var reviews = found_service.service_reviews;
+         var total ="";
+           for(var i=req_page*req_number;i<(req_page*req_number+req_number)&&i<rates.length;i++)
+           {
+             total.concat(rates[i].review) ;
+             total.concat("\n");
+           }
+         console.log(200);
+         res.status(200).send(total);
+       };
+})
+
+exports.Report_Business_Review = function(req,res)
+{
+  businesses.findOne({business_name:req.param('business')},function(err,found_business){
+        if(err)
+       {
+         console.log(401);
+         res.status(401).send('Error happend while looking for the business in the Report_Business_Review');
+       }
+       else if(!found_business)
+       {
+         console.log(401);
+         res.status(401).send('No business found error happend in the Report_Business_Review');
+       }
+       else
+       { for(var i=0;i<business.business_reviews.length;i++)
+        {
+          if(business_reviews[i].review==req.param('review')){
+            business_reviews[i].reported++;
+          }
+       }
+  }
+  business.save();
+};
+})

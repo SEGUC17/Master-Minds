@@ -104,3 +104,113 @@ router.post('/reviews/:business/:service',function(req,res)// add new review to 
     }
 }
 );
+
+
+//new stuff from bulldozer
+
+ router.post('/viewRateBusiness/:business',function(req,res) // view rating of a service
+{
+  if(!req.user)
+    {
+    console.log(401);
+    res.status(401).send("plz log in plz");
+    //res.render(loggin_page);
+    }
+  else
+    {
+      RateAndReviewCtrl.Get_Rate_Business(req,res);
+    }
+}
+);
+
+
+ router.post('/viewRateService/:service',function(req,res) // view rating of a service
+{
+  if(!req.user)
+    {
+    console.log(401);
+    res.status(401).send("plz log in plz");
+    //res.render(loggin_page);
+    }
+  else
+    {
+      RateAndReviewCtrl.Get_Rate_Service(req,res);
+    }
+}
+);
+
+router.post('/viewReviewBusiness/:business',function(req,res) // view review of a business
+{
+  if(!req.user)
+    {
+    console.log(401);
+    res.status(401).send("plz log in plz");
+    //res.render(loggin_page);
+    }
+  else
+    {
+      RateAndReviewCtrl.Get_Review_Business(req,res);
+    }
+}
+);
+
+router.post('/viewReviewService/:service',function(req,res) // view review of a service
+{
+  if(!req.user)
+    {
+    console.log(401);
+    res.status(401).send("plz log in plz");
+    //res.render(loggin_page);
+    }
+  else
+    {
+      RateAndReviewCtrl.Get_Review_Service(req,res);
+    }
+}
+);
+
+
+router.post('/viewReviewNumberedBusiness/:business',function(req,res) // view reviews numbered of a business
+{
+  if(!req.user)
+    {
+    console.log(401);
+    res.status(401).send("plz log in plz");
+    //res.render(loggin_page);
+    }
+  else
+    {
+      RateAndReviewCtrl.Get_Review_Numbered_Business(req,res);
+    }
+}
+);
+
+router.post('/viewReviewNumberedService/:service',function(req,res) // view reviews numbered of a service
+{
+  if(!req.user)
+    {
+    console.log(401);
+    res.status(401).send("plz log in plz");
+    //res.render(loggin_page);
+    }
+  else
+    {
+      RateAndReviewCtrl.Get_Review_Numbered_Service(req,res);
+    }
+}
+);
+
+router.post('/reportBusiness/:business',function(req,res) // report a business' review
+{
+  if(!req.user)
+    {
+    console.log(401);
+    res.status(401).send("plz log in plz");
+    //res.render(loggin_page);
+    }
+  else
+    {
+      RateAndReviewCtrl.Report_Business_Review(req,res);
+    }
+}
+);
