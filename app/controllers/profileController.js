@@ -18,12 +18,12 @@ let profileController = {
     },
 
     editProfile: function(req, res){
+        var username = req.user.username;
         var password=req.body.password;
         var email = req.body.email;
         var address = req.body.address;
         var profile_pic = req.body.profile_pic;
         var phone_number = req.body.phone_number;
-        // var username = req.session.username;
         var fullname = req.body.fullname;
 
         console.log(password);
@@ -34,7 +34,7 @@ let profileController = {
         console.log(req.body);
         
 
-        var username = req.body.username;
+        // var username = req.body.username;
 
         // var password = "client1";
         // var email = "client1";
