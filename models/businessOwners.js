@@ -9,7 +9,7 @@ var BusinessSchema = mongoose.Schema({
     fullname: String,
     business_name: { type: String, required: true, unique: true },
     business_description: String,
-    business_emails: [{ email: String, Description: String }],  //Business emails with description each
+    business_emails: [{ email: String, description: String }],  //Business emails with description each
     business_logo: { data: Buffer, contentType: String },
     associated_bank : String,   //The bank the business deals with
     business_website : String,
