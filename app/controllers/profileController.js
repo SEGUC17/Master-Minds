@@ -18,20 +18,30 @@ let profileController = {
     },
 
     editProfile: function(req, res){
-        // var password = req.body.password;
-        // var email = req.body.email;
-        // var address = req.body.address;
-        // var profile_pic = req.body.profile_pic;
-        // var phone_number = req.body.phone_number;
+        var password=req.body.password;
+        var email = req.body.email;
+        var address = req.body.address;
+        var profile_pic = req.body.profile_pic;
+        var phone_number = req.body.phone_number;
         // var username = req.session.username;
-        // var fullname = req.body.fullname;
+        var fullname = req.body.fullname;
 
-        var password = "client1";
-        var email = "client1";
-        var address = "client1";
-        var phone_number = "1";
-        var username = "client1";
-        var fullname = "client1";       
+        console.log(password);
+        console.log(email);
+        // console.log(address);
+        // console.log(phone_number);
+        // console.log(fullname);
+        console.log(req.body);
+        
+
+        var username = req.body.username;
+
+        // var password = "client1";
+        // var email = "client1";
+        // var address = "client1";
+        // var phone_number = "1";
+        // var username = "client1";
+        // var fullname = "client1";       
 
         Clients.findOne({username: username}, function(err, user){
             if(err){
