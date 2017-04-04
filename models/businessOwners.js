@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 //Business owner Schema
 var BusinessSchema = mongoose.Schema({
     personal_email: { type: String, required: true, unique: true },
-    username: { type: String, required: true, unique: true },// i added username for businessOwners
+  //  username: { type: String, required: true, unique: true },// i added username for businessOwners
     password: String,
     address: String,
     fullname: String,

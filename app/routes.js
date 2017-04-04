@@ -30,7 +30,10 @@ router.get('/login', function(req, res) {
 
 // business_owner _service_add POST
 router.post('/service_add', function(req, res) {
-    var username=req.body.username;
+
+  console.log('0');
+  //  var username=req.body.username;
+  var personal_email=req.body.personal_email;
     var service_pic = req.body.service_pic;
     var service_name = req.body.service_name;
     var service_Description = req.body.service_Description;
@@ -40,12 +43,13 @@ router.post('/service_add', function(req, res) {
 var promotion_offer=req.body.promotion_offer;
     // Validation
 
-    req.checkBody('username', 'username is required').notEmpty();
+console.log('1');
+
     req.checkBody('service_name', 'service_name is required').notEmpty();
     req.checkBody('service_Description', 'service_Description is required').notEmpty();
     req.checkBody('service_price', 'service_price is required').notEmpty();
 
-
+console.log('2');
 
     var errors = req.validationErrors();
 
@@ -55,20 +59,28 @@ var promotion_offer=req.body.promotion_offer;
 
         });
     } else {
-        var newservice = new services({
-            service_pic: service_pic,
-            service_name: service_name,
-            service_Description: service_Description,
-            service_price: service_price,
-            type_flag: type_flag,
-            available_flag: available_flag,
-promotion_offer:promotion_offer
-            //service_rating ,service_reviews we must set them to null and zeros or leave them ?
-        });
+//         var newservice = new services({
+//             service_pic: service_pic,
+//             service_name: service_name,
+//             service_Description: service_Description,
+//             service_price: service_price,
+//             type_flag: type_flag,
+//             available_flag: available_flag,
+// promotion_offer:promotion_offer
+//             //service_rating ,service_reviews we must set them to null and zeros or leave them ?
+//         });
 
-services.update(
-  {"username":username},
-  {"$push":{"services":newservice}},
+console.log('3');
+businesses.update(
+  {"personal_email":personal_email},
+   {"$push":{  "services.$.service_pic":service_pic,
+     "services.$.service_name":service_name,
+     "services.$.service_Description":service_Description,
+     "services.$.service_price":service_price,
+     "services.$.promotion_offer":promotion_offer,
+     "services.$.type_flag":type_flag,
+     "services.$.available_flag":available_flag,}}
+,
   function(err, result) {
       if (err) { console.log(err); res.send(err); return;}
       if (result) {
@@ -81,14 +93,15 @@ res.render('service_add'); // return to adding service page
   });
 
 
-
+console.log('4');
 
     }
 });
 
 // business_owner _service_edit POST
 router.post('/service_edit', function(req, res) {
-    var username=req.body.username;   // we must add username to search for the specific business_owner also i added  var username in business_owner schema
+  //  var username=req.body.username;   // we must add username to search for the specific business_owner also i added  var username in business_owner schema
+ var personal_email=req.body.personal_email;
     var newservice_pic = req.body.newservice_pic;
     var oldservice_name = req.body.oldservice_name;// business_owner must enter oldservice_name so i can know where to edit
     var newservice_name = req.body.newservice_name;
@@ -116,8 +129,8 @@ router.post('/service_edit', function(req, res) {
     } else {
 
 
-services.update(
-  {username:username,services:{ $eleMatch:{service_name:oldservice_name}}},{ //searching for the array of services suing username then matching first element with service name = old service_name then updating all data using $set
+business.update(
+  {personal_email:personal_email,services:{ $eleMatch:{service_name:oldservice_name}}},{ //searching for the array of services suing username then matching first element with service name = old service_name then updating all data using $set
     $set:{
       "services.$.service_pic":newservice_pic,
       "services.$.service_name":newservice_name,
