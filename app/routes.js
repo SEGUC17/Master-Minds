@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var RateAndReviewCtrl = require('./controller/RateAndReviewCtrl.js');
-
+var path = require('path');
 
 /*
 router.get('/rating/:business',function(req,res)   // get the  rating of a business
@@ -44,6 +44,9 @@ router.get('/reviews/:number_of_reviews_per_page/:page_number/:business/:service
 }
 );
 */
+//post(/rating/breakout);
+//post(/rating/paintball);
+//post(/rating/prison);
 router.post('/rating/:business',function(req,res) // add new rating to the business
 {
   if(!req.user)
