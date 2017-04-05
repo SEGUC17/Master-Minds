@@ -19,37 +19,43 @@ router.get('/login', function(req, res) {
 
 // Register User
 router.post('/register', function(req, res) {
-    var name = req.body.name;
+    var fullname = req.body.fullname;
     var email = req.body.email;
     var username = req.body.username;
+    var address = req.body.address;
+    var phone_number = req.body.phone_number;
     var password = req.body.password;
     var password2 = req.body.password2;
 
     // Validation
-    req.checkBody('name', 'Name is required').notEmpty();
+    req.checkBody('fullname', 'Name is required').notEmpty();
     req.checkBody('email', 'Email is required').notEmpty();
     req.checkBody('email', 'Email is not valid').isEmail();
     req.checkBody('username', 'Username is required').notEmpty();
+    req.checkBody('address', 'Address is required').notEmpty();
+    req.checkBody('phone_number', 'Phone Number is required').notEmpty();
     req.checkBody('password', 'Password is required').notEmpty();
     req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
 
     var errors = req.validationErrors();
 
     if (errors) {
-        res.render('register', {
+        res.render('Client_register', {
             errors: errors
         });
     } else {
-        var newUser = new User({
-            name: name,
+        var newClient = new Client({
+            fullname: fullname,
             email: email,
             username: username,
+            address: address,
+            phone_number: phone_number,
             password: password
         });
 
-        UserRegisterController.createUser(newUser, function(err, user) {
+        UserRegisterController.createUser(newClient, function(err, client) {
             if (err) throw err;
-            console.log(user);
+            console.log(client);
         });
 
         req.flash('success_msg', 'You are registered and can now login');
