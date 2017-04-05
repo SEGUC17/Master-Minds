@@ -1,32 +1,67 @@
 //dependencies
-let clients = ('../../models/clients');
+let clients = require('../../models/clients');
 
 let clientsController = {
 
     likeBusiness:function(req,res){
-      var business_name = req.body.business_name;
-
-      clients.findOne({email:req.session.client.email},function(err,client){
+      //Get name of business to be liked from the request
+      var business = req.body.name;
+      var email = "client1";
+      //locates the current client
+      clients.findOne({email:email},function(err,client){
         if(err){
           res.status(404).send();
         }else{
-          client.liked.push({business_names:business_name});
-          console.log("Business added to favorites");
+          //adds the liked business to the liked Array
+          client.liked.push({"business_names":business});
+          //Updates the client in the database
+          client.save(function(err){
+            if(err){
+              res.status(500).send();
+            }else{
+              console.log("Business added to favorites");
+            }
+          });
+
         }
       });
 
-    }
+    },
 
     unlikeBusiness:function(req,res){
-      var business_name = req.body.business_name;
-
-      clients.findOne({email:req.session.client.email},function(err,client){
+      //Get name of business to be unliked from the request
+      var business = req.body.name;
+      var email = 'client1';
+      //locate the current client
+      clients.findOne({email: email},function(err,client){
         if(err){
           res.status(404).send();
           console.log("client not found");
         }else{
-          client.liked.pull({business_names:business_name});
-          console.log("business unliked");
+          //Loops on the liked array and filters out the entry with the specified name from the rest
+          client.liked = client.liked.filter(function(el){
+          //returns the filtered array
+          return el.business_names !== business;
+          });
+          client.save(function(err){
+           // Now client is saved, save function runs asynchronously
+           console.log('business unliked');
+          });
+        }
+      });
+    },
+
+    viewLikedBusinesses:function(req,res){
+      var email = "client1";
+      //locates the current client
+      clients.findOne({email:email},function(err,client){
+        if(err){
+          res.status(404).send;
+          console.log("Client not Found");
+        }else{
+          //Returns the liked array from the found client object
+          res.send(client.liked);
+          console.log("Liked Businesses Returned");
         }
       });
     }
