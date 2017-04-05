@@ -3,7 +3,9 @@ var router = express.Router();
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
-var User = require('../models/user');
+var User = require('../models/clients');
+var UserRegisterController = require('./controllers/ClientRegisterController');
+var UserLoginController = require('./controllers/ClientLoginController');
 
 // Register
 router.get('/register', function(req, res) {
@@ -45,26 +47,26 @@ router.post('/register', function(req, res) {
             password: password
         });
 
-        User.createUser(newUser, function(err, user) {
+        UserRegisterController.createUser(newUser, function(err, user) {
             if (err) throw err;
             console.log(user);
         });
 
         req.flash('success_msg', 'You are registered and can now login');
 
-        res.redirect('/users/login');
+        res.redirect('/login');
     }
 });
 
 passport.use(new LocalStrategy(
     function(username, password, done) {
-        User.getUserByUsername(username, function(err, user) {
+        UserLoginController.getUserByUsername(username, function(err, user) {
             if (err) throw err;
             if (!user) {
                 return done(null, false, { message: 'Unknown User' });
             }
 
-            User.comparePassword(password, user.password, function(err, isMatch) {
+            UserLoginController.comparePassword(password, user.password, function(err, isMatch) {
                 if (err) throw err;
                 if (isMatch) {
                     return done(null, user);
@@ -80,7 +82,7 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(id, done) {
-    User.getUserById(id, function(err, user) {
+    UserLoginController.getUserById(id, function(err, user) {
         done(err, user);
     });
 });
@@ -96,18 +98,7 @@ router.get('/logout', function(req, res) {
 
     req.flash('success_msg', 'You are logged out');
 
-    res.redirect('/users/login');
+    res.redirect('/login');
 });
-
-router.get('/addwork', function(req, res) {
-    var user1 = req.user;
-    res.render('addwork', { user1 });
-})
-
-router.post('/addwork', function(req, res) {
-    User.createWork(req, res);
-    res.redirect('/users/addwork');
-    console.log(req.user);
-})
 
 module.exports = router;
