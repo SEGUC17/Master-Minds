@@ -84,6 +84,13 @@ let productContoller = {
         Choose random 4 ads from the database and send them to the view.
         Should be view in the directory page
         */
+        advertisements.find({}, function(err, ad){
+            for (var i = 0; i < ad.length; i++){
+                if (((new Date().getDate()) - ad[i].date.getDate()) > 7 || ((new Date().getDate()) - ad[i].date.getDate()) >= -24 || ((new Date().getMonth()) - ad[i].date.getMonth()) > 1){
+                    ad[i].remove();
+                }
+            }
+        })
         var adArray = [];   //Array of 4 randomly chosen advertisements
         advertisements.find({}, function (err, ads) {
             if (ads.length > 1) {   //There must be atleast 1 advertisement in the database
