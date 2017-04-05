@@ -6,94 +6,57 @@ let BusinessOwner = require('../../models/businessOwners');
 let viewController = {
 
     viewBusiness : function(req, res){
-        var search = req.params.search;
-
-                if (search){
+        //var search = req.body.business_name;
+        var search = "Busi1";
+        // var search = undefined;
+        if (search){
+             var Business = {
+    name: String,
+    logo: { data: Buffer, contentType: String },
+    // rating : [{rating : Number}]
+}
             
-            BusinessOwner.find({business_name: search}, function(err, business){
+            BusinessOwner.findOne({business_name: search}, function(err, business){
                 if(err){
                     res.send(err);
                 }else{
-            res.send(business);
+            Business.name = business.business_name;
+            Business.logo = business.business_logo;
+            console.log(Business);
+            res.send(Business);
                 }         
             });          
-            }else{
-             BusinessOwner.find({}, function(err, business){
-                if(err){
-                    res.send(err);
-                }else{
-            res.send(business);
-                 }         
-            });          
-
         }
-
-
-        
-
-
-
-
-
-
-
-//__________________________________________________________________________ 
-//         //var search = req.body.business_name;
-//         // var search = "Busi1";
-//         var search = undefined;
-//         var Business = [{
-//     name: String,
-//     logo: { data: Buffer, contentType: String },
-//     // rating : [{rating : Number}]
-// }]
-//         if (search){
+        else{
+             var Business = [{
+    name: String,
+    logo: { data: Buffer, contentType: String },
+    // rating : [{rating : Number}]
+}]
+        BusinessOwner.find({},function(err, business){
+            if(err){
+                res.send(err);
+            }else{
+                for(var i = 0; i<business.length ; i++)
+                {
+            //         for(var j = 0; j<business[i].rating[j];j++){
+            //             var temp = rating[j] + temp;
+            //         }
+            // var avrRating = temp/j;
             
-//             BusinessOwner.find({business_name: search}, function(err, business){
-//                 if(err){
-//                     res.send(err);
-//                 }else{
-//             for(var i = 0; i<business.length ; i++)
-//                 {
-//                     console.log(business);
-//             Business[i].name = business[i].business_name;
-//             Business[i].logo = business[i].business_logo;
-//             // Business[i].rating = avrRating;
-//                 }
-//             console.log(Business);
-//             res.send(Business);
-//                 }         
-//             });          
-//         }
-//         else{
-             
-//         BusinessOwner.find({},function(err, business){
-//             if(err){
-//                 res.send(err);
-//             }else{
-//                 // console.log(business);
-//                 for(var i = 0; i<business.length ; i++)
-//                 {
-//             //         for(var j = 0; j<business[i].rating[j];j++){
-//             //             var temp = rating[j] + temp;
-//             //         }
-//             // var avrRating = temp/j;
-//             Business.push({name: business[i].business_name});
-//             Business.push({logo: business[i].business_logo});
-//             console.log(Business);
-//             // Business[i].name = business[i].business_name;
-//             // Business[i].logo = business[i].business_logo;
-//             // console.log(Business);
-//             // Business[i].rating = avrRating;
-//                 }
-//             res.send(Business);
-//             }
-//         });
-//      }
+            Business[i].name = business[i].business_name;
+            Business[i].logo = business[i].business_logo;
+            // Business[i].rating = avrRating;
+                }
+            res.send(Business);
+            }
+        });
+     }
     },
 
     viewServices: function(req, res){
-        var business = req.body.business_name;
-        BusinessOwner.findOne({business_name: business}, function(err, service){
+        //var business = req.body.business_name;
+        BusinessOwner.findOne({business_name: "Busi1"}, function(err, service){
             if(err){
                 res.send(err);
             }else{
