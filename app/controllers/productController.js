@@ -18,25 +18,24 @@ let productContoller = {
         //   business.save();
         //   business.services.push({service_name: "room", service_reviews:[{review: "hello" }]});
         //   business.save();
-        //  business.services.service_name = 'room';
-        //  business.save();
-
-        if (req.param('report') == true) {
+        if (req.param('report') == 'true') {
             businesses.findOne({ business_name: req.param('businessname') }, function (err, business) {
                 for (var i = 0; i < business.services.length; i++) {
-                    if (business.services[i].service_name == req.param('servicename')) {
+                    if (business.services[i].service_name == req.param('product')) {
                         for (var j = 0; j < business.services[i].service_reviews.length; j++) {
-                            if (business.services[i].service_reviews[j].review == req.param('review')) {
+                            if (business.services[i].service_reviews[j].review == req.body.review) {
                                 business.services[i].service_reviews[j].reported++;
-                                res.render('detailedProductView', req.param('review')); //To change the report button on this review as reported
-                                break;
+                                res.render('detailedProductView', {'review': req.body.review}); //To change the report button on this review as reported
+                                return;
                             }
                         }
                     }
                 }
                 business.save();
+                res.render('detailedProductView');
+                return;
             });
-        }
+        }else
         res.render('detailedProductView');
     },
 
