@@ -591,13 +591,97 @@ router.post('/subscribe', upload.single('business_logo'), function (req, res) {
 
             newOwner.save(function (err, result) {
                 if (err) return console.error(err);
-                //res.redirect('addservices')
+                res.redirect('/service_add')
             });
         });
     });
 });
 
 
+router.get('/editboprofile', isLoggedIn, function(req, res, next){
+    var messages = req.flash('error');   // supply error messages to view
+    res.render('editprofile', {messages; messages, hasErrors: messages.length>0});
+});
+
+router.post('/editboprofile', upload.single('business_logo'), function(req, res){
+    BusinessOwner.findOne({'personal_email' : req.user.personal_email}, function(err, user){ // access the logged in user's information
+        var waitForCallback = 0;
+        if(req.body.business_name){
+            waitForCallback = 1;
+            BusinessOwner.findOne({'business_name' : req.body.business_name}, function(err, owner){ // check if new business name is taken
+                if(err){
+                    return console.error(err);
+                }
+                if(owner){
+                    req.flash('error', 'There is already a business with that name.');
+                    return res.redirect('/editboprofile');
+                }
+                req.user.business_name = req.body.business_name;
+                waitForCallback = 0;
+            });
+        }
+        while(waitForCallback);
+        if(req.body.personal_email){
+            waitForCallback = 1;
+            BusinessOwner.findOne({'personal_email' : req.body.personal_email}, function(err, owner){ // check if new email is used already
+                if(err){
+                    return console.error(err);
+                }
+                if(owner){
+                    req.flash('error', 'That email address is already in use.');
+                    return res.redirect('/editboprofile');
+                }
+                user.personal_email = req.body.personal_email;
+                waitForCallback = 0;
+            });
+        }
+        while(waitForCallback);
+        if(req.body.password)  // keep assigning new values (if any)
+            user.password = user.encryptPassword(req.body.password);
+        if(req.body.address)
+            user.address = req.body.address;
+        if(req.body.fullname)
+            user.fullname = req.body.fullname;
+        if(req.body.business_emails){
+            user.business_emails = [];
+            var a = req.body.business_emails;
+            var arr = a.split(',');
+            for (i = 0; i < arr.length; i++) {
+                user.business_emails.push({ email: arr[i] });
+            }
+        }
+        if(req.body.business_description)
+            user.business_description = req.body.business_description;
+        if(req.body.associated_bank)
+            user.associated_bank = req.body.associated_bank;
+        if(req.body.business_website)
+            user.business_website = req.body.business_website;
+        if(req.body.address)
+            user.address = req.body.address;
+        if(req.file){
+            user.business_logo = req.file.filename;
+        }
+        user.save(function(err){
+            if(err) return console.error(error);
+            res.send('Profile Updated');
+        });
+    });
+});
+
+
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/');
+}
+
+function notLoggedIn(req, res, next) {
+    if (!req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/');
+}
 
 
 
