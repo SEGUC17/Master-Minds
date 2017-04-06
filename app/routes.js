@@ -14,10 +14,8 @@ var upload_client = multer({ dest: './public/businessowner' });
 var viewController = require('./controllers/viewController');
 var profileController = require('./controllers/profileController');
 var productController = require('./controllers/productController');
-//<<<<<<< HEAD
 var replyController = require('./controllers/replyController');
 var Deletebussinesowner= require('./controllers/Deletebussinesowner');
-//=======
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var User = require('../models/clients');
@@ -25,9 +23,6 @@ var UserRegisterController = require('./controllers/ClientRegisterController');
 var UserLoginController = require('./controllers/ClientLoginController');
 let session = require('express-session');
 let businesses = require('../models/businessOwners');
-
-//>>>>>>> aa5aa91d3e7e2db03be8e7163c7c81e0467c9922
-
 
 //Add routes
 router.get('/', homepageController.test);
