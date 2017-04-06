@@ -4,7 +4,7 @@
   "description": "project for the secourse",
   "main": "server.js",
   "dependencies": {
-     "bcryptjs": "*",
+    "bcryptjs": "*",
     "body-parser": "*",
     "connect-flash": "*",
     "cookie-parser": "^1.4.1",
@@ -16,14 +16,14 @@
     "mongodb": "*",
     "mongoose": "*",
     "multer": "^1.3.0",
-    "passport": "*",
+    "passport": "^0.3.2",
     "passport-http": "*",
     "passport-local": "*"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -44,9 +44,4 @@
     "url": "https://github.com/GenedyMohamed/MasterMinds/issues"
   },
   "homepage": "https://github.com/GenedyMohamed/MasterMinds#readme"
-,
-  "scripts": {
-    "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  }
 }

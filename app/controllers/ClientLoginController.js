@@ -1,4 +1,4 @@
-var Client = require('../../models/clients.js');
+var Client = require('../../models/clients');
 var bcrypt = require('bcryptjs');
 
 
