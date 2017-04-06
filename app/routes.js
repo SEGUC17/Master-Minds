@@ -600,7 +600,7 @@ router.post('/subscribe', upload.single('business_logo'), function (req, res) {
 
 router.get('/editboprofile', isLoggedIn, function(req, res, next){
     var messages = req.flash('error');   // supply error messages to view
-    res.render('editprofile', {messages; messages, hasErrors: messages.length>0});
+    res.render('editprofile', {messages: messages, hasErrors: messages.length>0});
 });
 
 router.post('/editboprofile', upload.single('business_logo'), function(req, res){
