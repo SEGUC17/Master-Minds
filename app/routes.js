@@ -244,7 +244,8 @@ passport.use(new LocalStrategy(
                   // chechking the password to match the password in database for this email
                 if(userlogin.password==password){
                   res.send("password matches   personal email password ");
-                  res.redirect('/businessowner_logged');// logged  page view in the front end
+                //   res.redirect('/businessowner_logged');// logged  page view in the front end
+                  session.username = req.body.personal_email;
                 }else{
                   res.send("password does not matches    personal email password please try again ");
                     res.render('businessowner_login'); // login in view page in front end
