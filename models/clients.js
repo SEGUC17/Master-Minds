@@ -8,7 +8,7 @@ var ClientSchema = mongoose.Schema({
     username: String,
     fullName: String,
     address: String,
-    profile_pic: { data: Buffer, contentType: String },
+    profile_pic: String,
     phone_number: String,
     liked: [{ business_names: String }],
     businesses_ratings: [{ business_name: String, business_rating: Number }],
