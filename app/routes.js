@@ -9,6 +9,7 @@ var Admin = require('../models/admins');
 var Client = require('../models/clients');
 var multer = require('multer');
 var upload = multer({ dest: './public/businessowner' });
+var upload_client = multer({ dest: './public/client' });
 var viewController = require('./controllers/viewController');
 var profileController = require('./controllers/profileController');
 
@@ -18,7 +19,8 @@ router.get('/', homepageController.test);
 router.get('/viewbusiness', viewController.viewBusiness);
 router.get('/viewservices', viewController.viewServices);
 router.get('/viewprofile', profileController.viewProfile);
-router.post('/editprofile', profileController.editProfile);
+router.get('/editprofile', profileController.getEditProfile); 
+router.post('/editprofile',upload_client.single('profile_pic'), profileController.editProfile);
 
 
 var productController = require('./controllers/productController');
