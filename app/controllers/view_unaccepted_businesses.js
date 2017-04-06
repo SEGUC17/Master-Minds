@@ -1,5 +1,5 @@
-var Admin = require('../models/admins');
-let businesses = require('../models/businessOwners');
+var Admin = require('../../models/admins');
+let businesses = require('../../models/businessOwners');
 
 let view_unaccepted_businesses = {
 
