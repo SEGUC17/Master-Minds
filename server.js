@@ -9,11 +9,21 @@ var passport = require('passport');
 var flash = require('connect-flash');
 var validator = require('express-validator');
 var multer = require('multer');
+var fs = require('fs');
 var DB_URI = "mongodb://localhost:27017/BreakOut";
-
-var routes = require('./app/routes');
-
+var router = require('./app/routes');
 var app = express();
+var expressValidator = require('express-validator');
+var flash = require('connect-flash');
+var session = require('express-session');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var path = require('path');
+
+
+// Passport init
+app.use(passport.initialize());
+app.use(passport.session());
 
 mongoose.Promise = global.Promise;
 mongoose.connect(DB_URI);
@@ -24,18 +34,17 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(validator());
 app.use(cookieParser());
-app.use(session({secret: '7hweuf$ba%u9q8gfib%b76&usaa3@#dbwu09$ff', resave: false, saveUninitialized: false}));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json());
+app.use(express.static(__dirname + '/public'));
+app.use(router);
 
 app.use(function(req, res, next) {
     res.locals.login = req.isAuthenticated();
     next();
 });
-
-app.use('/', routes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -71,10 +80,45 @@ app.use(function(err, req, res, next) {
 
 module.exports = app;
 
+// Express Validator
+app.use(expressValidator({
+    errorFormatter: function(param, msg, value) {
+        var namespace = param.split('.'),
+            root = namespace.shift(),
+            formParam = root;
+
+        while (namespace.length) {
+            formParam += '[' + namespace.shift() + ']';
+        }
+        return {
+            param: formParam,
+            msg: msg,
+            value: value
+        };
+    }
+}));
+
+// Express Session
+app.use(session({
+    secret: 'secret',
+    saveUninitialized: true,
+    resave: true
+}));
 
 
-//Start the server
-app.listen(8080, function(){
-    console.log("server is listening on port 8080");
+// Connect Flash
+app.use(flash());
+
+// Global Vars
+app.use(function(req, res, next) {
+    res.locals.success_msg = req.flash('success_msg');
+    res.locals.error_msg = req.flash('error_msg');
+    res.locals.error = req.flash('error');
+    res.locals.client = req.client || null;
+    next();
 });
 
+//Start the server
+app.listen(8080, function() {
+    console.log("server is listening on port 8080");
+});
