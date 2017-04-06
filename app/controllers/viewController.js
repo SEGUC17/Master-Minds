@@ -6,23 +6,33 @@ let BusinessOwner = require('../../models/businessOwners');
 let viewController = {
 
     viewBusiness : function(req, res){
-        var search = req.params.search;
+        var search = req.query.search;
+        console.log(search);
 
                 if (search){
             
             BusinessOwner.find({business_name: search}, function(err, business){
                 if(err){
-                    res.send(err);
+                    res.status(500).send(err);
                 }else{
-            res.send(business);
+                    console.log(business);
+                    if (business.length == 0){
+                        res.status(404).send('Business not found');
+                    }else{
+                        res.send(business); 
+                    }
                 }         
             });          
             }else{
              BusinessOwner.find({}, function(err, business){
                 if(err){
-                    res.send(err);
+                    res.status(500).send(err);
                 }else{
-            res.send(business);
+                if (business.length == 0){
+                        res.status(404).send('Business not found');
+                    }else{
+                        res.send(business); 
+                    }
                  }         
             });          
 
