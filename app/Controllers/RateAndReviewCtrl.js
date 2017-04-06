@@ -220,6 +220,8 @@ service_reviews : [{clinet_username:"a",review : "hi"}]
 
 //new stuff from bulldozer
 ////////////////////////////////////////////////////////////////////////////////////
+
+
 exports.Get_Rate_Business= function(req,res)
 {
    var business = require('mongoose').model('businesses');
@@ -232,53 +234,101 @@ exports.Get_Rate_Business= function(req,res)
           console.log(401);
           res.status(401).send('error happend while looking for the business in the Get_Rate_Business');
         }
-        else if(!found_business)
+        else if(!found_business||!found_business[0])
         {
           console.log(401);
           res.status(401).send('no business found error happend in the Get_Rate_Busines');
         }
         else
-        { var rates = found_business.business_rating;
-          var total =0;
-            for(var i=0;i<rates.length;i++)
-            {
-              total+= rates[i].rating;
+        {
+          var obj_rate =found_business[0].business_rating;
+          if(!obj_rate||!obj_rate[0])
+          {
+            console.log(401);
+            res.status(401).send('no business found error happend in the Get_Rate_Busines');
+          }
+          else
+            {var rate =0;
+              for(var i=0;i<obj_rate.length;i++)
+              {
+                rate+=obj_rate[i].rating;
+              }
+              console.log(200);
+              rate /=obj_rate.length;
+              res.status(200).send(rate + "");
             }
-          var  total /= rates.length;
-          console.log(200);
-          res.status(200).send(total);
-        };
+          }
 
-})
-exports.Get_Rate_Service= function(req,res)
+});
+}
+
+
+exports.Get_Rate_Service= function(req,res)//tested
 {
   var business = require('mongoose').model('businesses');
+  var req_business = req.param('business');
   var req_service = req.param('service');
-  service.find({'service_name':req_service},function(err,found_service)
+  business.find({'business_name':req_business},function(err,found_business)
     {
         if(err)
         {
           console.log(401);
           res.status(401).send('error happend while looking for the service in the Get_Rate_Service');
         }
-        else if(!found_service)
+        else if(!found_business||!found_business[0])
         {
           console.log(401);
           res.status(401).send('no service found error happend in the Get_Rate_Service');
         }
         else
-          { var rates = found_service.service_rating;
-          var total =0;
-            for(var i=0;i<rates.length;i++)
-            {
-              total+= rates[i].rating;
+          {
+            var fname_of_service_found=0;
+            var output =0;
+            var obj_ser = found_business[0].services;
+            if(!obj_ser)
+            { console.log("no services");
+              res.status(401).send("the business has no services yet");
             }
-          var  total /= rates.length;
-          console.log(200);
-          res.status(200).send(total);
-        };
+            else{
+              for(var i=0;i<obj_ser.length;i++)
+              { var obj_ser_name=obj_ser[i];
 
-})
+                if(obj_ser_name.service_name==req_service)
+                {
+
+                  var obj_ser_rating= obj_ser[i].service_rating;
+
+                  fname_of_service_found=1;
+                  for(var j=0;j<obj_ser_rating.length;j++)
+                  {
+                    var obj_ser_rating_1= obj_ser_rating[i];
+
+
+                      output+=obj_ser_rating_1.rating;
+
+
+                  }
+                }
+              }
+              if(fname_of_service_found==1)
+              {   console.log(200);
+                output/= obj_ser_rating.length;
+                console.log(output);
+                  res.status(200).send(output+"");
+              }
+              else
+              {
+                console.log('service not found');
+                  res.status(401).send("service not found");
+              }
+
+            }
+          }
+});
+}
+
+
+
 exports.Get_Review_Business= function(req,res)
 {
   var business = require('mongoose').model('businesses');
@@ -337,6 +387,10 @@ exports.Get_Review_Service= function(req,res)
          res.status(200).send(total);
        };
 })
+
+
+
+
 exports.Get_Review_Numbered_Business = function(req,res)
 {
   var business = require('mongoose').model('businesses');
