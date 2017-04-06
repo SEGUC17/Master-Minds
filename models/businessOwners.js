@@ -6,7 +6,7 @@ var bcrypt = require('bcrypt-nodejs');
 //Business owner Schema
 var BusinessSchema = mongoose.Schema({
     personal_email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    password: { type: String},
     address: String,
     fullName: String,
     business_name: { type: String, required: true, unique: true },
@@ -16,9 +16,10 @@ var BusinessSchema = mongoose.Schema({
     associated_bank : String,   //The bank the business deals with
     business_website : String,
     FAQ : String,
-    business_reviews : [{username:String ,review : String , report : Number}],   //Array of reviews and reports
+    business_reviews : [{username:String ,review : String , reported : {type: Number, default: 0}}],   //Array of reviews and reports
     business_rating : [{username:String ,rating : Number}],
     accepted: Boolean,
+
     //Business Services
     services: [{
         service_pic: String,
@@ -26,12 +27,18 @@ var BusinessSchema = mongoose.Schema({
         service_Description: String,
         service_price: Number,
         promotion_offer : Number,   //Percentage dicount on service
+<<<<<<< HEAD
         service_rating  : [{username:String,rating : Number}],   //Array of ratings to get average
         service_reviews: [{ review: String, reported: { type: Number, default: 0 } }],   //Array of reviews
         type_flag : Boolean,    //Whether sevice type is time-based (true) or product-based (false)
         available_flag : Boolean    //Whether service is available or not
+=======
+        service_rating : [{rating : Number}],   //Array of ratings to get average
+        service_reviews : [{review : String, reported : {type: Number, default: 0}}],   //Array of reviews and corresponding reported number
+        type_flag : Boolean,    //Whether sevice type is time-based (true) or product-based (false)
+        available_flag : Boolean,    //Whether service is available or not
+>>>>>>> f8cf25d8c0f31b56e3b9d0b1a72797bfd4970763
     }]
-
 });
 
 BusinessSchema.methods.encryptPassword = function(password) {

@@ -26,7 +26,8 @@ let productContoller = {
                         for (var j = 0; j < business.services[i].service_reviews.length; j++) {
                             if (business.services[i].service_reviews[j].review == req.body.review) {
                                 business.services[i].service_reviews[j].reported++;
-                                res.render('detailedProductView', { 'review': req.body.review }); //To change the report button on this review as reported
+                                business.save();
+                                res.render('detailedProductView', { 'review': req.param('review') }); //To change the report button on this review as reported
                                 return;
                             }
                         }
