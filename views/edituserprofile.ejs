@@ -1,18 +1,21 @@
-<% include _header %>
 <div class="row">
     <div class="col-md-4 col-md-offset-4">
         <h1>Edit Profile</h1>
-        <%if(hasErrors){%>
+        {{#if hasErrors}}
             <div class="alert alert-danger">
-                <%for(var i=0; i<messages.length; i++){%>
-                    <p><%=messages[i]%></p>
-                <%}%>
+                {{# each messages }}
+                    <p>{{this}}</p>
+                {{/each}}
             </div>
-        <%}%>
-        <form action="/editboprofile" method="post">
+        {{/if}}
+        <form action="/user/editprofile" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="personal_email">E-Mail</label>
                 <input type="text" id="personal_email" name="personal_email" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="password">Old Password</label>
+                <input type="password" id="password" name="password" class="form-control">
             </div>
             <div class="form-group">
                 <label for="password">New Password</label>
@@ -43,12 +46,10 @@
                 <input type="text" id="business_website" name="business_website" class="form-control">
             </div>
             <div class="form-group">
-                <label for="business_logo">Business Logo</label>
-                <input type="file" id="business_logo" name="business_logo" class="form-control">
+                <label for="profile_pic">Profile Picture</label>
+                <input type="file" id="profile_pic" name="profile_pic" class="form-control">
             </div>
             <button type="submit" class="btn btn-primary">Apply Changes</button>
         </form>
     </div>
 </div>
-
-<% include _footer %>
