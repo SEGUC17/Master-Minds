@@ -5,7 +5,7 @@ var bcrypt = require('bcrypt-nodejs');
 //Business owner Schema
 var BusinessSchema = mongoose.Schema({
     personal_email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    password: { type: String},
     address: String,
     fullname: String,
     business_name: { type: String, required: true, unique: true },
