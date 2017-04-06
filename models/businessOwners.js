@@ -10,6 +10,7 @@ var BusinessSchema = mongoose.Schema({
     fullname: String,
     business_name: { type: String, required: true, unique: true },
     business_description: String,
+
     business_emails: [{ email: String }],
     business_logo: String,
     associated_bank: String, //The bank the business deals with
@@ -19,18 +20,21 @@ var BusinessSchema = mongoose.Schema({
     business_rating: [{ rating: Number }],
     accepted: Boolean, // whether or not the business's application to the directory has been accepted by the admin
 
+
     //Business Services
     services: [{
         service_pic: { data: Buffer, contentType: String },
         service_name: String,
         service_Description: String,
         service_price: Number,
+
         promotion_offer: Number, //Percentage dicount on service
         service_rating: [{ rating: Number }], //Array of ratings to get average
         service_reviews: [{ review: String, reported: { type: Number, default: 0 } }], //Array of reviews and corresponding reported number
         type_flag: Boolean, //Whether sevice type is time-based (true) or product-based (false)
         available_flag: Boolean, //Whether service is available or not
     }]
+
 });
 
 BusinessSchema.methods.encryptPassword = function(password) {
