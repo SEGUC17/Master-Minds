@@ -23,41 +23,68 @@ router.get('/service_edit', function(req, res) {
 router.get('/businessOwner_login', function(req, res) {
     res.render('login');
 });
-passport.use(new LocalStrategy(
-    function(username, password, done) {
-        UserLoginController.getUserByUsername(username, function(err, user) {
-            if (err) throw err;
-            if (!user) {
-                return done(null, false);
-            }
-
-            UserLoginController.comparePassword(password, user.password, function(err, isMatch) {
-                if (err) throw err;
-                if (isMatch) {
-                    return done(null, user);
-                } else {
-                    return done(null, false);
-                }
-            });
-        });
-    }));
-
-passport.serializeUser(function(user, done) {
-    done(null, user.id);
-});
-
-passport.deserializeUser(function(id, done) {
-    UserLoginController.getUserById(id, function(err, user) {
-        done(err, user);
-    });
-});
+// passport.use(new LocalStrategy(
+//     function(username, password, done) {
+//         UserLoginController.getUserByUsername(username, function(err, user) {
+//             if (err) throw err;
+//             if (!user) {
+//                 return done(null, false);
+//             }
+//
+//             UserLoginController.comparePassword(password, user.password, function(err, isMatch) {
+//                 if (err) throw err;
+//                 if (isMatch) {
+//                     return done(null, user);
+//                 } else {
+//                     return done(null, false);
+//                 }
+//             });
+//         });
+//     }));
+//
+// passport.serializeUser(function(user, done) {
+//     done(null, user.id);
+// });
+//
+// passport.deserializeUser(function(id, done) {
+//     UserLoginController.getUserById(id, function(err, user) {
+//         done(err, user);
+//     });
+// });
 
 // Login businessOwner  POST
-router.post('/businessowner_login',
-    passport.authenticate('local', { successRedirect: '/', failureRedirect: '/businessowner_login', failureFlash: true }),
-    function(req, res) {
-        console.log("i am logged in");
-        res.redirect('/');
+router.post('/businessowner_login',fucntion(req,res){
+    // passport.authenticate('local', { successRedirect: '/', failureRedirect: '/businessowner_login', failureFlash: true }),
+    // function(req, res) {
+    //     console.log("i am logged in");
+    //     res.redirect('/');
+
+      var personal_email=req.body.personal_email;
+      var password=rq.body.password;
+      if(personal_email==""||personal_email==null){
+        res.send("you must enter  your personal email to login ");
+        res.render('businessowner_login');
+      }else{
+        if(password==""||password==null){
+          res.send("you must enter  your password for your  email to login ");
+          res.render('businessowner_login');
+        }else{
+          businesses.findOne({personal_email:personal_email},function(err,userlogin){
+            if(err){
+              // if no email mathes error appears
+              res.send("error happened while login no  personal email matches businessOwner please check your email again");
+              res.render('businessowner_login');
+              res.send(err);
+
+            }else{
+              // chechking the password to match the password in database for this email
+            if(userlogin.password==password){
+              res.send("password matches   personal email password ");
+              res.render('businessowner_logged');// logged 
+            }
+
+        }
+      }
     });
 
 

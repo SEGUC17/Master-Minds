@@ -13,7 +13,8 @@ var mongoose = require('mongoose');
 var fs=require('fs');
 var DB_URI = "mongodb://localhost:27017/BreakOut";
 var app = express();
-
+// Connect Flash
+app.use(flash());
 //Configure app
 app.use(passport.initialize());
 app.use(passport.session());
@@ -61,8 +62,7 @@ app.use(session({
 }));
 
 
-// Connect Flash
-app.use(flash());
+
 
 //Start the server
 app.listen(8080, function(){
