@@ -23,6 +23,7 @@ var UserRegisterController = require('./controllers/ClientRegisterController');
 var UserLoginController = require('./controllers/ClientLoginController');
 let session = require('express-session');
 let businesses = require('../models/businessOwners');
+var view_unaccepted_businesses = require('./controllers/view_unaccepted_businesses');
 
 //Add routes
 router.get('/', homepageController.test);
@@ -429,6 +430,9 @@ router.post('/viewliked', function (req, res) {
     likeBusinessController.viewLikedBusinesses(req, res);
     console.log(res);
 });
+
+router.post('/view_unaccepted_businesses', view_unaccepted_businesses.view_unaccepted);
+router.post('/accept_application/:business', view_unaccepted_businesses.accept_application);
 
 //Export router
 module.exports = router;
