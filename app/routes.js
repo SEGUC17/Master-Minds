@@ -9,6 +9,7 @@ var Admin = require('../models/admins');
 var Client = require('../models/clients');
 var multer = require('multer');
 var upload = multer({ dest: './public/businessowner' });
+var upload_client = multer({ dest: './public/businessowner' });
 var viewController = require('./controllers/viewController');
 var profileController = require('./controllers/profileController');
 var productController = require('./controllers/productController');
@@ -21,18 +22,22 @@ let session = require('express-session');
 let businesses = require('../models/businessOwners');
 
 
+
 //Add routes
+router.get('/', homepageController.test);
 router.get('/viewbusiness', viewController.viewBusiness);
 router.get('/viewservices', viewController.viewServices);
 router.get('/viewprofile', profileController.viewProfile);
-router.post('/editprofile', profileController.editProfile);
-router.get('/', homepageController.test); //Testing image
+router.get('/editprofile', profileController.getEditProfile); 
+router.post('/editprofile',upload_client.single('profile_pic'), profileController.editProfile);
+
+
+
+
+//Add routes
 router.get('/detailedProduct/:businessname/:product', productController.reportServiceReview);
 router.get('/viewAdvertisement', productController.viewAdvertisements);
 router.get('/viewbusiness', viewController.viewBusiness);
-router.get('/viewservices', viewController.viewServices);
-router.get('/viewprofile', profileController.viewProfile);
-router.post('/editprofile', profileController.editProfile);
 router.post('/advertise/:businessname/:product', productController.addAdvertisment);
 router.post('/detailedProduct/:businessname/:product', productController.reportServiceReview);
 
