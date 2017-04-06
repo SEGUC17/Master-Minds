@@ -9,6 +9,4 @@ var AdminSchema = mongoose.Schema({
 });
 
 //Export schema
-mongoose.model('admins', AdminSchema);
-
-//var Admin = module.exports = 
+var Admin = module.exports = mongoose.model('admins', AdminSchema);

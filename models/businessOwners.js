@@ -16,7 +16,7 @@ var BusinessSchema = mongoose.Schema({
     FAQ : String,   
     business_reviews_and_reports : [{review : String , Report : String}],   //Array of reviews and reports
     business_rating : [{rating : Number}],
-
+    ban: Boolean,    //Whether the business owner has been banned by an admin or not
     //Business Services
     services: [{ 
         service_pic: { data: Buffer, contentType: String },
