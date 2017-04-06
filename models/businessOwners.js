@@ -10,40 +10,35 @@ var BusinessSchema = mongoose.Schema({
     fullname: String,
     business_name: { type: String, required: true, unique: true },
     business_description: String,
-<<<<<<< HEAD
-    business_emails: [{ email: String}],
+    business_emails: [{ email: String }],
     business_logo: String,
-=======
-    business_emails: [{ email: String, description: String }],  //Business emails with description each
-    business_logo: { data: Buffer, contentType: String },
->>>>>>> 3919cf12274f9ac46d3e1f4a91854ed9e474ac62
-    associated_bank : String,   //The bank the business deals with
-    business_website : String,
-    FAQ : String,   
-    business_reviews : [{review : String, reported : {type: Number, default: 0}}],   //Array of reviews and reports
-    business_rating : [{rating : Number}],
-    accepted: Boolean,   // whether or not the business's application to the directory has been accepted by the admin
+    associated_bank: String, //The bank the business deals with
+    business_website: String,
+    FAQ: String,
+    business_reviews: [{ review: String, reported: { type: Number, default: 0 } }], //Array of reviews and reports
+    business_rating: [{ rating: Number }],
+    accepted: Boolean, // whether or not the business's application to the directory has been accepted by the admin
 
     //Business Services
-    services: [{ 
+    services: [{
         service_pic: { data: Buffer, contentType: String },
-        service_name: String, 
-        service_Description: String, 
-        service_price: Number, 
-        promotion_offer : Number,   //Percentage dicount on service
-        service_rating : [{rating : Number}],   //Array of ratings to get average
-        service_reviews : [{review : String, reported : {type: Number, default: 0}}],   //Array of reviews and corresponding reported number
-        type_flag : Boolean,    //Whether sevice type is time-based (true) or product-based (false)
-        available_flag : Boolean,    //Whether service is available or not
-    }] 
+        service_name: String,
+        service_Description: String,
+        service_price: Number,
+        promotion_offer: Number, //Percentage dicount on service
+        service_rating: [{ rating: Number }], //Array of ratings to get average
+        service_reviews: [{ review: String, reported: { type: Number, default: 0 } }], //Array of reviews and corresponding reported number
+        type_flag: Boolean, //Whether sevice type is time-based (true) or product-based (false)
+        available_flag: Boolean, //Whether service is available or not
+    }]
 });
 
 BusinessSchema.methods.encryptPassword = function(password) {
-  return bcrypt.hashSync(password, bcrypt.genSaltSync(5), null);  
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(5), null);
 };
 
 BusinessSchema.methods.validPassword = function(password) {
-  return bcrypt.compareSync(password, this.password);  
+    return bcrypt.compareSync(password, this.password);
 };
 //Export Schema
 var Business = module.exports = mongoose.model('businesses', BusinessSchema);
