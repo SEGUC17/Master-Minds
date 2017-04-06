@@ -465,6 +465,8 @@ res.send("added")
 }
 //new stuff from bulldozer
 ////////////////////////////////////////////////////////////////////////////////////
+
+
 exports.Get_Rate_Business= function(req,res)
 {
    var business = require('mongoose').model('businesses');
@@ -504,6 +506,11 @@ exports.Get_Rate_Business= function(req,res)
 
 });
 }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> f54f1840070522ada420d33e5996635a288b43e2
 exports.Get_Rate_Service= function(req,res)//tested
 {
   var business = require('mongoose').model('businesses');
@@ -533,6 +540,7 @@ exports.Get_Rate_Service= function(req,res)//tested
             else{
               for(var i=0;i<obj_ser.length;i++)
               { var obj_ser_name=obj_ser[i];
+<<<<<<< HEAD
 
                 if(obj_ser_name.service_name==req_service)
                 {
@@ -567,6 +575,45 @@ exports.Get_Rate_Service= function(req,res)//tested
           }
 });
 }
+=======
+
+                if(obj_ser_name.service_name==req_service)
+                {
+
+                  var obj_ser_rating= obj_ser[i].service_rating;
+
+                  fname_of_service_found=1;
+                  for(var j=0;j<obj_ser_rating.length;j++)
+                  {
+                    var obj_ser_rating_1= obj_ser_rating[i];
+
+
+                      output+=obj_ser_rating_1.rating;
+
+
+                  }
+                }
+              }
+              if(fname_of_service_found==1)
+              {   console.log(200);
+                output/= obj_ser_rating.length;
+                console.log(output);
+                  res.status(200).send(output+"");
+              }
+              else
+              {
+                console.log('service not found');
+                  res.status(401).send("service not found");
+              }
+
+            }
+          }
+});
+}
+
+
+
+>>>>>>> f54f1840070522ada420d33e5996635a288b43e2
 exports.Get_Review_Business= function(req,res)
 {
   var business = require('mongoose').model('businesses');
@@ -625,6 +672,7 @@ exports.Get_Review_Service= function(req,res)
          res.status(401).send('no service found error happend in the  Get_Review_Service');
        }
        else
+<<<<<<< HEAD
        {
               var services = found_business[0].services;
                if(!services||!services[0])
@@ -675,6 +723,23 @@ exports.Get_Review_Service= function(req,res)
        }
 });
 }
+=======
+       { var reviews = found_service.service_reviews;
+         var total ="";
+           for(var i=0;i<rates.length;i++)
+           {
+             total.concat(rates[i].review) ;
+             total.concat("\n");
+           }
+         console.log(200);
+         res.status(200).send(total);
+       };
+})
+
+
+
+
+>>>>>>> f54f1840070522ada420d33e5996635a288b43e2
 exports.Get_Review_Numbered_Business = function(req,res)
 {
   var business = require('mongoose').model('businesses');
