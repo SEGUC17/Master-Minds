@@ -27,17 +27,13 @@ var BusinessSchema = mongoose.Schema({
         service_Description: String,
         service_price: Number,
         promotion_offer : Number,   //Percentage dicount on service
-<<<<<<< HEAD
+
         service_rating  : [{username:String,rating : Number}],   //Array of ratings to get average
         service_reviews: [{ review: String, reported: { type: Number, default: 0 } }],   //Array of reviews
         type_flag : Boolean,    //Whether sevice type is time-based (true) or product-based (false)
         available_flag : Boolean    //Whether service is available or not
-=======
-        service_rating : [{rating : Number}],   //Array of ratings to get average
-        service_reviews : [{review : String, reported : {type: Number, default: 0}}],   //Array of reviews and corresponding reported number
-        type_flag : Boolean,    //Whether sevice type is time-based (true) or product-based (false)
-        available_flag : Boolean,    //Whether service is available or not
->>>>>>> f8cf25d8c0f31b56e3b9d0b1a72797bfd4970763
+
+
     }]
 });
 
