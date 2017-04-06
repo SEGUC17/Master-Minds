@@ -470,9 +470,9 @@ router.post('/register', function(req, res) {
             console.log(client);
         });
 
-        //req.flash('success_msg', 'You are registered and can now login');
+        // req.flash('success_msg', 'You are registered and can now login');
 
-        //res.redirect('/login');
+        res.redirect('/login');
     }
 });
 passport.use(new LocalStrategy(
