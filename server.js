@@ -21,15 +21,13 @@ var LocalStrategy = require('passport-local').Strategy;
 var path = require('path');
 var validator = require('express-validator');
 
-
-app.use(passport.initialize());
-
 // Express Session
 app.use(session({
     secret: 'secret',
     saveUninitialized: true,
     resave: true
 }));
+app.use(passport.initialize());
 app.use(passport.session());
 
 

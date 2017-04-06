@@ -5,6 +5,7 @@ var express = require('express');
 var router = express.Router();
 var validator = require('express-validator');
 var homepageController = require('./controllers/hompageController');
+var likeBusinessController = require('../app/controllers/likeBusinessController');
 var BusinessOwner = require('../models/businessOwners');
 var Admin = require('../models/admins');
 var Client = require('../models/clients');
@@ -559,6 +560,21 @@ router.post('/subscribe', upload.single('business_logo'), function(req, res) {
             });
         });
     });
+});
+
+
+
+
+
+router.post('/like',function(req,res){
+  likeBusinessController.likeBusiness(req,res);
+})
+
+router.post('/unlike',likeBusinessController.unlikeBusiness);
+
+router.post('/viewliked',function(req,res){
+  likeBusinessController.viewLikedBusinesses(req,res);
+  console.log(res);
 });
 
 
