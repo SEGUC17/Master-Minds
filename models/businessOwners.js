@@ -11,12 +11,13 @@ var BusinessSchema = mongoose.Schema({
     business_name: { type: String, required: true, unique: true },
     business_description: String,
     business_emails: [{ email: String}],
-    business_logo: { data: Buffer, contentType: String },
+    business_logo: String,
     associated_bank : String,   //The bank the business deals with
     business_website : String,
     FAQ : String,   
     business_reviews_and_reports : [{review : String , Report : String}],   //Array of reviews and reports
     business_rating : [{rating : Number}],
+    accepted: Boolean,   // whether or not the business's application to the directory has been accepted by the admin
 
     //Business Services
     services: [{ 
