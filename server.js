@@ -14,19 +14,28 @@ var DB_URI = "mongodb://localhost:27017/BreakOut";
 var router = require('./app/routes');
 var app = express();
 var expressValidator = require('express-validator');
-var flash = require('connect-flash');
-var session = require('express-session');
-var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var path = require('path');
 
 
-// Passport init
-app.use(passport.initialize());
-app.use(passport.session());
+//Configure app
+app.set('view engine', 'handlebars');
+app.set('view engine', 'ejs');
+app.use(bodyParser.urlencoded({extended:false}));
 
 mongoose.Promise = global.Promise;
-mongoose.connect(DB_URI);
+mongoose.connect(DB_URI,function(err){
+  if(err){
+    console.log(err);
+  }else{
+    console.log("Connected to DB successfuly");
+  }
+});
+
+
+
+
+mongoose.Promise = global.Promise;
 
 //Configure app
 app.set('views', path.join(__dirname, 'views'));
@@ -106,6 +115,17 @@ app.use(expressValidator({
 
 
 
+
+// Express Session
+
+app.use(session({
+    secret: 'secret',
+    saveUninitialized: true,
+    resave: true
+}));
+
+
+
 // Global Vars
 app.use(function(req, res, next) {
     res.locals.success_msg = req.flash('success_msg');
@@ -114,8 +134,8 @@ app.use(function(req, res, next) {
     res.locals.client = req.client || null;
     next();
 });
-
 //Start the server
-app.listen(8080, function() {
+app.listen(8080, function(){
     console.log("server is listening on port 8080");
-});
+
+})
