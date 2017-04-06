@@ -4,11 +4,11 @@ var mongoose = require('mongoose');
 //client schema
 var ClientSchema = mongoose.Schema({
     email: { type: String, required: true, unique: true },
-    password: String,
+    password:String ,
     username: String,
-    fullName: String,
+    fullname: String,
     address: String,
-    profile_pic: { data: Buffer, contentType: String },
+    profile_pic:  String ,
     phone_number: String,
     liked: [{ business_names: String }],
     businesses_ratings: [{ business_name: String, business_rating: Number }],// not sure to do with this

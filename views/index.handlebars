@@ -1,0 +1,13 @@
+<h2 class="page-header">Home</h2>
+<p>Students</p>  
+<div>
+    {{#each users}}
+    <div class = "form-group">
+            <p>{{name}}           {{email}}</p>
+            {{#each works}}
+            <p>{{this}}</p>
+            {{/each}}
+    </div>
+    </br>
+    {{/each}}
+</div>
