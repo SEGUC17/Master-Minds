@@ -19,7 +19,7 @@ var UserRegisterController = require('./controllers/ClientRegisterController');
 var UserLoginController = require('./controllers/ClientLoginController');
 let session = require('express-session');
 let businesses = require('../models/businessOwners');
-var view_unaccepted_businesses = require('../models/view_unaccepted_businesses');
+var view_unaccepted_businesses = require('./controllers/view_unaccepted_businesses');
 
 
 //Add routes
