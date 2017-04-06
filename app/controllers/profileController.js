@@ -7,12 +7,17 @@ let profileController = {
 
     viewProfile: function(req, res){
         // var user = req.session.username;
-        var user = "client1";
+        var user = "cli";
         Clients.findOne({username: user}, function(err, user){
             if(err){
-                res.send(err);
+                res.status().send(err);
             }else{
+                if(user){
                 res.send(user);
+            }
+            else{
+                res.status(404).send('User not found');
+            }
             }
         });
     },
@@ -43,14 +48,17 @@ let profileController = {
         // var username = "client1";
         // var fullname = "client1";       
 
-        Clients.findOne({username: username}, function(err, user){
+        Clients.findOne({'username': username}, function(err, user){
             if(err){
-                res.send(err);
+                console.log(err);
+                res.status(404).send('Could not find the user');
             }else{
+                if(user){
+                console.log(user.username);
         user.password = password;
         user.email = email;
         user.address = address;
-        // user.profile_pic = profile_pic;
+        user.profile_pic = profile_pic;
         user.phone_number = phone_number;
         user.fullName = fullname;
         console.log(fullname);
@@ -58,11 +66,15 @@ let profileController = {
 
         user.save(function (err, editUser){
             if(err){
-                res.send(err);
+                console.log(err);
+                res.status(400).send('There was critical missing data');
             }else{
                 res.send(editUser);
             }
         });
+            }else{
+                res.status(404).send('user not found');
+            }
             }
         });
     }
