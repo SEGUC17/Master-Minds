@@ -17,12 +17,6 @@ var expressValidator = require('express-validator');
 var LocalStrategy = require('passport-local').Strategy;
 var path = require('path');
 
-
-//Configure app
-app.set('view engine', 'handlebars');
-app.set('view engine', 'ejs');
-app.use(bodyParser.urlencoded({extended:false}));
-
 mongoose.Promise = global.Promise;
 mongoose.connect(DB_URI,function(err){
   if(err){
@@ -31,11 +25,6 @@ mongoose.connect(DB_URI,function(err){
     console.log("Connected to DB successfuly");
   }
 });
-
-
-
-
-mongoose.Promise = global.Promise;
 
 //Configure app
 app.set('views', path.join(__dirname, 'views'));

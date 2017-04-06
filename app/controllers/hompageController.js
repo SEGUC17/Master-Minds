@@ -2,11 +2,13 @@
 var fs = require('fs');
 
 let clients = require('../../models/clients');
+let session = require('express-session');
 
 let homepageController = {
 
     //Testing image
     test:function(req, res){
+        session.username = 'genedy';
         //Removing data in the collection clients
         clients.remove(function (err) {
             if (err) throw err;
