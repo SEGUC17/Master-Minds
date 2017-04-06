@@ -6,6 +6,9 @@ let Clients = require('../../models/clients');
 let profileController = {
 
     viewProfile: function(req, res){
+        if(!req.user){
+            res.status(401).send('GET OFF MY PROPERTY');
+        }else{
         var user = req.user.username;
         Clients.findOne({username: user}, function(err, user){
             if(err){
@@ -19,6 +22,7 @@ let profileController = {
             }
             }
         });
+      }
     },
 
     getEditProfile: function(req, res){

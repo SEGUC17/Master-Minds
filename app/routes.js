@@ -9,9 +9,17 @@ var Admin = require('../models/admins');
 var Client = require('../models/clients');
 var multer = require('multer');
 var upload = multer({ dest: './public/businessowner' });
-var upload_client = multer({ dest: './public/client' });
+var upload_client = multer({ dest: './public/businessowner' });
 var viewController = require('./controllers/viewController');
 var profileController = require('./controllers/profileController');
+var productController = require('./controllers/productController');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var User = require('../models/clients');
+var UserRegisterController = require('./controllers/ClientRegisterController');
+var UserLoginController = require('./controllers/ClientLoginController');
+let session = require('express-session');
+let businesses = require('../models/businessOwners');
 
 
 
