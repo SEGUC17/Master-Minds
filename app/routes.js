@@ -11,6 +11,16 @@ var multer = require('multer');
 var upload = multer({ dest: './public/businessowner' });
 var viewController = require('./controllers/viewController');
 var profileController = require('./controllers/profileController');
+
+
+//Add routes
+router.get('/', homepageController.test);
+router.get('/viewbusiness', viewController.viewBusiness);
+router.get('/viewservices', viewController.viewServices);
+router.get('/viewprofile', profileController.viewProfile);
+router.post('/editprofile', profileController.editProfile);
+
+
 var productController = require('./controllers/productController');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
