@@ -1,6 +1,6 @@
 //Require dependencies
 var mongoose = require('mongoose');
-var bcrypt = require('bcrypt-nodejs');
+
 //Business owner Schema
 var BusinessSchema = mongoose.Schema({
     personal_email: { type: String, required: true, unique: true },
@@ -20,7 +20,7 @@ var BusinessSchema = mongoose.Schema({
     //Business Services
     services: [{
         service_pic: String,
-        service_name: type:String,
+        service_name:String,
         service_Description: String,
         service_price: Number,
         promotion_offer : Number,   //Percentage dicount on service

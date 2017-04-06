@@ -1,6 +1,6 @@
-var admins= require('../models/admins.js');
-var clients= require('../models/clients.js');
-var businessOwners= require('../models/businessOwners.js');
+var admins= require('../../models/admins.js');
+var clients= require('../../models/clients.js');
+var businessOwners= require('../../models/businessOwners.js');
 
 /*exports.Post_Rate_Business= function(req,res)
 {var done =0;
@@ -793,7 +793,7 @@ exports.Report_Business_Review = function(req,res)
   var req_business=req.param('business');
   var req_review=req.body.review;
   if(req_review&&req_business)
-  business.findOneAndUpdate({'business_name':req_business,'business_reviews.review':req_review},{'$inc':{business_reviews.$.report}},function(err,found_business)
+  business.findOneAndUpdate({'business_name':req_business,'business_reviews.review':req_review},{'$inc':{'business_reviews.$.report':1}},function(err,found_business)
   {
         if(err)
        {

@@ -3,7 +3,7 @@ var express = require('express');
 var router = express.Router();
 var validator = require('express-validator');
 var homepageController = require('./controllers/hompageController');
-var RateAndReviewCtrl = require('./Controllers/RateAndReviewCtrl.js');
+var RateAndReviewCtrl = require('./controllers/RateAndReviewCtrl.js');
 var BusinessOwner = require('../models/businessOwners');
 var Admin = require('../models/admins');
 var Client = require('../models/clients');
@@ -18,9 +18,9 @@ var path = require('path');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
-var User = require('./Models/clients.js');
-var UserRegisterController = require('./Controllers/ClientRegisterController');
-var UserLoginController = require('./Controllers/ClientLoginController');
+var User = require('../models/clients.js');
+var UserRegisterController = require('./controllers/ClientRegisterController');
+var UserLoginController = require('./controllers/ClientLoginController');
 let session = require('express-session');
 let businesses = require('../models/businessOwners');
 
