@@ -1,12 +1,14 @@
 //Require dependencies
 var mongoose = require('mongoose');
+var bcrypt = require('bcrypt-nodejs');
+
 
 //Business owner Schema
 var BusinessSchema = mongoose.Schema({
     personal_email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     address: String,
-    fullname: String,
+    fullName: String,
     business_name: { type: String, required: true, unique: true },
     business_description: String,
     business_emails: [{ email: String}],  //Business emails with description each
@@ -25,10 +27,11 @@ var BusinessSchema = mongoose.Schema({
         service_price: Number,
         promotion_offer : Number,   //Percentage dicount on service
         service_rating  : [{username:String,rating : Number}],   //Array of ratings to get average
-        service_reviews : [{username:String,review : String,report : Number}],   //Array of reviews
+        service_reviews: [{ review: String, reported: { type: Number, default: 0 } }],   //Array of reviews
         type_flag : Boolean,    //Whether sevice type is time-based (true) or product-based (false)
         available_flag : Boolean    //Whether service is available or not
     }]
+
 });
 
 BusinessSchema.methods.encryptPassword = function(password) {

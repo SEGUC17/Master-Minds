@@ -134,7 +134,7 @@ exports.Post_Rate_Service= function(req,res)
           });
 }
 */
-exports.Post_Review_Business = function(req,res)
+exports.Post_Rate_Business = function(req,res)
 {
   var business = require('mongoose').model('businesses');
   var req_business = req.param('business');

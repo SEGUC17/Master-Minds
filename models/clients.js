@@ -6,7 +6,7 @@ var ClientSchema = mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password:String ,
     username: String,
-    fullname: String,
+    fullName: String,
     address: String,
     profile_pic:  String ,
     phone_number: String,
