@@ -1,10 +1,17 @@
 var Client = require('../../models/clients');
+var Admin = require('../../models/admins');
 var bcrypt = require('bcryptjs');
 
 
 module.exports.getUserByUsername = function(username, callback) {
     var query = { username: username };
-    Client.findOne(query, callback);
+    Client.findOne(query, callback
+    	//function(err,client){
+    	//if(!client){
+    	//	Admin.findOne(query,callback);
+    	//}
+    //}
+    );
 }
 
 module.exports.getUserById = function(id, callback) {

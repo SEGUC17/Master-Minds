@@ -19,6 +19,8 @@ var LocalStrategy = require('passport-local').Strategy;
 var User = require('../models/clients');
 var UserRegisterController = require('./controllers/ClientRegisterController');
 var UserLoginController = require('./controllers/ClientLoginController');
+var adminFunctionsController = require('./controllers/adminFunctionsController');
+
 let session = require('express-session');
 let businesses = require('../models/businessOwners');
 
@@ -31,6 +33,9 @@ router.get('/viewservices', viewController.viewServices);
 router.get('/viewprofile', profileController.viewProfile);
 router.get('/editprofile', profileController.getEditProfile);
 router.post('/editprofile',upload_client.single('profile_pic'), profileController.editProfile);
+router.put('/admin/ban-user/:useremail', adminFunctionsController.banuser);    
+router.put('/admin/ban-bus/:business_name', adminFunctionsController.banbus);    
+router.get('/admin/viewReports', adminFunctionsController.viewReportedReviews);    
 
 
 
