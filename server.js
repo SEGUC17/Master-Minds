@@ -4,21 +4,18 @@ var router = require('./app/routes');
 var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
 var flash = require('connect-flash');
-
+var session = require('express-session');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var path = require('path');
-var session = require('express-session');
 var mongoose = require('mongoose');
 var fs=require('fs');
 var DB_URI = "mongodb://localhost:27017/BreakOut";
 var app = express();
-// Connect Flash
-app.use(flash());
+
 //Configure app
 app.use(passport.initialize());
 app.use(passport.session());
-
 app.set('view engine', 'handlebars');
 app.set('view engine', 'ejs');
 app.use(bodyParser.json());
@@ -33,12 +30,11 @@ mongoose.connect(DB_URI,function(err){
   }
 });
 
-
-
-
 app.use(router);
 
- //Express Validator
+
+
+// Express Validator
 app.use(expressValidator({
     errorFormatter: function(param, msg, value) {
         var namespace = param.split('.'),
@@ -55,15 +51,28 @@ app.use(expressValidator({
         };
     }
 }));
+
+
+
+// Express Session
+
 app.use(session({
     secret: 'secret',
     saveUninitialized: true,
     resave: true
 }));
 
+// Connect Flash
+app.use(flash());
 
-
-
+// Global Vars
+app.use(function(req, res, next) {
+    res.locals.success_msg = req.flash('success_msg');
+    res.locals.error_msg = req.flash('error_msg');
+    res.locals.error = req.flash('error');
+    res.locals.client = req.client || null;
+    next();
+});
 //Start the server
 app.listen(8080, function(){
     console.log("server is listening on port 8080");
