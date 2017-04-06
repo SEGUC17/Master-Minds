@@ -19,6 +19,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var User = require('../models/clients');
 var UserRegisterController = require('./controllers/ClientRegisterController');
 var UserLoginController = require('./controllers/ClientLoginController');
+var adminLoginController = require('./controllers/adminLoginController');
 var adminFunctionsController = require('./controllers/adminFunctionsController');
 
 let session = require('express-session');
@@ -53,7 +54,26 @@ passport.use(new LocalStrategy(
         UserLoginController.getUserByUsername(username, function(err, user) {
             if (err) throw err;
             if (!user) {
-                return done(null, false);
+              console.log("Reached here!");
+              adminLoginController.getAdminByUsername(username,function(err, admin){
+                  console.log("Reached here!");
+                  if (err) throw err;
+                  if (!admin){
+                    console.log("Reached here 1");
+                    return done(null, false);
+                  }
+                  adminLoginController.comparePassword(password, admin.password, function(err, isMatch) {
+                    console.log("Reached here 2");
+                    if (err) throw err;
+
+                    if (isMatch) {
+                      return done(null, admin);
+                    } else {
+                      return done(null, false);
+                    }
+                  });
+              });
+                //return done(null, false);
             }
 
             UserLoginController.comparePassword(password, user.password, function(err, isMatch) {
@@ -73,6 +93,9 @@ passport.serializeUser(function(user, done) {
 
 passport.deserializeUser(function(id, done) {
     UserLoginController.getUserById(id, function(err, user) {
+        if(!user || err){
+          adminLoginController.getAdminById(id, function(err, user) {done(err, user);});
+        }
         done(err, user);
     });
 });
@@ -317,7 +340,7 @@ router.post('/register', function(req, res) {
 
         //req.flash('success_msg', 'You are registered and can now login');
 
-        //res.redirect('/login');
+        res.redirect('/login');
     }
 });
 

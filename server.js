@@ -17,6 +17,14 @@ var expressValidator = require('express-validator');
 var LocalStrategy = require('passport-local').Strategy;
 var path = require('path');
 
+app.use(session({
+    secret: 'secret',
+    saveUninitialized: true,
+    resave: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
 mongoose.Promise = global.Promise;
 mongoose.connect(DB_URI,function(err){
   if(err){
@@ -39,8 +47,6 @@ app.use(session({
     resave: true
 }));
 app.use(flash());
-app.use(passport.initialize());
-app.use(passport.session());
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/public'));
 app.use(router);
@@ -107,11 +113,6 @@ app.use(expressValidator({
 
 // Express Session
 
-app.use(session({
-    secret: 'secret',
-    saveUninitialized: true,
-    resave: true
-}));
 
 
 
