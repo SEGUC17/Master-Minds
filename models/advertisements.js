@@ -4,7 +4,8 @@ var mongoose = require('mongoose');
 //Admin schema
 var AdvertisementSchema = mongoose.Schema({
     business_name: String,
-    service_name: String
+    service_name: String,
+    date: Date
 });
 
 //Export schema
