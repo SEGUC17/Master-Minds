@@ -122,7 +122,7 @@ router.get('/viewReviewService/:business/:service',function(req,res) // view rev
 }
 );
 
-
+/*
 router.get('/viewReviewNumberedBusiness/:business',function(req,res) // view reviews numbered of a business
 {
       RateAndReviewCtrl.Get_Review_Numbered_Business(req,res);
@@ -134,7 +134,7 @@ router.get('/viewReviewNumberedService/:business/:service',function(req,res) // 
       RateAndReviewCtrl.Get_Review_Numbered_Service(req,res);
 
 }
-);
+);*/
 
 router.post('/reportBusiness/:business',function(req,res) // report a business' review
 {
