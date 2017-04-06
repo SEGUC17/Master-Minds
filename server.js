@@ -18,7 +18,7 @@ var path = require('path');
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.set('view engine', 'handlebars');
+app.set('view engine', 'ejs');
 // Express Validator
 app.use(expressValidator({
     errorFormatter: function(param, msg, value) {

@@ -30,7 +30,7 @@ router.get('/register', function(req, res) {
 
 // Login
 router.get('/login', function(req, res) {
-    res.send('login');
+    res.render('login');
 });
 
 // Register User
