@@ -6,7 +6,11 @@ let clientsController = {
     likeBusiness:function(req,res){
       //Get name of business to be liked from the request
       var business = req.body.name;
-      var email = "client1";
+
+      //var email = "client1";  Was used for testing
+
+      //Get current user's email
+      var email = req.user.email;
       //locates the current client
       clients.findOne({email:email},function(err,client){
         if(err){
@@ -31,7 +35,11 @@ let clientsController = {
     unlikeBusiness:function(req,res){
       //Get name of business to be unliked from the request
       var business = req.body.name;
-      var email = 'client1';
+      //Get current User's email
+      var email = req.user.email;
+
+      //var email = 'client1';  used for testing
+
       //locate the current client
       clients.findOne({email: email},function(err,client){
         if(err){
@@ -52,7 +60,10 @@ let clientsController = {
     },
 
     viewLikedBusinesses:function(req,res){
-      var email = "client1";
+      //var email = "client1"; used for testing
+
+      //Get current user's email
+      var email = req.user.email;
       //locates the current client
       clients.findOne({email:email},function(err,client){
         if(err){
