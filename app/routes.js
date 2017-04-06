@@ -43,7 +43,7 @@ router.post('/rating/:business',function(req,res) // add new rating to the busin
 
 }
 );
-router.post('/rating/:business/:service',function(req,res) // add new rating to the service
+/*router.post('/rating/:business/:service',function(req,res) // add new rating to the service
 {
   if(!req.user)
     {
@@ -56,7 +56,7 @@ router.post('/rating/:business/:service',function(req,res) // add new rating to 
       RateAndReviewCtrl.Post_Rate_Service(req,res);
     }
 }
-);
+);*/
 router.post('/reviews/:business',function(req,res) // add new review to the business
 {
   if(!req.user)
@@ -71,7 +71,7 @@ router.post('/reviews/:business',function(req,res) // add new review to the busi
     }
 }
 );
-router.post('/reviews/:business/:service',function(req,res)// add new review to the service
+/*router.post('/reviews/:business/:service',function(req,res)// add new review to the service
 {
   if(!req.user)
     {
@@ -85,7 +85,7 @@ router.post('/reviews/:business/:service',function(req,res)// add new review to 
     }
 }
 );
-
+*/
 
 router.get('/test',function(req,res)// add new review to the service
 {
