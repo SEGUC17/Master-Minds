@@ -13,7 +13,6 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var path = require('path');
 
-
 // Passport init
 app.use(passport.initialize());
 app.use(passport.session());

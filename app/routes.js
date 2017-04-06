@@ -11,6 +11,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var User = require('../models/clients');
 var UserRegisterController = require('./controllers/ClientRegisterController');
 var UserLoginController = require('./controllers/ClientLoginController');
+let session = require('express-session');
 
 //Add routes
 router.get('/', homepageController.test); //Testing image
@@ -20,7 +21,7 @@ router.get('/viewbusiness', viewController.viewBusiness);
 router.get('/viewservices', viewController.viewServices);
 router.get('/viewprofile', profileController.viewProfile);
 router.post('/editprofile', profileController.editProfile);
-router.post('/detailedProduct/:businessname/:product', productController.addAdvertisment);
+router.post('/advertise/:businessname/:product', productController.addAdvertisment);
 router.post('/detailedProduct/:businessname/:product', productController.reportServiceReview);
 
 // Register
@@ -54,7 +55,6 @@ router.post('/register', function(req, res) {
     req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
 
     var errors = req.validationErrors();
-
     if (errors) {
         res.render('register', {
             errors: errors
@@ -114,6 +114,7 @@ router.post('/login',
     function(req, res) {
         console.log("i am logged in");
         res.redirect('/');
+        session.username = req.body.username;
     });
 
 router.get('/logout', function(req, res) {

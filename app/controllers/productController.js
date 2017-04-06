@@ -1,6 +1,7 @@
 //Require dependencies
 let businesses = require('../../models/businessOwners');
 let advertisements = require('../../models/advertisements');
+let session = require('express-session');
 
 let productContoller = {
     reportServiceReview: function (req, res) {
@@ -18,7 +19,7 @@ let productContoller = {
         //   business.save();
         //   business.services.push({service_name: "room", service_reviews:[{review: "hello" }]});
         //   business.save();
-        if (req.param('report') == 'true') {
+        if (req.param('report') == 'true' && session.username != null) {
             businesses.findOne({ business_name: req.param('businessname') }, function (err, business) {
                 for (var i = 0; i < business.services.length; i++) {
                     if (business.services[i].service_name == req.param('product')) {
