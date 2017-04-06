@@ -13,22 +13,22 @@ var BusinessSchema = mongoose.Schema({
     business_logo: { data: Buffer, contentType: String },
     associated_bank : String,   //The bank the business deals with
     business_website : String,
-    FAQ : String,   
-    business_reviews : [{review : String, reported : {type: Number, default: 0}}],   //Array of reviews and reports
+    FAQ : String,
+    business_reviews : [{username: String, review : String, reported : {type: Number, default: 0}}],   //Array of reviews and reports
     business_rating : [{rating : Number}],
 
     //Business Services
-    services: [{ 
+    services: [{
         service_pic: { data: Buffer, contentType: String },
-        service_name: String, 
-        service_Description: String, 
-        service_price: Number, 
+        service_name: String,
+        service_Description: String,
+        service_price: Number,
         promotion_offer : Number,   //Percentage dicount on service
         service_rating : [{rating : Number}],   //Array of ratings to get average
         service_reviews : [{review : String, reported : {type: Number, default: 0}}],   //Array of reviews and corresponding reported number
         type_flag : Boolean,    //Whether sevice type is time-based (true) or product-based (false)
         available_flag : Boolean,    //Whether service is available or not
-    }] 
+    }]
 });
 
 //Export Schema

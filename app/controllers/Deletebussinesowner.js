@@ -1,10 +1,27 @@
+
+var Business= require('../../models/businessOwners.js');
+
+
 exports.deleteowner= function(req,res){
-  var business = require('mongoose').model('businesses');
-  if(err)
-           {
-             console.log(401);
-             res.status(401).send('ERROR');
+  Business.findOne({business_name:'breakout'}, function(err, business){
+    business.remove({business_name:'breakout'});
+
+    business.save();
+    })
+  res.render('homepageView');
 }
-else {
-  
-}
+
+
+
+
+
+// exports.deleteowner= function(req,res){
+//  var bussinessname=req.body.bname
+//   Business.findOne({business_name:bussinesname}, function(err, business){
+//     business.remove({business_name:bussinesname});
+//
+//     business.save();
+//     })
+//   res.render('homepageView');
+//
+// }
