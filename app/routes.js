@@ -58,14 +58,15 @@ passport.use(new LocalStrategy(
             if (!user) {
               console.log("Reached here!");
               adminLoginController.getAdminByUsername(username,function(err, admin){
-                  console.log("Reached here!");
+                  console.log("Reached here 1!");
                   if (err) throw err;
                   if (!admin){
-                    console.log("Reached here 1");
+                    console.log("Reached here 2");
                     return done(null, false);
                   }
+                  console.log(admin);
                   adminLoginController.comparePassword(password, admin.password, function(err, isMatch) {
-                    console.log("Reached here 2");
+                    console.log("Reached here 3");
                     if (err) throw err;
 
                     if (isMatch) {
@@ -76,7 +77,7 @@ passport.use(new LocalStrategy(
                   });
               });
                 //return done(null, false);
-            }
+            }else{
 
             UserLoginController.comparePassword(password, user.password, function(err, isMatch) {
                 if (err) throw err;
@@ -86,11 +87,13 @@ passport.use(new LocalStrategy(
                     return done(null, false);
                 }
             });
+          }
         });
     }));
 
 passport.serializeUser(function(user, done) {
     done(null, user.id);
+    console.log(user.id);
 });
 
 passport.deserializeUser(function(id, done) {
@@ -347,10 +350,12 @@ router.post('/register', function(req, res) {
 });
 
 router.post('/login',
-    passport.authenticate('local', { successRedirect: '/', failureRedirect: '/login', failureFlash: true }),
+    passport.authenticate('local', { successRedirect: 'http://www.google.com', failureRedirect: '/login', failureFlash: true }),
     function(req, res) {
         console.log("i am logged in");
-        res.redirect('/');
+        //res.redirect('/');
+        //res.json({"result": "Success"}); 
+        console.log(req.body);
         session.username = req.body.username;
     });
 

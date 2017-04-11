@@ -10,7 +10,6 @@ let adminFunctionsController = {
     banuser:function(req,res){
         if(req.isAuthenticated()){
         if (req.user.admin){
-            
         clients.findOne({email: req.param('useremail')}, function(err, user){
             if(err)
                 res.send(err);
