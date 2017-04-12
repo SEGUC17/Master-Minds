@@ -11,8 +11,8 @@ var ClientSchema = mongoose.Schema({
     profile_pic: String,
     phone_number: String,
     liked: [{ business_names: String }],
-    businesses_ratings: [{ business_name: String, business_rating: Number }],
-    services_ratings: [{ service_name: String, service_Rating: Number }],
+    businesses_ratings: [{ business_name: String, business_rating: Number }],// not sure to do with this
+    services_ratings: [{ service_name: String, service_Rating: Number }],// not sure to do with this
     ban: Boolean    //Whether the clients has been banned by an admin or not
 });
 

@@ -6,9 +6,10 @@ let clients = require('../../models/clients');
 let admins = require('../../models/admins');
 let businesses = require('../../models/businessOwners');
 var bcrypt = require('bcryptjs');
+let session = require('express-session');
 
 let homepageController = {
-    
+
     //Testing image
     test:function(req, res){
         //session.username = 'genedy';
@@ -84,7 +85,6 @@ let homepageController = {
         //        res.send(bus.business_name);  //Sending to browser the image from the database
         //    })        
         //});
-        
     }
 }
 

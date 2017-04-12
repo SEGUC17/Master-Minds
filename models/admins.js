@@ -1,4 +1,4 @@
-//Require dependencies
+//require dependencies
 var mongoose = require('mongoose');
 
 //Admin schema

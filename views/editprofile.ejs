@@ -1,14 +1,16 @@
+
+<% include _header %>
 <div class="row">
     <div class="col-md-4 col-md-offset-4">
         <h1>Edit Profile</h1>
-        {{#if hasErrors}}
+        <%if(hasErrors){%>
             <div class="alert alert-danger">
-                {{# each messages }}
-                    <p>{{this}}</p>
-                {{/each}}
+                <%for(var i=0; i<messages.length; i++){%>
+                    <p><%=messages[i]%></p>
+                <%}%>
             </div>
-        {{/if}}
-        <form action="/user/editprofile" method="post">
+        <%}%>
+        <form action="/editboprofile" method="post">
             <div class="form-group">
                 <label for="personal_email">E-Mail</label>
                 <input type="text" id="personal_email" name="personal_email" class="form-control">
@@ -18,6 +20,7 @@
                 <input type="password" id="password" name="password" class="form-control">
             </div>
             <div class="form-group">
+
                 <label for="password">New Password</label>
                 <input type="password" id="password" name="password" class="form-control">
             </div>
@@ -53,3 +56,5 @@
         </form>
     </div>
 </div>
+
+<% include _footer %>

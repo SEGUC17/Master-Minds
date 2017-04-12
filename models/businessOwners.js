@@ -5,7 +5,7 @@ var bcrypt = require('bcrypt-nodejs');
 //Business owner Schema
 var BusinessSchema = mongoose.Schema({
     personal_email: { type: String, required: true, unique: true },
-    password: String,
+    password: { type: String},
     address: String,
     fullName: String,
     business_name: { type: String, required: true, unique: true },
@@ -19,6 +19,7 @@ var BusinessSchema = mongoose.Schema({
     business_rating : [{username:String ,rating : Number}],
     accepted: Boolean, // whether or not the business's application to the directory has been accepted by the admin
     ban: Boolean,    //Whether the business owner has been banned by an admin or not
+                                     
     //Business Services
     services: [{ 
         service_pic: String,
@@ -30,7 +31,9 @@ var BusinessSchema = mongoose.Schema({
         service_reviews: [{ review: String, reported: { type: Number, default: 0 } }], //Array of reviews and corresponding reported number
         type_flag : Boolean,    //Whether sevice type is time-based (true) or product-based (false)
         available_flag : Boolean    //Whether service is available or not
-    }] 
+
+
+    }]
 });
 
 BusinessSchema.methods.encryptPassword = function(password) {
