@@ -378,7 +378,7 @@ passport.use(new LocalStrategy(
          // searching for his specific service from the array of Services and then edit his data
          if(user.services[i].service_name==oldservice_name){
           user.services[i].service_pic=newservice_pic;
-        user.services[i].service_name=newservice_name;
+          user.services[i].service_name=newservice_name;
           user.services[i].service_Description=newservice_Description;
           user.services[i].service_price=newservice_price;
           user.services[i].promotion_offer=newpromotion_offer;
