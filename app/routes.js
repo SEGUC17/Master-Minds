@@ -216,7 +216,7 @@ passport.use(new LocalStrategy(
                     return done(null, false);
                 }
             });
-        });
+        }});
     }));
 
 
