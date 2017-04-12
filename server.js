@@ -5,6 +5,12 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cookieparser = require ('cookie-parser');
 var mongoose = require('mongoose');
+var session = require('express-session');
+var passport = require('passport');
+var flash = require('connect-flash');
+var validator = require('express-validator');
+var multer = require('multer');
+var fs = require('fs');
 var DB_URI = "mongodb://localhost:27017/BreakOut";
 var expressValidator = require('express-validator');
 var flash = require('connect-flash');
@@ -19,7 +25,6 @@ var app = express();
 var expressValidator = require('express-validator');
 var LocalStrategy = require('passport-local').Strategy;
 var path = require('path');
-var validator = require('express-validator');
 
 // Express Session
 app.use(session({
@@ -29,7 +34,6 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-
 
 // Express Validator
 app.use(expressValidator({
@@ -119,7 +123,6 @@ app.use(function(err, req, res, next) {
 
 
 module.exports = app;
-
 
 
 // Global Vars
