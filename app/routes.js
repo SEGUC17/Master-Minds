@@ -1,4 +1,3 @@
-
 //Require dependencies
 var fs = require('fs');
 var express = require('express');
@@ -15,13 +14,16 @@ var upload_client = multer({ dest: './public/businessowner' });
 var viewController = require('./controllers/viewController');
 var profileController = require('./controllers/profileController');
 var productController = require('./controllers/productController');
-var replyController = require('./controllers/replyController');
-var Deletebussinesowner= require('./controllers/Deletebussinesowner');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var User = require('../models/clients');
 var UserRegisterController = require('./controllers/ClientRegisterController');
 var UserLoginController = require('./controllers/ClientLoginController');
+var adminLoginController = require('./controllers/adminLoginController');
+var adminFunctionsController = require('./controllers/adminFunctionsController');
+var replyController = require('./controllers/replyController');   
+var Deletebussinesowner= require('./controllers/Deletebussinesowner');
+
 let session = require('express-session');
 let businesses = require('../models/businessOwners');
 
@@ -160,6 +162,9 @@ router.get('/viewservices', viewController.viewServices);
 router.get('/viewprofile', profileController.viewProfile);
 router.get('/editprofile', profileController.getEditProfile);
 router.post('/editprofile',upload_client.single('profile_pic'), profileController.editProfile);
+router.put('/admin/ban-user/:useremail', adminFunctionsController.banuser);    
+router.put('/admin/ban-bus/:business_name', adminFunctionsController.banbus);    
+router.get('/admin/viewReports', adminFunctionsController.viewReportedReviews);    
 
 //Add routes
 router.get('/detailedProduct/:businessname/:product', productController.reportServiceReview);
@@ -169,22 +174,41 @@ router.post('/advertise/:businessname/:product', productController.addAdvertisme
 router.post('/detailedProduct/:businessname/:product', productController.reportServiceReview);
 router.post('/reply', replyController.Post_Reply);
 router.post('/deletebussines', Deletebussinesowner.deleteowner);
-
 router.get('/logout', function(req, res) {
         req.logout();
         res.redirect('/login');
    });
 
-
+//Passport
 passport.use(new LocalStrategy(
-    function (username, password, done) {
-        UserLoginController.getUserByUsername(username, function (err, user) {
+    function(username, password, done) {
+        UserLoginController.getUserByUsername(username, function(err, user) {
             if (err) throw err;
             if (!user) {
-                return done(null, false);
-            }
+              console.log("Reached here!");
+              adminLoginController.getAdminByUsername(username,function(err, admin){
+                  console.log("Reached here 1!");
+                  if (err) throw err;
+                  if (!admin){
+                    console.log("Reached here 2");
+                    return done(null, false);
+                  }
+                  console.log(admin);
+                  adminLoginController.comparePassword(password, admin.password, function(err, isMatch) {
+                    console.log("Reached here 3");
+                    if (err) throw err;
 
-            UserLoginController.comparePassword(password, user.password, function (err, isMatch) {
+                    if (isMatch) {
+                      return done(null, admin);
+                    } else {
+                      return done(null, false);
+                    }
+                  });
+              });
+                //return done(null, false);
+            }else{
+
+            UserLoginController.comparePassword(password, user.password, function(err, isMatch) {
                 if (err) throw err;
                 if (isMatch) {
                     return done(null, user);
@@ -192,7 +216,7 @@ passport.use(new LocalStrategy(
                     return done(null, false);
                 }
             });
-        });
+        }});
     }));
 
 
@@ -408,8 +432,6 @@ passport.use(new LocalStrategy(
     });
 
 
-
-
 // Register
 router.get('/register', function (req, res) {
 
@@ -432,8 +454,6 @@ router.get('/login', function (req, res) {
 
 // Register User
 router.post('/register', function(req, res) {
-
-
     var fullName = req.body.fullName;
     var email = req.body.email;
     var username = req.body.username;
@@ -442,7 +462,6 @@ router.post('/register', function(req, res) {
     var password = req.body.password;
     var password2 = req.body.password2;
 
-    console.log(fullName);
     // Validation
     req.checkBody('fullName', 'Name is required').notEmpty();
     req.checkBody('email', 'Email is required').notEmpty();
@@ -468,16 +487,16 @@ router.post('/register', function(req, res) {
             password: password
         });
 
-        UserRegisterController.createUser(newClient, function (err, client) {
+        UserRegisterController.createUser(newClient, function(err, client) {
+
             if (err) throw err;
             console.log(client);
         });
 
-        // req.flash('success_msg', 'You are registered and can now login');
-
         res.redirect('/login');
     }
 });
+
 passport.use(new LocalStrategy(
     function(username, password, done) {
         UserLoginController.getUserByUsername(username, function(err, user) {
@@ -523,17 +542,16 @@ router.get('/logout', function (req, res) {
 });
 
 router.get('/subscribe', function(req, res, next) {
-
     var messages = req.flash('error'); // supply view with the error messages that appeared (if any)
     res.render('subscribe', { messages: messages, hasErrors: messages.length > 0 });
 });
 
-router.post('/subscribe', upload.single('business_logo'), function (req, res) {
+router.post('/subscribe', upload.single('business_logo'), function(req, res) {
     // check for any mistakes or lack of input in the input form
     req.checkBody('personal_email', 'Invalid email').notEmpty().isEmail();
     req.checkBody('password', 'Invalid password').notEmpty().isLength({ min: 4 });
     req.checkBody('business_name', 'Please enter business name').notEmpty();
-    req.checkBody('fullName', "Please enter business owner's name").notEmpty();
+    req.checkBody('fullname', "Please enter business owner's name").notEmpty();
     req.checkBody('business_description', 'PLease enter business description').notEmpty();
     req.checkBody('business_emails', 'Please enter business emails').notEmpty();
     req.checkBody('associated_bank', 'Please enter associated bank info').notEmpty();
@@ -545,7 +563,7 @@ router.post('/subscribe', upload.single('business_logo'), function (req, res) {
         messages.push('Need to upload a business logo'); //  check whether business logo has been uploaded or not
     }
     if (errors) {
-        errors.forEach(function (error) {
+        errors.forEach(function(error) {
             messages.push(error.msg); // prepare the error messages that will be shown
         });
         if (flag) // ** if there are errors, and hence nothing will be inserted into the db, remove the file that upload.single uploaded
@@ -553,7 +571,7 @@ router.post('/subscribe', upload.single('business_logo'), function (req, res) {
         req.flash('error', messages); // flash error messages
         return res.redirect('/subscribe');
     }
-    BusinessOwner.findOne({ 'personal_email': req.body.personal_email }, function (err, owner) { //check that email is unique
+    BusinessOwner.findOne({ 'personal_email': req.body.personal_email }, function(err, owner) { //check that email is unique
         if (err) {
             return console.error(err);
         }
@@ -562,7 +580,7 @@ router.post('/subscribe', upload.single('business_logo'), function (req, res) {
             req.flash('error', 'Email is already in use.'); // flash error message
             return res.redirect('/subscribe');
         }
-        BusinessOwner.findOne({ 'business_name': req.body.business_name }, function (err, owner) { // check that business name is unique
+        BusinessOwner.findOne({ 'business_name': req.body.business_name }, function(err, owner) { // check that business name is unique
             if (err) {
                 return console.error(err);
             }
@@ -575,7 +593,7 @@ router.post('/subscribe', upload.single('business_logo'), function (req, res) {
             newOwner.personal_email = req.body.personal_email;
             newOwner.password = newOwner.encryptPassword(req.body.password);
             newOwner.business_name = req.body.business_name;
-            newOwner.fullName = req.body.fullName;
+            newOwner.fullname = req.body.fullname;
             newOwner.business_description = req.body.business_description;
             newOwner.business_logo = req.file.filename;
             var a = req.body.business_emails;
@@ -589,15 +607,99 @@ router.post('/subscribe', upload.single('business_logo'), function (req, res) {
             newOwner.rating = [];
             newOwner.accepted = false; // shows that this business is pending approval by the admin to be shown on the directory
 
+
             newOwner.save(function (err, result) {
                 if (err) return console.error(err);
-                //res.redirect('addservices')
+                res.redirect('/service_add')
             });
         });
     });
 });
 
 
+router.get('/editboprofile', isLoggedIn, function(req, res, next){
+    var messages = req.flash('error');   // supply error messages to view
+    res.render('editprofile', {messages: messages, hasErrors: messages.length>0});
+});
+
+router.post('/editboprofile', upload.single('business_logo'), function(req, res){
+    BusinessOwner.findOne({'personal_email' : req.user.personal_email}, function(err, user){ // access the logged in user's information
+        var waitForCallback = 0;
+        if(req.body.business_name){
+            waitForCallback = 1;
+            BusinessOwner.findOne({'business_name' : req.body.business_name}, function(err, owner){ // check if new business name is taken
+                if(err){
+                    return console.error(err);
+                }
+                if(owner){
+                    req.flash('error', 'There is already a business with that name.');
+                    return res.redirect('/editboprofile');
+                }
+                req.user.business_name = req.body.business_name;
+                waitForCallback = 0;
+            });
+        }
+        while(waitForCallback);
+        if(req.body.personal_email){
+            waitForCallback = 1;
+            BusinessOwner.findOne({'personal_email' : req.body.personal_email}, function(err, owner){ // check if new email is used already
+                if(err){
+                    return console.error(err);
+                }
+                if(owner){
+                    req.flash('error', 'That email address is already in use.');
+                    return res.redirect('/editboprofile');
+                }
+                user.personal_email = req.body.personal_email;
+                waitForCallback = 0;
+            });
+        }
+        while(waitForCallback);
+        if(req.body.password)  // keep assigning new values (if any)
+            user.password = user.encryptPassword(req.body.password);
+        if(req.body.address)
+            user.address = req.body.address;
+        if(req.body.fullname)
+            user.fullname = req.body.fullname;
+        if(req.body.business_emails){
+            user.business_emails = [];
+            var a = req.body.business_emails;
+            var arr = a.split(',');
+            for (i = 0; i < arr.length; i++) {
+                user.business_emails.push({ email: arr[i] });
+            }
+        }
+        if(req.body.business_description)
+            user.business_description = req.body.business_description;
+        if(req.body.associated_bank)
+            user.associated_bank = req.body.associated_bank;
+        if(req.body.business_website)
+            user.business_website = req.body.business_website;
+        if(req.body.address)
+            user.address = req.body.address;
+        if(req.file){
+            user.business_logo = req.file.filename;
+        }
+        user.save(function(err){
+            if(err) return console.error(error);
+            res.send('Profile Updated');
+        });
+    });
+});
+
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/');
+}
+
+function notLoggedIn(req, res, next) {
+    if (!req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/');
+}
 
 
 

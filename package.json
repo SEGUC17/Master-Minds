@@ -4,13 +4,10 @@
   "description": "project for the secourse",
   "main": "server.js",
   "dependencies": {
-
-    "express-messages": "*",
-    "mongodb": "*",
-    "passport-http": "*",
-
-
-        "express-messages": "^1.0.1",
+    "express-messages": "*",   
+    "mongodb": "*",   
+    "passport-http": "*",   
+    "express-messages": "^1.0.1",
 
     "bcrypt-nodejs": "0.0.3",
 
