@@ -1,5 +1,5 @@
-var Client = require('../../models/clients');
-var Admin = require('../../models/admins');
+var Client = require('../../../models/clients');
+var Admin = require('../../../models/admins');
 var bcrypt = require('bcryptjs');
 
 

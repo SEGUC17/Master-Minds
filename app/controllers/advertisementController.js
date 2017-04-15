@@ -1,45 +1,8 @@
 //Require dependencies
-let businesses = require('../../models/businessOwners');
 let advertisements = require('../../models/advertisements');
 let session = require('express-session');
 
-let productContoller = {
-    reportServiceReview: function (req, res) {
-        /*
-        I will get a post request from the detailed product view when the button of the report on 
-        a certain review is clicked. The product name, the business name and the review content 
-        will be passed from the view to this function in the product controller. 
-        This function should search for the review in the business and set the reported flag true.
-        */
-
-        /* Adding values to be tested on in the database */
-        //   var business = new businesses();
-        //   business.personal_email = 'genedymohamed96@gmail.com';
-        //   business.business_name = 'breakout';
-        //   business.save();
-        //   business.services.push({service_name: "room", service_reviews:[{review: "hello" }]});
-        //   business.save();
-        if (req.param('report') == 'true' && session.username != null) {
-            businesses.findOne({ business_name: req.param('businessname') }, function (err, business) {
-                for (var i = 0; i < business.services.length; i++) {
-                    if (business.services[i].service_name == req.param('product')) {
-                        for (var j = 0; j < business.services[i].service_reviews.length; j++) {
-                            if (business.services[i].service_reviews[j].review == req.body.review) {
-                                business.services[i].service_reviews[j].reported++;
-                                business.save();
-                                res.render('detailedProductView', { 'review': req.param('review') }); //To change the report button on this review as reported
-                                return;
-                            }
-                        }
-                    }
-                }
-                business.save();
-                res.render('detailedProductView');
-                return;
-            });
-        } else
-            res.render('detailedProductView');
-    },
+let advertisementController = {
 
     addAdvertisment: function (req, res) {
         /*
@@ -86,7 +49,7 @@ let productContoller = {
                             }
                         }
                     })
-                }else{
+                } else {
                     err.message('This is not one of your products');
                 }
             })
@@ -102,7 +65,7 @@ let productContoller = {
         */
         advertisements.find({}, function (err, ad) {
             for (var i = 0; i < ad.length; i++) {
-                if (((new Date().getDate()) - ad[i].date.getDate()) > 7 || ((new Date().getDate()) - ad[i].date.getDate()) >= -24 || ((new Date().getMonth()) - ad[i].date.getMonth()) > 1) {
+                if (((new Date().getDate()) - ad[i].date.getDate()) > 7 || ((new Date().getDate()) - ad[i].date.getDate()) <= -24 || ((new Date().getMonth()) - ad[i].date.getMonth()) > 1) {
                     ad[i].remove();
                 }
             }
@@ -118,12 +81,11 @@ let productContoller = {
                     }
                 }
             }
-            // console.log(adArray);
+            console.log(adArray);
             res.render('advertisementsView', { adArray });    //Pass the chosen ads to the view
         })
     }
-
 }
 
-//Export controller
-module.exports = productContoller;
+//Export Controller
+module.exports = advertisementController;

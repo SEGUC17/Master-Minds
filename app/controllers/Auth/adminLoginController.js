@@ -1,4 +1,4 @@
-var Admin = require('../../models/admins');
+var Admin = require('../../../models/admins');
 var bcrypt = require('bcryptjs');
 
 
