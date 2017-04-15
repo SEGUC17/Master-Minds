@@ -1,7 +1,7 @@
 var admins= require('../../models/admins.js');
 var clients= require('../../models/clients.js');
 var student_schema= require('../../models/businessOwners.js');
-
+let businesses = require('../../models/businessOwners');
 exports.Post_Rate_Business= function(req,res)
 {
   var business = require('mongoose').model('businesses');
@@ -51,7 +51,7 @@ exports.Post_Rate_Business= function(req,res)
 
 }
 
-exports.Post_Rate_Service= function(req,res)
+/*exports.Post_Rate_Service= function(req,res)
 {
   var business = require('mongoose').model('businesses');
   var req_business = req.param('business');
@@ -99,7 +99,7 @@ exports.Post_Rate_Service= function(req,res)
                  res.status(200).send("added");
               }});
 
-}
+}*/
 
 /*exports.Post_Review_Business = function(req,res)
 { var bus = require('mongoose').model('businesses');
@@ -164,7 +164,143 @@ console.log(new_rate);
                         }
                       });
   }
+/*exports.Post_Rate_Service=function(req,res)
+{
+  var business = require('mongoose').model('businesses');
+  var req_business = req.param('business');
+  var req_service = req.param('service');
+  service_rating = {
+    'username':req.user.username,
+    'rating':req.body.rating
+  }
+  var ffound = 0 ;
+  var where_cause1={'services':{'service_name':req_service,'service_rating':{'username':req.user.username}}, 'business_name': req_business};
 
+  businessesO.update(where_cause1,{
+    '$set' : {
+        'services.$.service_rating' : service_rating
+    }
+  },function(err,found_business)
+  {
+    if(err)
+    {
+      console.log(err);
+  res.status(401).send("error");
+    }
+    if(found_business.nModified==0)
+    {
+      ffound=0
+    }
+    else
+    { ffound=1;
+      console.log(found_business);
+      res.status(200).send("added");
+    }
+  });
+
+
+
+if(ffound==0){
+  var where_cause = {'services':{'service_name':req_service}, 'business_name': req_business }
+  businessesO.update(where_cause,{
+    '$addToSet' : {
+        'services.service_rating' : service_rating
+    }
+},function(err,found_business)
+  {
+    if(err)
+    {
+      console.log(err);
+res.status(401).send("error");
+    }
+    if(found_business.nModified==0)
+    {
+      console.log("this bus not found");
+       res.status(401).send("no business");
+    }
+    else
+    {
+      console.log(200);
+      res.status(200).send("added");
+    }
+  });
+}
+}*/
+exports.Post_Rate_Service=function(req,res)
+
+ {
+      /*
+      I will get a post request from the detailed product view when the button of the report on
+      a certain review is clicked. The product name, the business name and the review content
+      will be passed from the view to this function in the product controller.
+      This function should search for the review in the business and set the reported flag true.
+      */
+
+      /* Adding values to be tested on in the database */
+      //   var business = new businesses();
+      //   business.personal_email = 'genedymohamed96@gmail.com';
+      //   business.business_name = 'breakout';
+      //   business.save();
+      //   business.services.push({service_name: "room", service_reviews:[{review: "hello" }]});
+      //   business.save();
+      var new_rate= {
+        "username":req.user.username,
+        "rate":req.body.rating
+
+      };
+//      console.log(req.user.username);
+//      console.log("console:this method is not working you know");
+
+      var ffoundbs = 0;  var ffound = 0;
+          businesses.findOne({ business_name: req.param('business') }, function (err, business) {
+            if(err)
+            {
+              console.log(err);
+              res.status(404).send("err");
+            }
+            else if(!business)
+            {
+              console.log("found_business");
+              res.status(404).send("not found");
+            }
+            else{
+              for (var i = 0; i < business.services.length; i++) {
+              //  console.log(business)
+                  if (business.services[i].service_name == req.param('service')) {
+                  ffoundbs=1;
+              //    console.log(business.services[i])
+                      for (var j = 0; j < business.services[i].service_rating.length; j++) {
+                          if (business.services[i].service_rating[j].username == req.user.username) {
+                              business.services[i].service_rating[j].rating=req.body.rating;
+                              business.save(); ffound=1;
+
+
+
+                          }
+                      }
+                      if(ffound==0)
+                      {
+                        business.services[i].service_rating.push(new_rate);
+                      }
+
+                  }
+              }
+              if(ffoundbs==0)
+              {
+                res.status(404).send("this business  not found");
+              }
+              else{
+              business.save();
+              //res.render('detailedProductView');
+              console.log(200);
+              res.status(200).send("done");
+            }
+            }
+              return;
+
+          });
+
+  }
 
 /*
 exports.Post_Rate_Service= function(req,res)
@@ -240,14 +376,14 @@ exports.Post_Review_Service= function(req,res)
   var business = require('mongoose').model('businesses');
   var req_business = req.param('business');
   var req_service = req.param('service');
-  business.find({'business_name':req_business},function(err,found_business)
+  businessesO.findOne({'business_name':req_business},function(err,found_business)
           {
             if(err)
             {
               console.log(401);
               res.status(401).send('error happend while looking for the business in the Post_Review_Business');
             }
-            else if(!found_business||!found_business[0])
+            else if(!found_business)
             {
               console.log(401);
               res.status(401).send('no business found error happend in the Post_Review_Business');
@@ -255,7 +391,7 @@ exports.Post_Review_Service= function(req,res)
             else
             { var ffound=0;
               var fname_found=0;
-              var obj_ser = found_business[0].services;
+              var obj_ser = found_business.services;
                 for(var i=0;i<obj_ser.length;i++)
                 { var obj_ser_name=obj_ser[i];
                   if(obj_ser_name.service_name==req_service)
@@ -264,13 +400,13 @@ exports.Post_Review_Service= function(req,res)
                   }
                 }
                 var new_review= {
-                  "username":req.uesr.username,
+                  "username":req.user.username,
                   "review":req.body.review
                 };
                 if(fname_found==1)
                 {
                 obj_ser_reviews.push(new_review);
-                business.save();
+                found_business.save();
                 res.console.log(200);
                 res.status(200).send('the review should have been added');
                 }
@@ -286,6 +422,60 @@ exports.Post_Review_Service= function(req,res)
 }*/
 exports.Post_Review_Service= function(req,res)
 {
+  var new_review= {
+    "username":req.user.username,
+    "review":req.body.review,
+    "report":0
+  };
+     console.log(req.user.username);
+      console.log("console:this method is not working you know");
+
+  var ffoundbs = 0;
+      businesses.findOne({ business_name: req.param('business') }, function (err, business) {
+        if(err)
+        {
+          console.log(err);
+          res.status(404).send("err");
+        }
+        else if(!business)
+        {
+          console.log("found_business");
+          res.status(404).send("not found");
+        }
+        else{
+          for (var i = 0; i < business.services.length; i++) {
+          //  console.log(business)
+              if (business.services[i].service_name == req.param('service')) {
+              ffoundbs=1;
+          //    console.log(business.services[i])
+                  business.services[i].service_reviews.push(new_review);
+
+
+                      }
+                  }
+
+
+              }
+
+          if(ffoundbs==0)
+          {
+            res.status(404).send("this business  not found");
+          }
+          else{
+          business.save();
+          //res.render('detailedProductView');
+          console.log(200);
+          res.status(200).send("done");
+        }
+
+          return;
+
+      });
+
+}
+
+/*exports.Post_Review_Service= function(req,res)
+{
   var business = require('mongoose').model('businesses');
   var req_business = req.param('business');
   var req_service =req.param('service');
@@ -295,7 +485,7 @@ exports.Post_Review_Service= function(req,res)
   "report":0
                 };
 console.log(new_rate);
-              business.findOneAndUpdate({'business_name':req_business,'services.service_name':req_service},{"$push":{
+              business.update({'services.service_name':req_service,'business_name':req_business},{ '$addToSet':{
               'services.service_reviews':new_rate}
               },function(err,found_business)
                       {
@@ -314,7 +504,7 @@ console.log(new_rate);
                            res.status(200).send("added");
                         }
                       });
-}
+}*/
 exports.Post_test= function(req,res)
 { /*
   var business1= new business();

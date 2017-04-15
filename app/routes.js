@@ -21,7 +21,7 @@ var UserRegisterController = require('./controllers/ClientRegisterController');
 var UserLoginController = require('./controllers/ClientLoginController');
 var adminLoginController = require('./controllers/adminLoginController');
 var adminFunctionsController = require('./controllers/adminFunctionsController');
-var replyController = require('./controllers/replyController');   
+var replyController = require('./controllers/replyController');
 var Deletebussinesowner= require('./controllers/Deletebussinesowner');
 
 let session = require('express-session');
@@ -47,7 +47,7 @@ router.post('/rating/:business',function(req,res) // add new rating to the busin
 
 }
 );
-/*router.post('/rating/:business/:service',function(req,res) // add new rating to the service
+router.post('/rating/:business/:service',function(req,res) // add new rating to the service
 {
   if(!req.user)
     {
@@ -60,7 +60,7 @@ router.post('/rating/:business',function(req,res) // add new rating to the busin
       RateAndReviewCtrl.Post_Rate_Service(req,res);
     }
 }
-);*/
+);
 router.post('/reviews/:business',function(req,res) // add new review to the business
 {
   if(!req.user)
@@ -75,7 +75,7 @@ router.post('/reviews/:business',function(req,res) // add new review to the busi
     }
 }
 );
-/*router.post('/reviews/:business/:service',function(req,res)// add new review to the service
+router.post('/reviews/:business/:service',function(req,res)// add new review to the service
 {
   if(!req.user)
     {
@@ -89,7 +89,7 @@ router.post('/reviews/:business',function(req,res) // add new review to the busi
     }
 }
 );
-*/
+
 
 router.get('/test',function(req,res)// add new review to the service
 {
@@ -162,9 +162,9 @@ router.get('/viewservices', viewController.viewServices);
 router.get('/viewprofile', profileController.viewProfile);
 router.get('/editprofile', profileController.getEditProfile);
 router.post('/editprofile',upload_client.single('profile_pic'), profileController.editProfile);
-router.put('/admin/ban-user/:useremail', adminFunctionsController.banuser);    
-router.put('/admin/ban-bus/:business_name', adminFunctionsController.banbus);    
-router.get('/admin/viewReports', adminFunctionsController.viewReportedReviews);    
+router.put('/admin/ban-user/:useremail', adminFunctionsController.banuser);
+router.put('/admin/ban-bus/:business_name', adminFunctionsController.banbus);
+router.get('/admin/viewReports', adminFunctionsController.viewReportedReviews);
 
 //Add routes
 router.get('/detailedProduct/:businessname/:product', productController.reportServiceReview);
