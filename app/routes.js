@@ -115,5 +115,9 @@ function notLoggedIn(req, res, next) {
     res.redirect('/');
 }
 
+router.get('/somepage', function(req, res){
+    res.render('somepage');
+});
+
 //Export router
 module.exports = router;
