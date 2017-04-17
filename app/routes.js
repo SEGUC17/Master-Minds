@@ -497,33 +497,6 @@ router.post('/register', function(req, res) {
     }
 });
 
-passport.use(new LocalStrategy(
-    function(username, password, done) {
-        UserLoginController.getUserByUsername(username, function(err, user) {
-            if (err) {
-              console.log(err.message);
-              res.status(500).send(error.message);
-            }
-            if (!user) {
-                return done(null, false);
-            }
-
-            UserLoginController.comparePassword(password, user.password, function(err, isMatch) {
-                if (err)
-                {
-                  console.log(err.message);
-
-                }
-                if (isMatch) {
-                    return done(null, user);
-                } else {
-                    return done(null, false);
-                }
-            });
-        });
-    }));
-
-
 
 router.post('/login',
     passport.authenticate('local', { successRedirect: '/', failureRedirect: '/login', failureFlash: true }),
