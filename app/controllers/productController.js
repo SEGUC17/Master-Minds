@@ -63,7 +63,7 @@ let productContoller = {
                         } else {
                             var advertised = false;
                             for (var i = 0; i < ads.length; i++) {
-                                if (ads.business_name == business.business_name) {    //check that the same business doesn't advertise twice
+                                if (ads[i].business_name == business.business_name) {    //check that the same business doesn't advertise twice
                                     advertised = true;
                                 }
                             }
@@ -79,7 +79,7 @@ let productContoller = {
                                 var ad = new advertisements();
                                 ad.business_name = business.business_name;
                                 ad.service_name = req.param('product');
-                                ad.Date = new Date();
+                                ad.date = new Date();
                                 ad.save();  //Saving the new advertisement to the database
                             } else {
                                 err.message('You already have a service advertised');

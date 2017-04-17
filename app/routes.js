@@ -174,10 +174,7 @@ router.post('/advertise/:businessname/:product', productController.addAdvertisme
 router.post('/detailedProduct/:businessname/:product', productController.reportServiceReview);
 router.post('/reply', replyController.Post_Reply);
 router.post('/deletebussines', Deletebussinesowner.deleteowner);
-router.get('/logout', function(req, res) {
-        req.logout();
-        res.redirect('/login');
-   });
+
 
 //Passport
 passport.use(new LocalStrategy(
@@ -216,17 +213,17 @@ passport.use(new LocalStrategy(
                     return done(null, false);
                 }
             });
-        });
+        }});
     }));
 
 
 
     passport.serializeUser(function(user, done) {
-        done(null, user.id);
+        return done(null, user._id);
     });
     passport.deserializeUser(function(id, done) {
         UserLoginController.getUserById(id, function(err, user) {
-            done(err, user);
+            return done(err, user);
         });
     });
     //  business_owner _service_add page GET
@@ -496,33 +493,6 @@ router.post('/register', function(req, res) {
         res.redirect('/login');
     }
 });
-
-passport.use(new LocalStrategy(
-    function(username, password, done) {
-        UserLoginController.getUserByUsername(username, function(err, user) {
-            if (err) {
-              console.log(err.message);
-              res.status(500).send(error.message);
-            }
-            if (!user) {
-                return done(null, false);
-            }
-
-            UserLoginController.comparePassword(password, user.password, function(err, isMatch) {
-                if (err)
-                {
-                  console.log(err.message);
-
-                }
-                if (isMatch) {
-                    return done(null, user);
-                } else {
-                    return done(null, false);
-                }
-            });
-        });
-    }));
-
 
 
 router.post('/login',
