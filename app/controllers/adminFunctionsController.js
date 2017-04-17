@@ -70,26 +70,33 @@ let adminFunctionsController = {
        if(req.isAuthenticated()){
        if (req.user.admin){ 
 
-            businesses.find({'business_reviews.reported': {$ne: 0}},function(err, arr){
+            businesses.find({'business_reviews.reported': {$ne: 0}},function(err, arr1){
             if(err)
                 res.send(err);
 
-            var reviewsArr = arr.map(function(a) {return a.business_reviews;});
+                businesses.find({'services.service_reviews.reported': {$ne: 0}},function(err, arr2){
 
-            function isNumber(obj) {
-            return obj!== undefined && typeof(obj) === 'number' && !isNaN(obj);
-            }
+                    var reviewsArr1 = arr1.map(function(a) {return a.business_reviews;});
+                    var reviewsArr2 = arr2.map(function(a) {return a.services.service_reviews;});
 
-            function filterByReports(review) {
-                if (isNumber(review.reported) && review.reported >0) {
-                 return true;
-                } 
-                 return false; 
-                }
+                    function isNumber(obj) {
+                        return obj!== undefined && typeof(obj) === 'number' && !isNaN(obj);
+                    }
 
-            var reportsArr = reviewsArr.filter(filterByReports);
+                    function filterByReports(review) {
+                        if (isNumber(review.reported) && review.reported >0) {
+                            return true;
+                        } 
+                            return false; 
+                        }
 
-            res.json(reportsArr);
+                    var reportsArr1 = reviewsArr1.filter(filterByReports);
+                    var reportsArr2 = reviewsArr2.filter(filterByReports);
+                    var reportsArr = reportsArr1.concat(reportsArr2);
+                    res.json(reportsArr);
+
+                    });
+
             });
 
 
