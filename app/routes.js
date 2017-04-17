@@ -174,10 +174,7 @@ router.post('/advertise/:businessname/:product', productController.addAdvertisme
 router.post('/detailedProduct/:businessname/:product', productController.reportServiceReview);
 router.post('/reply', replyController.Post_Reply);
 router.post('/deletebussines', Deletebussinesowner.deleteowner);
-router.get('/logout', function(req, res) {
-        req.logout();
-        res.redirect('/login');
-   });
+
 
 //Passport
 passport.use(new LocalStrategy(
