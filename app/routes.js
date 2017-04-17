@@ -22,7 +22,7 @@ var UserLoginController = require('./controllers/ClientLoginController');
 var adminLoginController = require('./controllers/adminLoginController');
 var adminFunctionsController = require('./controllers/adminFunctionsController');
 var replyController = require('./controllers/replyController');   
-var Deletebussinesowner= require('./controllers/Deletebussinesowner');
+//var deleteBussinesOwner= require('./controllers/Deletebussinesowner');
 
 let session = require('express-session');
 let businesses = require('../models/businessOwners');
@@ -165,6 +165,8 @@ router.post('/editprofile',upload_client.single('profile_pic'), profileControlle
 router.put('/admin/ban-user/:useremail', adminFunctionsController.banuser);    
 router.put('/admin/ban-bus/:business_name', adminFunctionsController.banbus);    
 router.get('/admin/viewReports', adminFunctionsController.viewReportedReviews);    
+router.get('/admin/deleteReview', adminFunctionsController.deleteReportedReviews);    
+router.put('/admin/deletebussines/:business_name', adminFunctionsController.deleteOwner);
 
 //Add routes
 router.get('/detailedProduct/:businessname/:product', productController.reportServiceReview);
@@ -173,7 +175,6 @@ router.get('/viewbusiness', viewController.viewBusiness);
 router.post('/advertise/:businessname/:product', productController.addAdvertisment);
 router.post('/detailedProduct/:businessname/:product', productController.reportServiceReview);
 router.post('/reply', replyController.Post_Reply);
-router.post('/deletebussines', Deletebussinesowner.deleteowner);
 
 
 //Passport
