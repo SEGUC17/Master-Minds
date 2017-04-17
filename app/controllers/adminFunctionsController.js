@@ -8,6 +8,8 @@ let adminFunctionsController = {
     
     //Banning User
     banuser:function(req,res){
+        console.log(req.user);
+        console.log(req.body);
         if(req.isAuthenticated()){
         if (req.user.admin){
         clients.findOne({email: req.param('useremail')}, function(err, user){
@@ -65,18 +67,100 @@ let adminFunctionsController = {
         }
     },
     viewReportedReviews:function(req,res){
-        if(req.isAuthenticated()){
+       if(req.isAuthenticated()){
+       if (req.user.admin){ 
 
-            if (req.user.admin){
+            businesses.find({'business_reviews.reported': {$ne: 0}},function(err, arr){
+            if(err)
+                res.send(err);
 
-            }else{
-            res.json({"result": "Failed!"}); //Indicates failure if not admin.
+            var reviewsArr = arr.map(function(a) {return a.business_reviews;});
+
+            function isNumber(obj) {
+            return obj!== undefined && typeof(obj) === 'number' && !isNaN(obj);
             }
+
+            function filterByReports(review) {
+                if (isNumber(review.reported) && review.reported >0) {
+                 return true;
+                } 
+                 return false; 
+                }
+
+            var reportsArr = reviewsArr.filter(filterByReports);
+
+            res.json(reportsArr);
+            });
+
+
+       }else{
+           res.json({"result": "Failed!"}); //Indicates failure if not admin.
+       }
+
+       }else{
+          res.json({"result": "Failed!"}); //Indicates failure if not admin.
+       }
+    },
+
+    deleteReportedReviews:function(req,res){
+        if(req.isAuthenticated()){
+        if (req.user.admin){ 
+
+            businesses.find({'business_reviews.reported': {$ne: 0}},function(err, arr){
+            if(err)
+                res.send(err);
+
+            var reviewsArr = arr.map(function(a) {return a.business_reviews;});
+
+            function isNumber(obj) {
+            return obj!== undefined && typeof(obj) === 'number' && !isNaN(obj);
+            }
+
+            function filterByReports(review) {
+                if (isNumber(review.reported) && review.reported >0) {
+                 return true;
+                } 
+                 return false; 
+                }
+
+            var reportsArr = reviewsArr.filter(filterByReports);
+
+            res.json(reportsArr);
+            });
+
 
         }else{
             res.json({"result": "Failed!"}); //Indicates failure if not admin.
         }
+
+        }else{
+           res.json({"result": "Failed!"}); //Indicates failure if not admin.
+        }
+    },
+
+    deleteOwner:function(req,res){
+        if(req.isAuthenticated()){
+        if (req.user.admin){
+
+            businesses.findOne({business_name:req.param('business_name')}, function(err, bus){
+                if(err)
+                res.send(err);
+
+                bus.remove({business_name:req.param('business_name')});
+                bus.save();
+                res.json({"result": "Success"});
+            });
+
+        }else{
+            res.json({"result": "Failed!"}); //Indicates failure if not admin.
+        }
+
+        }else{
+           res.json({"result": "Failed!"}); //Indicates failure if not admin.
+        }
     }
+
+
 }
 
 //Export Controller
