@@ -1,4 +1,6 @@
-angular.module('userApp', ['appRoutes','Ang_RateAndReviewCtrl'])
+
+angular.module('userApp', ['appRoutes','Ang_RateAndReviewCtrl','userControllers'])
+
 
 
 .config(['$locationProvider', function($locationProvider) {

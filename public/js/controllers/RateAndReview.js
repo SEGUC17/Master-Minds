@@ -12,6 +12,6 @@ angular.module('Ang_RateAndReviewCtrl', [])
   {
 
       console.log($scope.review);
-      $http.post('/routes/reviews/business3',$scope.review);
+      $http.post('/routes/reviews/business3',$scope.review.review);
   };
 });
