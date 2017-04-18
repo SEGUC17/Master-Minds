@@ -718,5 +718,9 @@ router.post('/viewliked', function (req, res) {
 router.post('/view_unaccepted_businesses', view_unaccepted_businesses.view_unaccepted);
 router.post('/accept_application/:business', view_unaccepted_businesses.accept_application);
 
+router.get('/somepage', function(req, res){
+    res.render('somepage');
+});
+
 //Export router
 module.exports = router;
