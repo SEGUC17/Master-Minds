@@ -113,27 +113,38 @@ let adminFunctionsController = {
         if(req.isAuthenticated()){
         if (req.user.admin){ 
 
-            businesses.find({'business_reviews.reported': {$ne: 0}},function(err, arr){
+            businesses.findOne({'business_reviews._id': req.param('id')},function(err, bus1){
             if(err)
                 res.send(err);
 
-            var reviewsArr = arr.map(function(a) {return a.business_reviews;});
+            if(!bus1){
+                businesses.findOne({'services.service_reviews._id': new ObjectId(req.param('id'))},function(err, bus2){
+                    businesses.update( 
+                        { username: bus2.username },
+                        { $pull: { "services.service_reviews" : { _id : new ObjectId(req.param('id')) } } },
+                        function removeReviews(err, obj) {
+                                if(err){
+                                res.json(500, {message:"Could not remove review from review list"});
+                                }else{
+                                res.json(200);
+                                }
+                        });
 
-            function isNumber(obj) {
-            return obj!== undefined && typeof(obj) === 'number' && !isNaN(obj);
-            }
+                });
 
-            function filterByReports(review) {
-                if (isNumber(review.reported) && review.reported >0) {
-                 return true;
-                } 
-                 return false; 
-                }
+            }else{
+                    businesses.update( 
+                        { username: bus1.username },
+                        { $pull: { "business_reviews" : { _id : new ObjectId(req.param('id')) } } },
+                        function removeReviews(err, obj) {
+                                if(err){
+                                res.json(500, {message:"Could not remove review from review list"});
+                                }else{
+                                res.json(200);
+                                }
+                        });
 
-            var reportsArr = reviewsArr.filter(filterByReports);
-
-            res.json(reportsArr);
-            });
+            }});
 
 
         }else{
