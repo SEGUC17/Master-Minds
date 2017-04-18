@@ -8,7 +8,7 @@ angular.module('Ang_RateAndReviewCtrl', [])
       console.log($scope.rating);
 
   };
-  $scope.Post_Reviw= function(review)
+  $scope.Post_Review= function(review)
   {
 
       console.log($scope.review);
