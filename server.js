@@ -25,15 +25,15 @@ var expressValidator = require('express-validator');
 var LocalStrategy = require('passport-local').Strategy;
 var path = require('path');
 
-// Express Session
 
+// Express Session
 app.use(session({
     secret: 'secret',
     saveUninitialized: true,
     resave: true
 }));
-
-/* PASSPORT WAS HERE*/
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Express Validator
 app.use(expressValidator({
@@ -65,14 +65,13 @@ mongoose.connect(DB_URI, function(err) {
 
 
 //Configure app
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/public'));
 
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(router);
+app.use('/routes', router);
+
+//app.use(router);
 
 app.use(flash());
 
@@ -92,7 +91,6 @@ app.use(function(req, res, next) {
 
 
 //Configure app
-
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: false }));
