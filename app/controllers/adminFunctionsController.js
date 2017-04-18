@@ -30,11 +30,11 @@ let adminFunctionsController = {
 
         });
         }else{
-            res.json({"result": "Failed"}); //Indicates failure if not admin.
+            res.json({"result": "Failed","message":"You are not an admin!"}); //Indicates failure if not admin.
         }
 
         }else{
-            res.json({"result": "Failed!"}); //Indicates failure if not admin.
+            res.json({"result": "Failed","message":"You are not logged in!"}); //Indicates failure if not admin.
         }
     },
     banbus:function(req,res){
@@ -60,10 +60,10 @@ let adminFunctionsController = {
         });
         
         }else{
-            res.json({"result": "Failed"}); //Indicates failure if not admin.
+            res.json({"result": "Failed","message":"You are not an admin!"}); //Indicates failure if not admin.
         }
         }else{
-            res.json({"result": "Failed!"}); //Indicates failure if not admin.
+            res.json({"result": "Failed","message":"You are not logged in!"}); //Indicates failure if not admin.
         }
     },
     viewReportedReviews:function(req,res){
@@ -101,11 +101,11 @@ let adminFunctionsController = {
 
 
        }else{
-           res.json({"result": "Failed!"}); //Indicates failure if not admin.
+           res.json({"result": "Failed","message":"You are not an admin!"}); //Indicates failure if not admin.
        }
 
        }else{
-          res.json({"result": "Failed!"}); //Indicates failure if not admin.
+          res.json({"result": "Failed","message":"You are not logged in!"}); //Indicates failure if not admin.
        }
     },
 
@@ -124,9 +124,9 @@ let adminFunctionsController = {
                         { $pull: { "services.service_reviews" : { _id : new ObjectId(req.param('id')) } } },
                         function removeReviews(err, obj) {
                                 if(err){
-                                res.json(500, {message:"Could not remove review from review list"});
+                                res.json(500, {"result": "Failed","message":"Could not remove review from review list"});
                                 }else{
-                                res.json(200);
+                                res.json(200, {"result": "Success"}); //I added the result part
                                 }
                         });
 
@@ -148,11 +148,11 @@ let adminFunctionsController = {
 
 
         }else{
-            res.json({"result": "Failed!"}); //Indicates failure if not admin.
+            res.json({"result": "Failed","message":"You are not an admin!"}); //Indicates failure if not admin.
         }
 
         }else{
-           res.json({"result": "Failed!"}); //Indicates failure if not admin.
+           res.json({"result": "Failed","message":"You are not logged in!"}); //Indicates failure if not admin.
         }
     },
 
@@ -170,11 +170,11 @@ let adminFunctionsController = {
             });
 
         }else{
-            res.json({"result": "Failed!"}); //Indicates failure if not admin.
+            res.json({"result": "Failed","message":"You are not an admin!"}); //Indicates failure if not admin.
         }
 
         }else{
-           res.json({"result": "Failed!"}); //Indicates failure if not admin.
+           res.json({"result": "Failed","message":"You are not logged in!"}); //Indicates failure if not admin.
         }
     }
 
