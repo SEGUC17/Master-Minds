@@ -30,130 +30,17 @@ let businesses = require('../models/businessOwners');
 var view_unaccepted_businesses = require('./controllers/view_unaccepted_businesses');
 var RateAndReviewCtrl = require('./controllers/RateAndReviewCtrl.js');
 var path = require('path');
-//post(/rating/breakout);
-//post(/rating/paintball);
-//post(/rating/prison);
-router.post('/rating/:business',function(req,res) // add new rating to the business
-{
-  if(req.user)
-    {
-    RateAndReviewCtrl.Post_Rate_Business(req,res);
-    }
-  else
-    {console.log(401);
-    res.status(401).send("plz log in plz");
-    //res.render(loggin_page);
-    }
 
-}
-);
-router.post('/rating/:business/:service',function(req,res) // add new rating to the service
-{
-  if(!req.user)
-    {
-    console.log(401);
-    res.status(401).send("plz log in plz");
-    //res.render(loggin_page);
-    }
-  else
-    {
-      RateAndReviewCtrl.Post_Rate_Service(req,res);
-    }
-}
-);
-router.post('/reviews/:business',function(req,res) // add new review to the business
-{
-  if(!req.user)
-    {
-    console.log(401);
-    res.status(401).send("plz log in plz");
-    //res.render(loggin_page);
-    }
-  else
-    {
-      RateAndReviewCtrl.Post_Review_Business(req,res);
-    }
-}
-);
-router.post('/reviews/:business/:service',function(req,res)// add new review to the service
-{
-  if(!req.user)
-    {
-    console.log(401);
-    res.status(401).send("plz log in plz");
-    //res.render(loggin_page);
-    }
-  else
-    {
-      RateAndReviewCtrl.Post_Review_Service(req,res);
-    }
-}
-);
-
-
-router.get('/test',function(req,res)// add new review to the service
-{
-
-      RateAndReviewCtrl.Post_test(req,res);
-
-}
-);
-//new stuff from bulldozer
-//////////////////////////////////////////////////////////////////////////////////////////////
- router.get('/viewRateBusiness/:business',function(req,res) // view rating of a service
-{
-      RateAndReviewCtrl.Get_Rate_Business(req,res);
-}
-);
-
-
- router.get('/viewRateService/:business/:service',function(req,res) // view rating of a service
-{
-      RateAndReviewCtrl.Get_Rate_Service(req,res);
-
-}
-);
-
-router.get('/viewReviewBusiness/:business',function(req,res) // view review of a business
-{
-      RateAndReviewCtrl.Get_Review_Business(req,res);
-}
-);
-
-router.get('/viewReviewService/:business/:service',function(req,res) // view review of a service
-{
-      RateAndReviewCtrl.Get_Review_Service(req,res);
-}
-);
-
-/*
-router.get('/viewReviewNumberedBusiness/:business',function(req,res) // view reviews numbered of a business
-{
-      RateAndReviewCtrl.Get_Review_Numbered_Business(req,res);
-}
-);
-
-router.get('/viewReviewNumberedService/:business/:service',function(req,res) // view reviews numbered of a service
-{
-      RateAndReviewCtrl.Get_Review_Numbered_Service(req,res);
-
-}
-);*/
-
-router.post('/reportBusiness/:business',function(req,res) // report a business' review
-{
-  if(!req.user)
-    {
-    console.log(401);
-    res.status(401).send("plz log in plz");
-    //res.render(loggin_page);
-    }
-  else
-    {
-      RateAndReviewCtrl.Report_Business_Review(req,res);
-    }
-}
-);
+//Add routes
+router.post('/rating/:business',function(req,res){RateAndReviewCtrl.Post_Rate_Business(req,res);});
+router.post('/rating/:business/:service',function(req,res){RateAndReviewCtrl.Post_Rate_Service(req,res);});
+router.post('/reviews/:business',function(req,res){RateAndReviewCtrl.Post_Review_Business(req,res);});
+router.post('/reviews/:business/:service',function(req,res){RateAndReviewCtrl.Post_Review_Service(req,res);});
+router.get('/viewRateBusiness/:business',function(req,res) { RateAndReviewCtrl.Get_Rate_Business(req,res);});
+router.get('/viewRateService/:business/:service',function(req,res){ RateAndReviewCtrl.Get_Rate_Service(req,res);});
+router.get('/viewReviewBusiness/:business',function(req,res) {RateAndReviewCtrl.Get_Review_Business(req,res);});
+router.get('/viewReviewService/:business/:service',function(req,res){RateAndReviewCtrl.Get_Review_Service(req,res);});
+router.post('/reportBusiness/:business',function(req,res){RateAndReviewCtrl.Report_Business_Review(req,res);});
 
 //Add routes
 router.get('/', homepageController.test);
@@ -402,7 +289,7 @@ passport.use(new LocalStrategy(
          // searching for his specific service from the array of Services and then edit his data
          if(user.services[i].service_name==oldservice_name){
           user.services[i].service_pic=newservice_pic;
-          user.services[i].service_name=newservice_name;
+        user.services[i].service_name=newservice_name;
           user.services[i].service_Description=newservice_Description;
           user.services[i].service_price=newservice_price;
           user.services[i].promotion_offer=newpromotion_offer;
