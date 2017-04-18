@@ -62,7 +62,8 @@ router.post('/rating/:business',function(req,res) // add new rating to the busin
 }
 );*/
 router.post('/reviews/:business',function(req,res) // add new review to the business
-{
+{ 
+  console.log(req.user);
   if(!req.user)
     {
     console.log(401);
@@ -224,7 +225,14 @@ passport.use(new LocalStrategy(
     });
     passport.deserializeUser(function(id, done) {
         UserLoginController.getUserById(id, function(err, user) {
-            return done(err, user);
+            if(!user){
+              adminLoginController.getAdminById(id, function(err, admin) {
+                return done(err,admin);
+              });
+            }else{
+              return done(err, user);
+            }
+            
         });
     });
     //  business_owner _service_add page GET
