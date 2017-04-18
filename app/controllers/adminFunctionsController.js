@@ -120,7 +120,7 @@ let adminFunctionsController = {
             businesses.findOne({'business_reviews._id': req.param('id')},function(err, bus1){
             if(err)
                 res.send(err);
-
+            console.log(bus1);
             if(!bus1){
                 businesses.findOne({'services.service_reviews._id': new ObjectId(req.param('id'))},function(err, bus2){
                     businesses.update( 
@@ -136,10 +136,10 @@ let adminFunctionsController = {
 
                 });
 
-            }else{
+            }else{  //new ObjectId(req.param('id'))
                     businesses.update( 
                         { username: bus1.username },
-                        { $pull: { "business_reviews" : { _id : new ObjectId(req.param('id')) } } },
+                        { $pull: { "business_reviews" : { _id : req.param('id')} } },
                         function removeReviews(err, obj) {
                                 if(err){
                                 res.json(500, {message:"Could not remove review from review list"});

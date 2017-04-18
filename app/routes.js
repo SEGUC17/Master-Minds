@@ -166,7 +166,7 @@ router.post('/editprofile',upload_client.single('profile_pic'), profileControlle
 router.put('/admin/ban-user/:useremail', adminFunctionsController.banuser);    
 router.put('/admin/ban-bus/:business_name', adminFunctionsController.banbus);    
 router.get('/admin/viewReports', adminFunctionsController.viewReportedReviews);    
-router.get('/admin/deleteReview', adminFunctionsController.deleteReportedReviews);    
+router.put('/admin/deleteReview/:id', adminFunctionsController.deleteReportedReviews);    
 router.put('/admin/deletebussines/:business_name', adminFunctionsController.deleteOwner);
 
 //Add routes
