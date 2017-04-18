@@ -70,20 +70,24 @@ let adminFunctionsController = {
        if(req.isAuthenticated()){
        if (req.user.admin){ 
 
-            businesses.find({'business_reviews.reported': {$ne: 0}},function(err, arr1){
+            businesses.find({'business_reviews.reported': {$eq: 0}},function(err, arr1){
             if(err)
                 res.send(err);
-
                 businesses.find({'services.service_reviews.reported': {$ne: 0}},function(err, arr2){
 
-                    var reviewsArr1 = arr1.map(function(a) {return a.business_reviews;});
-                    var reviewsArr2 = arr2.map(function(a) {return a.services.service_reviews;});
+                    var tempreviewsArr1 = arr1.map(function(a) {return a.business_reviews;});
+                    var reviewsArr1 = [].concat.apply([], tempreviewsArr1);
+
+                    var tempreviewsArr2 = arr2.map(function(a) {return a.services.service_reviews;});
+                    var reviewsArr2 = [].concat.apply([], tempreviewsArr2);
 
                     function isNumber(obj) {
                         return obj!== undefined && typeof(obj) === 'number' && !isNaN(obj);
                     }
 
                     function filterByReports(review) {
+                        if(review)
+                        if(review.reported)
                         if (isNumber(review.reported) && review.reported >0) {
                             return true;
                         } 
