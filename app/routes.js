@@ -32,7 +32,7 @@ var path = require('path');
 //Add routes
 router.post('/rating/:business',function(req,res){RateAndReviewCtrl.Post_Rate_Business(req,res);});
 router.post('/rating/:business/:service',function(req,res){RateAndReviewCtrl.Post_Rate_Service(req,res);});
-router.post('/reviews/:business',function(req,res){RateAndReviewCtrl.Post_Review_Business(req,res);});
+router.post('/reviews/:business',function(req,res){console.log(req.body);RateAndReviewCtrl.Post_Review_Business(req,res);});
 router.post('/reviews/:business/:service',function(req,res){RateAndReviewCtrl.Post_Review_Service(req,res);});
 router.get('/viewRateBusiness/:business',function(req,res) { RateAndReviewCtrl.Get_Rate_Business(req,res);});
 router.get('/viewRateService/:business/:service',function(req,res){ RateAndReviewCtrl.Get_Rate_Service(req,res);});
