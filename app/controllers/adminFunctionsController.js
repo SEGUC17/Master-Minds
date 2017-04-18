@@ -117,15 +117,18 @@ let adminFunctionsController = {
         if(req.isAuthenticated()){
         if (req.user.admin){ 
 
-            businesses.findOne({'business_reviews._id': req.param('id')},function(err, bus1){
-            if(err)
-                res.send(err);
+            businesses.findOne({'business_reviews._id': req.param('id')},function(err1, bus1){
+            //if(err1)
+            //    res.send(err1);
             console.log(bus1);
             if(!bus1){
-                businesses.findOne({'services.service_reviews._id': new ObjectId(req.param('id'))},function(err, bus2){
-                    businesses.update( 
+                businesses.findOne({'services.service_reviews._id': req.param('id')},function(err2, bus2){
+                  //  if(err2)
+                  //      res.send(err2);
+                    if(bus2){
+                        businesses.update( 
                         { username: bus2.username },
-                        { $pull: { "services.service_reviews" : { _id : new ObjectId(req.param('id')) } } },
+                        { $pull: { "services.service_reviews" : { _id : req.param('id') } } },
                         function removeReviews(err, obj) {
                                 if(err){
                                 res.json(500, {"result": "Failed","message":"Could not remove review from review list"});
@@ -133,6 +136,11 @@ let adminFunctionsController = {
                                 res.json(200, {"result": "Success"}); //I added the result part
                                 }
                         });
+                    }else{
+                      res.json(500, {"result": "Failed","message":"Could not find review in reviews list"});
+
+                    }
+                    
 
                 });
 
@@ -146,7 +154,7 @@ let adminFunctionsController = {
                                 }else{
                                 res.json(200);
                                 }
-                        });
+                    });
 
             }});
 
