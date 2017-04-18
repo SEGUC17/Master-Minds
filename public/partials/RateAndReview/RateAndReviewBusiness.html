@@ -1,29 +1,29 @@
 
     <div ng-controller="RateAndReviewBusinessCtrl">
-      <form class ="form-group" ng-submit= "Post_Rate(content)">
+      <form class ="form-group" ng-submit= "Post_Rate(rating)">
         <p class="jumbotron" >your rating is important to us </p>
         <div class="btn-group" data-toggle="radio">
         <label class="btn btn-primary active">
-          <input type="radio" name="rating" id="rating" value =1 ng-model="content.rating" autocomplete="off" checked>1 star
+          <input type="radio" name="rating" id="rating" value =1 ng-model="rating" autocomplete="off" checked>1 star
         </label>
         <label class="btn btn-primary">
-          <input type="radio" name="rating" id="rating"  value =2 ng-model="content.rating" autocomplete="off">2 stars
+          <input type="radio" name="rating" id="rating"  value =2 ng-model="rating" autocomplete="off">2 stars
         </label>
         <label class="btn btn-primary">
-          <input type="radio" name="rating" id="rating" value =3 ng-model="content.rating" autocomplete="off">3 stars
+          <input type="radio" name="rating" id="rating" value =3 ng-model="rating" autocomplete="off">3 stars
         </label>
       </label>
       <label class="btn btn-primary">
-        <input type="radio" name="rating" id="rating" value =4 ng-model="content.rating" autocomplete="off">4 stars
+        <input type="radio" name="rating" id="rating" value =4 ng-model="rating" autocomplete="off">4 stars
       </label>
       <label class="btn btn-primary">
-        <input type="radio" name="rating" id="rating" value =5 ng-model="content.rating" autocomplete="off">5 stars
+        <input type="radio" name="rating" id="rating" value =5 ng-model="rating" autocomplete="off">5 stars
       </label>
     </div></br></br>
       <input class ="btn btn-primary" type="submit" value = "add">
       <input class ="btn btn-primary" type="reset" value="clear">
       </form>
-
+<!--
       <p class="jumbotron">please provide us with your review</p>
       <form ng-submit ="Post_Review(content)" class ="form-group" >
         <label for="comment">review:</label>
@@ -31,4 +31,5 @@
         <input class ="btn btn-primary" type="submit" value = "add">
         <input class ="btn btn-primary" type="reset" value="clear">
       </form>
+-->
     </div>
