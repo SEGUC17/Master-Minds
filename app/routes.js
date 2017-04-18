@@ -22,7 +22,7 @@ var UserLoginController = require('./controllers/ClientLoginController');
 var adminLoginController = require('./controllers/adminLoginController');
 var adminFunctionsController = require('./controllers/adminFunctionsController');
 var replyController = require('./controllers/replyController');   
-var Deletebussinesowner= require('./controllers/Deletebussinesowner');
+//var deleteBussinesOwner= require('./controllers/Deletebussinesowner');
 
 let session = require('express-session');
 let businesses = require('../models/businessOwners');
@@ -62,7 +62,8 @@ router.post('/rating/:business',function(req,res) // add new rating to the busin
 }
 );*/
 router.post('/reviews/:business',function(req,res) // add new review to the business
-{
+{ 
+  console.log(req.user);
   if(!req.user)
     {
     console.log(401);
@@ -165,6 +166,8 @@ router.post('/editprofile',upload_client.single('profile_pic'), profileControlle
 router.put('/admin/ban-user/:useremail', adminFunctionsController.banuser);    
 router.put('/admin/ban-bus/:business_name', adminFunctionsController.banbus);    
 router.get('/admin/viewReports', adminFunctionsController.viewReportedReviews);    
+router.get('/admin/deleteReview', adminFunctionsController.deleteReportedReviews);    
+router.put('/admin/deletebussines/:business_name', adminFunctionsController.deleteOwner);
 
 //Add routes
 router.get('/detailedProduct/:businessname/:product', productController.reportServiceReview);
@@ -173,11 +176,7 @@ router.get('/viewbusiness', viewController.viewBusiness);
 router.post('/advertise/:businessname/:product', productController.addAdvertisment);
 router.post('/detailedProduct/:businessname/:product', productController.reportServiceReview);
 router.post('/reply', replyController.Post_Reply);
-router.post('/deletebussines', Deletebussinesowner.deleteowner);
-router.get('/logout', function(req, res) {
-        req.logout();
-        res.redirect('/login');
-   });
+
 
 //Passport
 passport.use(new LocalStrategy(
@@ -222,11 +221,18 @@ passport.use(new LocalStrategy(
 
 
     passport.serializeUser(function(user, done) {
-        done(null, user.id);
+        return done(null, user._id);
     });
     passport.deserializeUser(function(id, done) {
         UserLoginController.getUserById(id, function(err, user) {
-            done(err, user);
+            if(!user){
+              adminLoginController.getAdminById(id, function(err, admin) {
+                return done(err,admin);
+              });
+            }else{
+              return done(err, user);
+            }
+            
         });
     });
     //  business_owner _service_add page GET
@@ -496,33 +502,6 @@ router.post('/register', function(req, res) {
         res.redirect('/login');
     }
 });
-
-passport.use(new LocalStrategy(
-    function(username, password, done) {
-        UserLoginController.getUserByUsername(username, function(err, user) {
-            if (err) {
-              console.log(err.message);
-              res.status(500).send(error.message);
-            }
-            if (!user) {
-                return done(null, false);
-            }
-
-            UserLoginController.comparePassword(password, user.password, function(err, isMatch) {
-                if (err)
-                {
-                  console.log(err.message);
-
-                }
-                if (isMatch) {
-                    return done(null, user);
-                } else {
-                    return done(null, false);
-                }
-            });
-        });
-    }));
-
 
 
 router.post('/login',

@@ -7,7 +7,7 @@ let homepageController = {
 
     //Testing image
     test:function(req, res){
-        console.log(session.username);
+        //console.log(session.username);
         session.username = 'genedy';
         //Removing data in the collection clients
         // clients.remove(function (err) {
