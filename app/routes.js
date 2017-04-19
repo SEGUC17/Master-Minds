@@ -406,58 +406,31 @@ router.get('/logout', function (req, res) {
 });
 
 router.get('/subscribe', function(req, res, next) {
-    var messages = req.flash('error'); // supply view with the error messages that appeared (if any)
-    res.render('subscribe', { messages: messages, hasErrors: messages.length > 0 });
+    res.render('subscribe');
 });
 
-router.post('/subscribe', upload.single('business_logo'), function(req, res) {
-    // check for any mistakes or lack of input in the input form
-    req.checkBody('personal_email', 'Invalid email').notEmpty().isEmail();
-    req.checkBody('password', 'Invalid password').notEmpty().isLength({ min: 4 });
-    req.checkBody('business_name', 'Please enter business name').notEmpty();
-    req.checkBody('fullname', "Please enter business owner's name").notEmpty();
-    req.checkBody('business_description', 'PLease enter business description').notEmpty();
-    req.checkBody('business_emails', 'Please enter business emails').notEmpty();
-    req.checkBody('associated_bank', 'Please enter associated bank info').notEmpty();
-    var errors = req.validationErrors();
-    var messages = [];
-    var flag = 1;
-    if (!req.file) {
-        flag = 0; // flag set to 0 if no file has been uploaded
-        messages.push('Need to upload a business logo'); //  check whether business logo has been uploaded or not
-    }
-    if (errors) {
-        errors.forEach(function(error) {
-            messages.push(error.msg); // prepare the error messages that will be shown
-        });
-        if (flag) // ** if there are errors, and hence nothing will be inserted into the db, remove the file that upload.single uploaded
-            fs.unlink('./public/businessowner/' + req.file.filename);
-        req.flash('error', messages); // flash error messages
-        return res.redirect('/subscribe');
-    }
-    BusinessOwner.findOne({ 'personal_email': req.body.personal_email }, function(err, owner) { //check that email is unique
+router.post('/subscribe', upload.single('business_logo'), function (req, res) {
+    BusinessOwner.findOne({ 'personal_email': req.body.personal_email }, function (err, owner) { //check that email is unique
         if (err) {
-            return console.error(err);
+            return res.json({'result':'failed', 'message':'error'});
         }
         if (owner) {
             fs.unlink('./public/businessowner/' + req.file.filename); // same as **
-            req.flash('error', 'Email is already in use.'); // flash error message
-            return res.redirect('/subscribe');
+            return res.json({'result':'failed', 'message':'email already in use'});
         }
-        BusinessOwner.findOne({ 'business_name': req.body.business_name }, function(err, owner) { // check that business name is unique
+        BusinessOwner.findOne({ 'business_name': req.body.business_name }, function (err, owner) { // check that business name is unique
             if (err) {
-                return console.error(err);
+                return res.json({'result':'failed', 'message':'error'});
             }
             if (owner) {
                 fs.unlink('./public/businessowner/' + req.file.filename); //  same as **
-                req.flash('error', 'There is already a business with that name.'); // flash error message
-                return res.redirect('/subscribe');
+                return res.json({'result':'failed', 'message':'business name in use'});
             }
             var newOwner = new BusinessOwner(); // insert data into database
             newOwner.personal_email = req.body.personal_email;
             newOwner.password = newOwner.encryptPassword(req.body.password);
             newOwner.business_name = req.body.business_name;
-            newOwner.fullname = req.body.fullname;
+            newOwner.fullName = req.body.fullName;
             newOwner.business_description = req.body.business_description;
             newOwner.business_logo = req.file.filename;
             var a = req.body.business_emails;
@@ -465,90 +438,195 @@ router.post('/subscribe', upload.single('business_logo'), function(req, res) {
             for (i = 0; i < arr.length; i++) {
                 newOwner.business_emails.push({ email: arr[i] });
             }
+            newOwner.address = req.body.address;
             newOwner.associated_bank = req.body.associated_bank;
             newOwner.business_website = req.body.business_website;
             newOwner.business_reviews_and_reports = [];
             newOwner.rating = [];
             newOwner.accepted = false; // shows that this business is pending approval by the admin to be shown on the directory
 
-
             newOwner.save(function (err, result) {
-                if (err) return console.error(err);
-                res.redirect('/service_add')
+                if (err) return res.json({'result':'failed', 'message':'error'});
+                return res.json({'result':'success', 'message':'subscribed to directpry'});
             });
         });
     });
 });
 
 
-router.get('/editboprofile', isLoggedIn, function(req, res, next){
-    var messages = req.flash('error');   // supply error messages to view
-    res.render('editprofile', {messages: messages, hasErrors: messages.length>0});
+
+router.get('/editboprofile', function(req, res){
+  res.render('editprofile');
 });
 
 router.post('/editboprofile', upload.single('business_logo'), function(req, res){
-    BusinessOwner.findOne({'personal_email' : req.user.personal_email}, function(err, user){ // access the logged in user's information
-        var waitForCallback = 0;
-        if(req.body.business_name){
-            waitForCallback = 1;
-            BusinessOwner.findOne({'business_name' : req.body.business_name}, function(err, owner){ // check if new business name is taken
-                if(err){
-                    return console.error(err);
-                }
-                if(owner){
-                    req.flash('error', 'There is already a business with that name.');
-                    return res.redirect('/editboprofile');
-                }
-                req.user.business_name = req.body.business_name;
-                waitForCallback = 0;
-            });
+  
+  BusinessOwner.findOne({'personal_email':req.body.personal_email}, function(err, user){
+    if(err){
+      return res.json({'result':'failed', 'message':'error'});
+    }
+    if(!user){
+      return res.json({'result':'failed', 'message':'user not found'});
+    }
+    if(!user.validPassword(req.body.password)){
+      return res.json({'result':'failed', 'message':'wrong password'});
+    }
+    if(req.body.new_email && req.body.business_name){
+      BusinessOwner.findOne({'personal_email':req.body.new_email}, function(err, owner){
+        if(err){
+          return res.json({'result':'failed', 'message':'error'});
         }
-        while(waitForCallback);
-        if(req.body.personal_email){
-            waitForCallback = 1;
-            BusinessOwner.findOne({'personal_email' : req.body.personal_email}, function(err, owner){ // check if new email is used already
-                if(err){
-                    return console.error(err);
-                }
-                if(owner){
-                    req.flash('error', 'That email address is already in use.');
-                    return res.redirect('/editboprofile');
-                }
-                user.personal_email = req.body.personal_email;
-                waitForCallback = 0;
-            });
+        if(owner){
+          return res.json({'result':'failed', 'message':'new email already in use'});
         }
-        while(waitForCallback);
-        if(req.body.password)  // keep assigning new values (if any)
-            user.password = user.encryptPassword(req.body.password);
-        if(req.body.address)
+        user.personal_email = req.body.new_email;
+        BusinessOwner.findOne({'business_name':req.body.business_name}, function(err, owner){
+          if(err){
+            return res.json({'result':'failed', 'message':'error'});
+          }
+          if(owner){
+            return res.json({'result':'failed', 'message':'new business name already in use '});
+          }
+          user.business_name = req.body.business_name;
+          if(req.body.new_password)
+            user.new_password = user.encryptPassword(req.body.new_password);
+          if(req.body.fullName) 
+            user.fullName = req.body.fullName;
+          if(req.body.address)
             user.address = req.body.address;
-        if(req.body.fullname)
-            user.fullname = req.body.fullname;
-        if(req.body.business_emails){
+          if(req.body.business_emails){
             user.business_emails = [];
             var a = req.body.business_emails;
             var arr = a.split(',');
             for (i = 0; i < arr.length; i++) {
-                user.business_emails.push({ email: arr[i] });
+              user.business_emails.push({ email: arr[i] });
             }
+          }
+          if(req.body.business_description)
+            user.business_description = req.body.business_description;
+          if(req.body.associated_bank)
+            user.associated_bank = req.body.associated_bank;
+          if(req.body.business_website)
+            user.business_website = req.body.business_website;
+          if(req.file){
+            fs.unlink('./public/businessowner/' + user.business_logo);
+            user.business_logo = req.file.filename;
+          }
+          user.save(function (err, result) {
+            if (err) return res.json({'result':'failed', 'message':'error'});
+            return res.json({'result':'success', 'message':'business profile updated'});
+          });
+        });
+      });
+    }else
+    if(req.body.business_name){
+      BusinessOwner.findOne({'business_name':req.body.business_name}, function(err, owner){
+        if(err){
+          return res.json({'result':'failed', 'message':'error'});
+        }
+        if(owner){
+          return res.json({'result':'failed', 'message':'new business name already in use '});
+        }
+        user.business_name = req.body.business_name;
+        if(req.body.new_password)
+          user.new_password = user.encryptPassword(req.body.new_password);
+        if(req.body.fullName) 
+          user.fullName = req.body.fullName;
+        if(req.body.address)
+          user.address = req.body.address;
+        if(req.body.business_emails){
+          user.business_emails = [];
+          var a = req.body.business_emails;
+          var arr = a.split(',');
+          for (i = 0; i < arr.length; i++) {
+            user.business_emails.push({ email: arr[i] });
+          }
         }
         if(req.body.business_description)
-            user.business_description = req.body.business_description;
+          user.business_description = req.body.business_description;
         if(req.body.associated_bank)
-            user.associated_bank = req.body.associated_bank;
+          user.associated_bank = req.body.associated_bank;
         if(req.body.business_website)
-            user.business_website = req.body.business_website;
-        if(req.body.address)
-            user.address = req.body.address;
+          user.business_website = req.body.business_website;
         if(req.file){
-            user.business_logo = req.file.filename;
+          fs.unlink('./public/businessowner/' + user.business_logo);
+          user.business_logo = req.file.filename;
         }
-        user.save(function(err){
-            if(err) return console.error(error);
-            res.send('Profile Updated');
+        user.save(function (err, result) {
+          if (err) return res.json({'result':'failed', 'message':'error'});
+          return res.json({'result':'success', 'message':'business profile updated'});
         });
-    });
+      });
+    }else if(req.body.new_email){
+      BusinessOwner.findOne({'personal_email':req.body.new_email}, function(err, owner){
+        if(err){
+          return res.json({'result':'failed', 'message':'error'});
+        }
+        if(owner){
+          return res.json({'result':'failed', 'message':'new email already in use'});
+        }a
+        user.personal_email = req.body.new_email;
+        if(req.body.new_password)
+          user.new_password = user.encryptPassword(req.body.new_password);
+        if(req.body.fullName) 
+          user.fullName = req.body.fullName;
+        if(req.body.address)
+          user.address = req.body.address;
+        if(req.body.business_emails){
+          user.business_emails = [];
+          var a = req.body.business_emails;
+          var arr = a.split(',');
+          for (i = 0; i < arr.length; i++) {
+            user.business_emails.push({ email: arr[i] });
+          }
+        }
+        if(req.body.business_description)
+          user.business_description = req.body.business_description;
+        if(req.body.associated_bank)
+          user.associated_bank = req.body.associated_bank;
+        if(req.body.business_website)
+          user.business_website = req.body.business_website;
+        if(req.file){
+          fs.unlink('./public/businessowner/' + user.business_logo);
+          user.business_logo = req.file.filename;
+        }
+        user.save(function (err, result) {
+          if (err) return res.json({'result':'failed', 'message':'error'});
+          return res.json({'result':'success', 'message':'business profile updated'});
+        });
+      });
+    }
+    else{
+      if(req.body.new_password)
+        user.new_password = user.encryptPassword(req.body.new_password);
+      if(req.body.fullName) 
+        user.fullName = req.body.fullName;
+      if(req.body.address)
+        user.address = req.body.address;
+      if(req.body.business_emails){
+        user.business_emails = [];
+        var a = req.body.business_emails;
+        var arr = a.split(',');
+        for (i = 0; i < arr.length; i++) {
+          user.business_emails.push({ email: arr[i] });
+        }
+      }
+      if(req.body.business_description)
+        user.business_description = req.body.business_description;
+      if(req.body.associated_bank)
+        user.associated_bank = req.body.associated_bank;
+      if(req.body.business_website)
+        user.business_website = req.body.business_website;
+      if(req.file){
+        fs.unlink('./public/businessowner/' + user.business_logo);
+        user.business_logo = req.file.filename;
+      }
+      user.save(function (err, result) {
+        if (err) return res.json({'result':'failed', 'message':'error'});
+        return res.json({'result':'success', 'message':'business profile updated'});
+      });
+    }
+  });
 });
 
 function isLoggedIn(req, res, next) {
