@@ -109,7 +109,7 @@ let viewController = {
             }else{
                 console.log(service.services);
                 console.log('Hi');
-                res.send(service.services);
+                res.json(service.services);
             }
         });
     }
