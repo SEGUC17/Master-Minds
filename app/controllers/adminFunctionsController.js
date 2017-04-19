@@ -13,8 +13,8 @@ let adminFunctionsController = {
         if(req.isAuthenticated()){
         if (req.user.admin){
         clients.findOne({email: req.param('useremail')}, function(err, user){
-            if(err)
-                res.send(err);
+           // if(err)
+           //     res.send(err);
 
             if(user){
             user.ban = true;
@@ -25,7 +25,7 @@ let adminFunctionsController = {
                 res.json({"result": "Success"}); //Confirm success by returning JSON object with result field set to "Success".
             });
             }else{
-                res.json({"result": "Failed"}); //Indicates failure to find user by returning JSON object with result field set to "Failed".
+                res.json({"result": "Failed","message":"User not found!"}); //Indicates failure to find user by returning JSON object with result field set to "Failed".
             }
 
         });
@@ -42,8 +42,8 @@ let adminFunctionsController = {
         if (req.user.admin){
             
         businesses.findOne({business_name: req.param('business_name')}, function(err, user){
-            if(err)
-                res.send(err);
+            //if(err)
+            //    res.send(err);
 
             if(user){
             user.ban = true;
@@ -54,7 +54,7 @@ let adminFunctionsController = {
                 res.json({"result": "Success"}); //Confirm success by returning JSON object with result field set to "Success".
             });
             }else{
-                res.json({"result": "Failed"}); //Indicates failure to find user by returning JSON object with result field set to "Failed".
+                res.json({"result": "Failed","message":"Business not found!"}); //Indicates failure to find user by returning JSON object with result field set to "Failed".
             }
 
         });
@@ -70,10 +70,8 @@ let adminFunctionsController = {
        if(req.isAuthenticated()){
        if (req.user.admin){ 
 
-            businesses.find({'business_reviews.reported': {$eq: 0}},function(err, arr1){
-            if(err)
-                res.send(err);
-                businesses.find({'services.service_reviews.reported': {$ne: 0}},function(err, arr2){
+            businesses.find({'business_reviews.reported': {$eq: 0}},function(err1, arr1){
+                businesses.find({'services.service_reviews.reported': {$ne: 0}},function(err2, arr2){
 
                     var tempreviewsArr1 = arr1.map(function(a) {return a.business_reviews;});
                     var reviewsArr1 = [].concat.apply([], tempreviewsArr1);
@@ -99,7 +97,7 @@ let adminFunctionsController = {
                     var reportsArr = reportsArr1.concat(reportsArr2);
                     res.json(reportsArr);
 
-                    });
+                    });  
 
             });
 
@@ -173,12 +171,17 @@ let adminFunctionsController = {
         if (req.user.admin){
 
             businesses.findOne({business_name:req.param('business_name')}, function(err, bus){
-                if(err)
-                res.send(err);
+                //if(err)
+                //res.send(err);
 
-                bus.remove({business_name:req.param('business_name')});
-                bus.save();
-                res.json({"result": "Success"});
+                if(bus){
+                    bus.remove({business_name:req.param('business_name')});
+                    bus.save();
+                    res.json({"result": "Success"});
+                }else{
+                    res.json({"result": "Failed","message":"Business owner not found!"});
+                }
+                
             });
 
         }else{
