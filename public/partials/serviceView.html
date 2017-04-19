@@ -1,0 +1,25 @@
+<div ng-controller="serviceController">
+this is the service view
+
+
+<form ng-submit="pay()">
+<input type="submit" value="Stripe" >
+  <script
+    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+    data-key="pk_test_6pRNASCoBOKtIshFeQd4XMUh"
+    data-amount="999"
+    data-name="Stripe.com"
+    data-description="Widget"
+    data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+    data-locale="auto"
+    data-zip-code="true">
+  </script>
+</form>
+
+ <form ng-submit="reportFunction(report)" method="post" action="?report=true">
+        review: <input type="text" name="review"><br>
+        <button type="submit">Report</button>
+    </form>
+
+
+</div>
