@@ -19,10 +19,11 @@ let adminFunctionsController = {
             if(user){
             user.ban = true;
             user.save(function(err, user){
-                if(err)
-                    res.send(err);
-
-                res.json({"result": "Success"}); //Confirm success by returning JSON object with result field set to "Success".
+                if(err){
+                    res.json({"result": "Failed","message":"Error in saving banned user in database!"});
+                }else{
+                    res.json({"result": "Success"}); //Confirm success by returning JSON object with result field set to "Success".
+                }
             });
             }else{
                 res.json({"result": "Failed","message":"User not found!"}); //Indicates failure to find user by returning JSON object with result field set to "Failed".
@@ -48,10 +49,12 @@ let adminFunctionsController = {
             if(user){
             user.ban = true;
             user.save(function(err, user){
-                if(err)
-                    res.send(err);
+                if(err){
+                    res.json({"result": "Failed","message":"Error in saving banned business in database!"});
+                }else{
+                    res.json({"result": "Success"}); //Confirm success by returning JSON object with result field set to "Success".
+                }
 
-                res.json({"result": "Success"}); //Confirm success by returning JSON object with result field set to "Success".
             });
             }else{
                 res.json({"result": "Failed","message":"Business not found!"}); //Indicates failure to find user by returning JSON object with result field set to "Failed".
