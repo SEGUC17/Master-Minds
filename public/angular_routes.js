@@ -1,6 +1,7 @@
 angular.module('appRoutes', ['ngRoute'])
 
-.config(function($routeProvider) {
+
+.config(['$routeProvider',function($routeProvider) {
 
     $routeProvider
 
@@ -12,8 +13,8 @@ angular.module('appRoutes', ['ngRoute'])
         templateUrl: 'partials/about.html'
     })
 
-    .when('/Rate_Review_Business', {
-        templateUrl: 'partials/RateAndReview/RateAndReviewBusiness.html',
+    .when('/Rate_Review_Business/:business', {
+        templateUrl: function (urlattr){console.log(urlattr.business);return 'partials/RateAndReview/RateAndReviewBusiness.html';},
         controller:'RateAndReviewBusinessCtrl'
     })
 
@@ -24,4 +25,4 @@ angular.module('appRoutes', ['ngRoute'])
     })
 
     .otherwise({ redirectTo: '/' });
-});
+}]);
