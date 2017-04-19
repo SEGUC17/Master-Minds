@@ -17,6 +17,10 @@ angular.module('appRoutes', ['ngRoute'])
         templateUrl: function (urlattr){console.log(urlattr.business);return 'partials/RateAndReview/RateAndReviewBusiness.html';},
         controller:'RateAndReviewBusinessCtrl'
     })
+    .when('/Rate_Review_Business/:business/:service', {
+        templateUrl: function (urlattr){console.log(urlattr.business);return 'partials/RateAndReview/RateAndReviewService.html';},
+        controller:'RateAndReviewBusinessCtrl'
+    })
 
 
     .when('/register', {

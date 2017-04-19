@@ -1,6 +1,6 @@
 
     <div ng-controller="RateAndReviewBusinessCtrl">
-      <form class ="form-group" ng-submit= "Post_Rate(RateData)">
+      <form class ="form-group" ng-submit= "Post_Rate_Business(RateData)">
         <p class="jumbotron" >your rating is important to us </p>
         <div class="btn-group" data-toggle="radio">
         <label class="btn btn-primary active">
@@ -25,7 +25,7 @@
       </form>
 
       <p class="jumbotron">please provide us with your review</p>
-      <form ng-submit ="Post_Review(ReviewData)" class ="form-group" >
+      <form ng-submit ="Post_Review_Service(ReviewData)" class ="form-group" >
         <label for="comment">review:</label>
       <textarea name="review"  class="form-control" id="review"  rows="5" ng-model="ReviewData.review"></textarea> </br>
         <input class ="btn btn-primary" type="submit" value = "add">
