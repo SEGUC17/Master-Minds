@@ -6,6 +6,6 @@ angular.module('serviceControllers', [])
                 };
                 $scope.reportFunction = function (report) {
                         console.log($scope.report);
-                        $http.post('/routes/detailedService/:businessname/:product', $scope.report.report);
+                        $http.post('/routes/detailedService/:businessname/:product', $scope.report.report).then(function(res){console.log(res.data);});
                 };
         });
