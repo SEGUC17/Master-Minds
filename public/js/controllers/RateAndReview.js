@@ -7,7 +7,8 @@ angular.module('Ang_RateAndReviewCtrl', [])
 
   //    console.log($scope.RateData);
     var str_url = $location.url().split('/');
-    $http.post('/routes/rating/'+str_url[str_url.length-1],$scope.RateData).then(function(res)
+    $http.post('/routes/rating/'+str_url[str_url.length-1],$scope.RateData)
+    .then(function(res)
     {
       //$scope.responce =res;
       console.log(res.data);

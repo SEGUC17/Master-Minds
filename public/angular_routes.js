@@ -14,11 +14,11 @@ angular.module('appRoutes', ['ngRoute'])
     })
 
     .when('/Rate_Review_Business/:business', {
-        templateUrl: function (urlattr){console.log(urlattr.business);return 'partials/RateAndReview/RateAndReviewBusiness.html';},
+        templateUrl: function (urlattr){return 'partials/RateAndReview/RateAndReviewBusiness.html';},
         controller:'RateAndReviewBusinessCtrl'
     })
     .when('/Rate_Review_Business/:business/:service', {
-        templateUrl: function (urlattr){console.log(urlattr.business);return 'partials/RateAndReview/RateAndReviewService.html';},
+        templateUrl: function (urlattr){return 'partials/RateAndReview/RateAndReviewService.html';},
         controller:'RateAndReviewBusinessCtrl'
     })
 
