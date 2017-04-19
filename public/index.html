@@ -8,7 +8,6 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <link rel="stylesheet" type="text/css" href="styles/bootstrap.css">
 
     <script src="js/angular.js"></script>
     <script src="js/angular-route.js"></script>
@@ -17,6 +16,10 @@
     <script src="angular_routes.js"></script>
     <script src="js/controllers/RateAndReview.js"></script>
     <script src="js/controllers/userCtrl.js"></script>
+    <script src="js/controllers/serviceControllers.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <title>Theme Template for Bootstrap</title>
 
 </head>
@@ -27,25 +30,73 @@
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                    aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-                <a class="navbar-brand" href="#">Bootstrap theme</a>
+                <a href="#">
+                    <img src="masterminds.jpg" alt="logo" style="width:150px;height:50px;">
+                </a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+                    <li>
+                        <a></a>
+                    </li>
                     <li class="active"><a href="#/">Home</a></li>
                     <li><a href="#/about">About</a></li>
-<<<<<<< HEAD
                     <li><a href="#/Rate_Review_Business">Rate_Review_Business</a></li>
-=======
-                    <li><a href="#/register">Register</a></li>
->>>>>>> origin/dev
+                    <li>
+                        <a></a>
+                    </li>
+                    <li>
+                        <a></a>
+                    </li>
+                    <li>
+                        <a></a>
+                    </li>
+                    <li>
+                        <a></a>
+                    </li>
+                    <li>
+                        <a></a>
+                    </li>
+                    <li>
+                        <a></a>
+                    </li>
+                    <li>
+                        <a></a>
+                    </li>
+                    <li>
+                        <a></a>
+                    </li>
+                    <li>
+                        <a></a>
+                    </li>
+                    <li>
+                        <a></a>
+                    </li>
+                    <li>
+                        <a></a>
+                    </li>
+                    <li>
+                        <a></a>
+                    </li>
+                    <li>
+                        <a></a>
+                    </li>
+                    <li>
+                        <a></a>
+                    </li>
+                    <li>
+                        <a></a>
+                    </li>
+                    <li><a href="#/login">Login</a></li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Register <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="#">Action</a></li>
                             <li><a href="#">Another action</a></li>
@@ -56,34 +107,21 @@
                             <li><a href="#">One more separated link</a></li>
                         </ul>
                     </li>
+                    <script>
+                        $('.dropdown-toggle').dropdown()
+                    </script>
                 </ul>
             </div>
             <!--/.nav-collapse -->
         </div>
     </nav>
 
-    <div class="container theme-showcase" role="main">
-
-        <!-- Main jumbotron for a primary marketing message or call to action -->
-        <div class="jumbotron">
-            <h1>Theme example</h1>
-            <p>This is a template showcasing the optional theme stylesheet included in Bootstrap. Use it as a starting point to create something more unique by building on or modifying it.</p>
-        </div>
+    <div class="container theme-showcase" role="main" style="margin-top:5%;">
 
         <div ng-view></div>
 
     </div>
-    <!-- /container -->
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
     <script src="js/bootstrap.js"></script>
 </body>
 
-<<<<<<< HEAD
 </html>
-=======
-</html>
->>>>>>> origin/dev

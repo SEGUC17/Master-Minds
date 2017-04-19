@@ -1,5 +1,5 @@
 
-angular.module('userApp', ['appRoutes','Ang_RateAndReviewCtrl','userControllers'])
+angular.module('userApp', ['appRoutes','Ang_RateAndReviewCtrl','userControllers','serviceControllers'])
 
 
 
