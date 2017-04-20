@@ -11,7 +11,8 @@ angular.module('appRoutes', ['ngRoute'])
     })
 
     .when('/client_profile', {
-        templateUrl: 'partials/client_profile.html'
+        templateUrl: 'partials/client_profile.html',
+        controller: 'ClientprofileCtrl'
     })
 
     .when('/Rate_Review_Business/:business_name', {
