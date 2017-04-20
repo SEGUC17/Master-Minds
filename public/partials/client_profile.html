@@ -1,0 +1,18 @@
+<div ng-controller = "ClientprofileCtrl">
+  <P ng-init="message=''">
+  <span ng-bind="message"></span>
+  </p>
+  <div ng-init="fullName=''" ng-init="username=''" ng-init="email=''" ng-init="address=''" ng-init="phone_number=''">
+  <label class="jumbotron">full name:<span ng-bind="fullName"></span></label></br>
+  <label class="jumbotron">username:<span ng-bind="username"></span></label></br>
+  <label class="jumbotron">email:<span ng-bind="email"></span></label></br>
+  <label class="jumbotron">address:<span ng-bind="address"></span></label></br>
+  <label class="jumbotron">phone_number:<span ng-bind="phone_number"></span></label>
+  </div>
+  <form ng-submit ="" class ="form-group" >
+  <input class ="btn btn-primary" type="submit" value = "edit your profile">
+  </form>
+
+  <div>
+  </div>
+</div>

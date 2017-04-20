@@ -10,16 +10,17 @@ angular.module('appRoutes', ['ngRoute'])
         controller: 'HomepageController'
     })
 
-    .when('/about', {
-        templateUrl: 'partials/about.html'
+    .when('/client_profile', {
+        templateUrl: 'partials/client_profile.html',
+        controller: 'ClientprofileCtrl'
     })
 
-    .when('/Rate_Review_Business/:business', {
-        templateUrl: function (urlattr){console.log(urlattr.business);return 'partials/RateAndReview/RateAndReviewBusiness.html';},
+    .when('/Rate_Review_Business/:business_name', {
+        templateUrl: function (urlattr){return 'partials/RateAndReview/RateAndReviewBusiness.html';},
         controller:'RateAndReviewBusinessCtrl'
     })
-    .when('/Rate_Review_Business/:business/:service', {
-        templateUrl: function (urlattr){console.log(urlattr.business);return 'partials/RateAndReview/RateAndReviewService.html';},
+    .when('/Rate_Review_Business/:business_name/:service_name', {
+        templateUrl: function (urlattr){return 'partials/RateAndReview/RateAndReviewService.html';},
         controller:'RateAndReviewBusinessCtrl'
     })
 
@@ -32,6 +33,7 @@ angular.module('appRoutes', ['ngRoute'])
         templateUrl: 'partials/users/login.html',
         controller: 'loginCtrl'
     })
+
 
     .when('/detailedService/:business/:service', {
         templateUrl: function (urlattr){console.log(urlattr.business+" "+urlattr.service);return 'partials/Service/serviceView.html';},
