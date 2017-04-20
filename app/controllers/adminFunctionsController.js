@@ -12,7 +12,7 @@ let adminFunctionsController = {
         console.log(req.body);
         if(req.isAuthenticated()){
         if (req.user.admin){
-        clients.findOne({email: req.param('useremail')}, function(err, user){
+        clients.findOne({username: req.param('username')}, function(err, user){
            // if(err)
            //     res.send(err);
 
@@ -133,9 +133,11 @@ let adminFunctionsController = {
                         { $pull: { "services.service_reviews" : { _id : req.param('id') } } },
                         function removeReviews(err, obj) {
                                 if(err){
-                                res.json(500, {"result": "failure","message":"Could not remove review from review list"});
+
+                                res.json({"result": "failure","message":"Could not remove review from review list"});
                                 }else{
-                                res.json(200, {"result": "success"}); //I added the result part
+                                res.json({"result": "success"}); //I added the result part
+
                                 }
                         });
                     }else{
@@ -152,9 +154,9 @@ let adminFunctionsController = {
                         { $pull: { "business_reviews" : { _id : req.param('id')} } },
                         function removeReviews(err, obj) {
                                 if(err){
-                                res.json(500, {message:"Could not remove review from review list"});
+                                res.json({message:"Could not remove review from review list"});
                                 }else{
-                                res.json(200);
+                                res.json({"result": "success"});
                                 }
                     });
 

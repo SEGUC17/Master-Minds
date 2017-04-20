@@ -49,7 +49,7 @@ router.get('/viewprofile', profileController.viewProfile);
 router.get('/editprofile', profileController.getEditProfile);
 router.post('/editprofile', upload_client.single('profile_pic'), profileController.editProfile);
 
-router.put('/admin/ban-user/:useremail', adminFunctionsController.banuser);
+router.put('/admin/ban-user/:username', adminFunctionsController.banuser);
 router.put('/admin/ban-bus/:business_name', adminFunctionsController.banbus);
 router.get('/admin/viewReports', adminFunctionsController.viewReportedReviews);
 router.put('/admin/deleteReview/:id', adminFunctionsController.deleteReportedReviews);
@@ -71,6 +71,7 @@ router.post('/service_add', serviceController.addservice);
 router.post('/service_edit', serviceController.editservice);
 
 //Passport
+
 passport.use('local.clientsadmins',new LocalStrategy(
     function (username, password, done) {
         var already_sent_a_json = 0;
@@ -99,6 +100,7 @@ passport.use('local.clientsadmins',new LocalStrategy(
                 });
                 //return done(null, false);
             } else {
+
 
                 UserLoginController.comparePassword(password, user.password, function (err, isMatch) {
                     if (err) throw err;
@@ -153,6 +155,9 @@ router.get('/service_edit', function (req, res) {
 router.get('/businessowner_login', function (req, res) {
     res.render('login');
 });
+
+                    res.status(500).send(err);
+                } else {
 
 
 router.post('/businessowner_login',passport.authenticate('local.businessowner', 
@@ -220,6 +225,7 @@ passport.use('local.businessowner', new LocalStrategy({
 //         }
 //     }
 // });
+
 
 // business_owner _service_edit POST
 router.post('/service_edit', function (req, res) {
@@ -390,7 +396,9 @@ router.post('/register', function (req, res) {
 });
 
 router.post('/login',
-    passport.authenticate('local.clientsadmins', { successRedirect: '/routes/successjson', failureRedirect: '/routes/failurejson' }));
+
+passport.authenticate('local.clientsadmins', { successRedirect: '/routes/successjson', failureRedirect: '/routes/failurejson' }));
+
 
 router.get('/successjson', function (req, res) {
     res.json({ result: "success", message: "You have successfully logged in" })
