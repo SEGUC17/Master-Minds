@@ -6,7 +6,8 @@ angular.module('appRoutes', ['ngRoute'])
     $routeProvider
 
         .when('/', {
-        templateUrl: 'partials/home.html'
+        templateUrl: 'partials/Homepage/Homepage.html',
+        controller: 'HomepageController'
     })
 
     .when('/about', {
@@ -21,7 +22,6 @@ angular.module('appRoutes', ['ngRoute'])
         templateUrl: function (urlattr){console.log(urlattr.business);return 'partials/RateAndReview/RateAndReviewService.html';},
         controller:'RateAndReviewBusinessCtrl'
     })
-
 
     .when('/register', {
         templateUrl: 'partials/users/register.html',
