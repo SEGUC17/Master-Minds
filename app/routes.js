@@ -163,7 +163,7 @@ passport.use('local.businessowner', new LocalStrategy({
     passwordField: 'password',
     passReqToCallback: true
 }, function(req, email, password, done) {
-    User.findOne({'personal_email': email}, function (err, owner) {
+    BusinessOwner.findOne({'personal_email': email}, function (err, owner) {
         if (err) {
             return done(err);
         }
