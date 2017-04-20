@@ -1,0 +1,35 @@
+<div ng-controller="serviceController">
+
+  <div class="row">
+    <div class="col-md-11 push-md-1">TITLE</div>
+    <form ng-submit="pay()">
+      <input class="col-md-1 push-md-11" type="submit" value="BUY">
+      <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="pk_test_6pRNASCoBOKtIshFeQd4XMUh" data-amount="999"
+        data-name="Stripe.com" data-description="Widget" data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+        data-locale="auto" data-zip-code="true">
+
+        </script>
+    </form>
+  </div>
+
+  <div class="row">
+    <div class="col-md-5 push-md-7">PICTURE</div>
+    <div class="col-md-7 push-md-5">DESCRIPTION</div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8 push-md-4">RATING</div>
+    <div class="col-md-4 push-md-8">Price with Offer</div>
+  </div>
+
+  <div>RATING</div>
+
+  <form>
+    <div>COMMENTS</div>
+  </form>
+
+  <form>
+    <div>ADD COMMENT</div>
+  </form>
+
+</div>
