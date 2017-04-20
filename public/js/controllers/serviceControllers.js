@@ -22,13 +22,17 @@ angular.module('serviceControllers', [])
                                 } else {
                                         $scope.service_price = res.data.content.service_price;
                                 }
-                        } else{
+                        } else {
                                 $scope.service_price = "0.00";
                         }
-                        if (res.data.content.service_rating.length != 0)
-                                $scope.service_rating = res.data.content.service_rating;
-                        else
+                        if (res.data.content.service_rating.length != 0) {
+                                var num = 0;
+                                for (var i = 0; i < res.data.content.service_rating.length; i++)
+                                        num += Number(res.data.content.service_rating[i].rating);
+                                $scope.service_rating = num/Number(res.data.content.service_rating.length);
+                        } else {
                                 $scope.service_rating = "No Rating";
+                        }
                         if (res.data.content.service_reviews)
                                 $scope.service_reviews = res.data.content.service_reviews;
                         else
