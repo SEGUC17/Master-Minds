@@ -10,8 +10,8 @@ angular.module('appRoutes', ['ngRoute'])
         controller: 'HomepageController'
     })
 
-    .when('/about', {
-        templateUrl: 'partials/about.html'
+    .when('/client_profile', {
+        templateUrl: 'partials/client_profile.html'
     })
 
     .when('/Rate_Review_Business/:business_name', {
@@ -32,6 +32,7 @@ angular.module('appRoutes', ['ngRoute'])
         templateUrl: 'partials/users/login.html',
         controller: 'loginCtrl'
     })
+
 
     .when('/detailedService/:business/:service', {
         templateUrl: function (urlattr){console.log(urlattr.business+" "+urlattr.service);return 'partials/Service/serviceView.html';},
