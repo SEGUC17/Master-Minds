@@ -1,7 +1,8 @@
 angular.module('Ang_RateAndReviewCtrl', [])
 
 .controller('RateAndReviewBusinessCtrl',function($scope,$http,$location)
-{ console.log("lunched");
+{ //console.log("lunched");
+
   $scope.Post_Rate_Business= function(RateData)
   {
 

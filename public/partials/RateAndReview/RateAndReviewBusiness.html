@@ -3,7 +3,7 @@
       <P ng-init="resp_rate=''">
       <span ng-bind="resp_rate"></span>
       </p>
-      <form class ="form-group" ng-submit= "Post_Rate_Business(RateData)">
+      <form class ="form-group" ng-submit= "Post_Rate_Business(RateData)" ng-init="initbs()">
         <p class="jumbotron" >your rating is important to us </p>
         <div class="btn-group" data-toggle="radio">
         <label class="btn btn-primary active">
