@@ -70,6 +70,7 @@
             <input class="form-control" type="password" name="password" placeholder="please enter your password" ng-model="regData.password" required ng-minlength="6" ng-maxlength="30">
             <p ng-show="userForm.password.$error.minlength" class="help-block">password is too short.</p>
             <p ng-show="userForm.password.$error.maxlength" class="help-block">password is too long.</p>
+             <p ng-show="userForm.password.$invalid && !userForm.password.$pristine" class="help-block">Your password is required.</p>
         </div>
 
         <br>
