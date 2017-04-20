@@ -7,7 +7,6 @@ let viewController = {
 
     viewBusiness : function(req, res){
         var search = req.query.search;
-        console.log(search);
 
                 if (search){
             
@@ -15,7 +14,7 @@ let viewController = {
                 if(err){
                     res.status(500).json({"result":"failure","message":"Database error, purging database!"});
                 }else{
-                    console.log(business);
+                
                     if (business.length == 0){
                         res.status(404).json({"result":"failure","message":"Businesses not found, purging database!"});
                     }else{

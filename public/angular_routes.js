@@ -13,12 +13,16 @@ angular.module('appRoutes', ['ngRoute'])
     .when('/about', {
         templateUrl: 'partials/about.html'
     })
+    
+    .when('/:business_name', {
 
-    .when('/Rate_Review_Business/:business', {
+    })
+
+    .when('/Rate_Review_Business/:business_name', {
         templateUrl: function (urlattr){console.log(urlattr.business);return 'partials/RateAndReview/RateAndReviewBusiness.html';},
         controller:'RateAndReviewBusinessCtrl'
     })
-    .when('/Rate_Review_Business/:business/:service', {
+    .when('/Rate_Review_Business/:business_name/:service', {
         templateUrl: function (urlattr){console.log(urlattr.business);return 'partials/RateAndReview/RateAndReviewService.html';},
         controller:'RateAndReviewBusinessCtrl'
     })

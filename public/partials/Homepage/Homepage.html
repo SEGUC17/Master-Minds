@@ -5,11 +5,13 @@
 		<div ng-repeat="business in businesses">
 		<article >
 			<div class="trialimage">
-				<img src="http://icons.iconarchive.com/icons/laurent-baumann/blend/256/Location-Generic-icon.png" class="generic-icon" width="80" height="80" align="left">
+				<img src="public" class="generic-icon" width="80" height="80" align="left">
 			</div>
 			<div class="title">
 				<span class="name">
-					{{business.business_name}}
+					<a href="#/{{business.business_name}}"> {{business.business_name}}</a>
+					<a href="#/Rate_Review_Business/{{business.business_name}}"><button type="button" class="btn btn-default">Rate and review</button><a>
+				      <a href="#/like/{{business.business_name}}"><button type="button" class="btn btn-default">Like</button><a>
 				</span>
 			</div>
 
