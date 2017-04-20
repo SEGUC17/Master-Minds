@@ -13,103 +13,41 @@ let viewController = {
             
             BusinessOwner.find({business_name: search}, function(err, business){
                 if(err){
-                    res.status(500).send(err);
+                    res.status(500).json({"result":"failure","message":"Database error, purging database!"});
                 }else{
                     console.log(business);
                     if (business.length == 0){
-                        res.status(404).send('Business not found');
+                        res.status(404).json({"result":"failure","message":"Businesses not found, purging database!"});
                     }else{
-                        res.send(business); 
+                        res.json({"result":"success","message":"Eureka!! We found it","content": business}); 
                     }
                 }         
             });          
             }else{
              BusinessOwner.find({}, function(err, business){
                 if(err){
-                    res.status(500).send(err);
+                    res.status(500).json({"result":"failure","message":"Database error, purging database!"});
                 }else{
                 if (business.length == 0){
-                        res.status(404).send('Business not found');
+                        res.status(404).json({"result":"failure","message":"Businesses not found, purging database!"});
                     }else{
-                        res.send(business); 
+                        res.json({"result":"success","message":"Eureka!! We found it","content": business}); 
+                        
                     }
                  }         
             });          
 
         }
 
-
-        
-
-
-
-
-
-
-
-//__________________________________________________________________________ 
-//         //var search = req.body.business_name;
-//         // var search = "Busi1";
-//         var search = undefined;
-//         var Business = [{
-//     name: String,
-//     logo: { data: Buffer, contentType: String },
-//     // rating : [{rating : Number}]
-// }]
-//         if (search){
-            
-//             BusinessOwner.find({business_name: search}, function(err, business){
-//                 if(err){
-//                     res.send(err);
-//                 }else{
-//             for(var i = 0; i<business.length ; i++)
-//                 {
-//                     console.log(business);
-//             Business[i].name = business[i].business_name;
-//             Business[i].logo = business[i].business_logo;
-//             // Business[i].rating = avrRating;
-//                 }
-//             console.log(Business);
-//             res.send(Business);
-//                 }         
-//             });          
-//         }
-//         else{
-             
-//         BusinessOwner.find({},function(err, business){
-//             if(err){
-//                 res.send(err);
-//             }else{
-//                 // console.log(business);
-//                 for(var i = 0; i<business.length ; i++)
-//                 {
-//             //         for(var j = 0; j<business[i].rating[j];j++){
-//             //             var temp = rating[j] + temp;
-//             //         }
-//             // var avrRating = temp/j;
-//             Business.push({name: business[i].business_name});
-//             Business.push({logo: business[i].business_logo});
-//             console.log(Business);
-//             // Business[i].name = business[i].business_name;
-//             // Business[i].logo = business[i].business_logo;
-//             // console.log(Business);
-//             // Business[i].rating = avrRating;
-//                 }
-//             res.send(Business);
-//             }
-//         });
-//      }
     },
 
     viewServices: function(req, res){
-        var business = req.body.business_name;
-        BusinessOwner.findOne({business_name: business}, function(err, service){
+        var search = req.query.search;
+        BusinessOwner.findOne({business_name: search}, function(err, service){
             if(err){
                 res.send(err);
             }else{
-                console.log(service.services);
-                console.log('Hi');
-                res.send(service.services);
+                res.send(service);
             }
         });
     }
