@@ -19,6 +19,7 @@ let productContoller = {
         //   business.save();
         //   business.services.push({service_name: "room", service_reviews:[{review: "hello" }]});
         //   business.save();
+        console.log("report here");
         if (req.param('report') == 'true' && session.username != null) {
             businesses.findOne({ business_name: req.param('businessname') }, function (err, business) {
                 for (var i = 0; i < business.services.length; i++) {
@@ -82,17 +83,17 @@ let productContoller = {
                                 ad.date = new Date();
                                 ad.save();  //Saving the new advertisement to the database
                             } else {
-                                err.message('You already have a service advertised');
+                                res.json({'result':'failed','message':'You already have a service advertised'});
                             }
                         }
                     })
                 }else{
-                    err.message('This is not one of your products');
+                    res.json({'result':'failed', 'message':'This is not one of your products'});
                 }
             })
 
         }
-        res.render('detailedProductView');
+        res.json({'result':'success', 'message':'detailedProductView'});
     },
 
     viewAdvertisements: function (req, res) {
@@ -119,7 +120,7 @@ let productContoller = {
                 }
             }
             // console.log(adArray);
-            res.render('advertisementsView', { adArray });    //Pass the chosen ads to the view
+            res.json({'result':'success', 'message':'advertisementsView', 'content': adArray });    //Pass the chosen ads to the view
         })
     }
 

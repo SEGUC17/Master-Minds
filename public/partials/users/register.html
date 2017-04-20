@@ -1,0 +1,28 @@
+<div class="page-header">
+    <h1>Client Registration</h1>
+</div>
+
+<div ng-controller="regCtrl">
+    <form ng-submit="regUser()">
+        <label>Full name</label>
+        <input class="form-control" type="text" name="fullName" placeholder="please enter your name">
+        <br>
+        <label>Email</label>
+        <input class="form-control" type="text" name="email" placeholder="please enter your email">
+        <br>
+        <label>username</label>
+        <input class="form-control" type="text" name="username" placeholder="please enter your username">
+        <br>
+        <label>Address</label>
+        <input class="form-control" type="text" name="address" placeholder="please enter your Address">
+        <br>
+        <label>Phone Number</label>
+        <input class="form-control" type="number" name="phone_number" placeholder="please enter your Phone Number">
+        <br>
+        <label>Password</label>
+        <input class="form-control" type="password" name="password" placeholder="please enter your password">
+        <br>
+        <button class="btn btn-primary" type="submit">Submit</button>
+
+    </form>
+</div>
