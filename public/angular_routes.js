@@ -5,6 +5,7 @@ angular.module('appRoutes', ['ngRoute'])
 
     $routeProvider
 
+
     .when('/', {
         templateUrl: 'partials/Homepage/Homepage.html',
         controller: 'HomepageController'

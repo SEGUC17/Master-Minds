@@ -133,9 +133,11 @@ let adminFunctionsController = {
                         { $pull: { "services.service_reviews" : { _id : req.param('id') } } },
                         function removeReviews(err, obj) {
                                 if(err){
+
                                 res.json({"result": "failure","message":"Could not remove review from review list"});
                                 }else{
                                 res.json({"result": "success"}); //I added the result part
+
                                 }
                         });
                     }else{
