@@ -28,36 +28,44 @@
       <h2>SALE: {{promotion_offer}}%</h2>
     </div>
   </div><br>
-
-<span class="rating">
+  <form ng-submit="rateService(service)">
+    <span class="rating" ng-model="service.review">
   Please Rate: 
-  <input id="rating1" type="radio" name="rating" value="1">
+  <p style="color: green">{{rateSuccessMessage}}</p>
+  <p style="color: red">{{rateFailureMessage}}</p>
+  <input ng-model="service.rating" id="rating1" type="radio" name="rating" value="1">
   <label for="rating1">1</label>
-  <input id="rating2" type="radio" name="rating" value="2">
+  <input ng-model="service.rating" id="rating2" type="radio" name="rating" value="2">
   <label for="rating2">2</label>
-  <input id="rating3" type="radio" name="rating" value="3">
+  <input ng-model="service.rating" id="rating3" type="radio" name="rating" value="3">
   <label for="rating3">3</label>
-  <input id="rating4" type="radio" name="rating" value="4" checked>
+  <input ng-model="service.rating" id="rating4" type="radio" name="rating" value="4">
   <label for="rating4">4</label>
-  <input id="rating5" type="radio" name="rating" value="5">
+  <input ng-model="service.rating" id="rating5" type="radio" name="rating" value="5">
   <label for="rating5">5</label>
-</span>
+  <input type="submit" value="Submit" id="rate">
+  <p>Your rating: {{service.rate}}</p>
+</span></form><br>
   <div>Overall Rating: {{service_rating}}</div><br>
 
   <h2>Comments:</h2>
   <div ng-repeat="service in service_reviews">
-    <form style="border: 1px solid grey">
+    <form class="jumbotron" style="border: 1px solid grey">
       <fieldset>
         <legend>{{service.username}}:</legend>
-        <div style="background-color: lightgray;">{{service.review}}</div>
+        <div>{{service.review}}</div>
       </fieldset>
-    </form><br>
+    </form>
   </div><br>
 
-  <form method='post'>
-    Comment:<br />
-    <textarea name='comment' id='comment' style="width:40%"></textarea><br />
-    <input type='submit' value='Submit' />
+  <form ng-submit="reviewService(service)">
+    Comment:<br>
+    <p style="color: green">{{reviewSuccessMessage}}</p>
+    <p style="color: red">{{reviewFailureMessage}}</p>
+    <textarea name='comment' id='comment' style="width:40%" ng-model="service.review"></textarea><br />
+    <input type='submit' value='Submit' id="review">
   </form><br>
 
 </div>
+
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
