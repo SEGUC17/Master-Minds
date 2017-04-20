@@ -23,129 +23,23 @@ var adminLoginController = require('./controllers/adminLoginController');
 var adminFunctionsController = require('./controllers/adminFunctionsController');
 var replyController = require('./controllers/replyController');
 var Deletebussinesowner = require('./controllers/Deletebussinesowner');
-
 let session = require('express-session');
 let businesses = require('../models/businessOwners');
-
 var view_unaccepted_businesses = require('./controllers/view_unaccepted_businesses');
 var RateAndReviewCtrl = require('./controllers/RateAndReviewCtrl.js');
+var serviceController = require('./controllers/serviceController');
 var path = require('path');
-//post(/rating/breakout);
-//post(/rating/paintball);
-//post(/rating/prison);
-router.post('/rating/:business', function(req, res) // add new rating to the business
-    {
-        if (req.user) {
-            RateAndReviewCtrl.Post_Rate_Business(req, res);
-        } else {
-            console.log(401);
-            res.status(401).send("plz log in plz");
-            //res.render(loggin_page);
-        }
 
-    }
-);
-/*router.post('/rating/:business/:service',function(req,res) // add new rating to the service
-{
-  if(!req.user)
-    {
-    console.log(401);
-    res.status(401).send("plz log in plz");
-    //res.render(loggin_page);
-    }
-  else
-    {
-      RateAndReviewCtrl.Post_Rate_Service(req,res);
-    }
-}
-);*/
-router.post('/reviews/:business', function(req, res) // add new review to the business
-    {
-        if (!req.user) {
-            console.log(401);
-            res.status(401).send("plz log in plz");
-            //res.render(loggin_page);
-        } else {
-            RateAndReviewCtrl.Post_Review_Business(req, res);
-        }
-    }
-);
-/*router.post('/reviews/:business/:service',function(req,res)// add new review to the service
-{
-  if(!req.user)
-    {
-    console.log(401);
-    res.status(401).send("plz log in plz");
-    //res.render(loggin_page);
-    }
-  else
-    {
-      RateAndReviewCtrl.Post_Review_Service(req,res);
-    }
-}
-);
-*/
-
-router.get('/test', function(req, res) // add new review to the service
-    {
-
-        RateAndReviewCtrl.Post_test(req, res);
-
-    }
-);
-//new stuff from bulldozer
-//////////////////////////////////////////////////////////////////////////////////////////////
-router.get('/viewRateBusiness/:business', function(req, res) // view rating of a service
-    {
-        RateAndReviewCtrl.Get_Rate_Business(req, res);
-    }
-);
-
-
-router.get('/viewRateService/:business/:service', function(req, res) // view rating of a service
-    {
-        RateAndReviewCtrl.Get_Rate_Service(req, res);
-
-    }
-);
-
-router.get('/viewReviewBusiness/:business', function(req, res) // view review of a business
-    {
-        RateAndReviewCtrl.Get_Review_Business(req, res);
-    }
-);
-
-router.get('/viewReviewService/:business/:service', function(req, res) // view review of a service
-    {
-        RateAndReviewCtrl.Get_Review_Service(req, res);
-    }
-);
-
-/*
-router.get('/viewReviewNumberedBusiness/:business',function(req,res) // view reviews numbered of a business
-{
-      RateAndReviewCtrl.Get_Review_Numbered_Business(req,res);
-}
-);
-
-router.get('/viewReviewNumberedService/:business/:service',function(req,res) // view reviews numbered of a service
-{
-      RateAndReviewCtrl.Get_Review_Numbered_Service(req,res);
-
-}
-);*/
-
-router.post('/reportBusiness/:business', function(req, res) // report a business' review
-    {
-        if (!req.user) {
-            console.log(401);
-            res.status(401).send("plz log in plz");
-            //res.render(loggin_page);
-        } else {
-            RateAndReviewCtrl.Report_Business_Review(req, res);
-        }
-    }
-);
+//Add routes
+router.post('/rating/:business', function (req, res) { RateAndReviewCtrl.Post_Rate_Business(req, res); });
+router.post('/rating/:business/:service', function (req, res) { RateAndReviewCtrl.Post_Rate_Service(req, res); });
+router.post('/reviews/:business', function (req, res) { RateAndReviewCtrl.Post_Review_Business(req, res); });
+router.post('/reviews/:business/:service', function (req, res) { RateAndReviewCtrl.Post_Review_Service(req, res); });
+router.get('/viewRateBusiness/:business', function (req, res) { RateAndReviewCtrl.Get_Rate_Business(req, res); });
+router.get('/viewRateService/:business/:service', function (req, res) { RateAndReviewCtrl.Get_Rate_Service(req, res); });
+router.get('/viewReviewBusiness/:business', function (req, res) { RateAndReviewCtrl.Get_Review_Business(req, res); });
+router.get('/viewReviewService/:business/:service', function (req, res) { RateAndReviewCtrl.Get_Review_Service(req, res); });
+router.post('/reportBusiness/:business', function (req, res) { RateAndReviewCtrl.Report_Business_Review(req, res); });
 
 //Add routes
 router.get('/', homepageController.test);
@@ -154,9 +48,12 @@ router.get('/viewservices', viewController.viewServices);
 router.get('/viewprofile', profileController.viewProfile);
 router.get('/editprofile', profileController.getEditProfile);
 router.post('/editprofile', upload_client.single('profile_pic'), profileController.editProfile);
+
 router.put('/admin/ban-user/:useremail', adminFunctionsController.banuser);
 router.put('/admin/ban-bus/:business_name', adminFunctionsController.banbus);
 router.get('/admin/viewReports', adminFunctionsController.viewReportedReviews);
+router.put('/admin/deleteReview/:id', adminFunctionsController.deleteReportedReviews);
+router.put('/admin/deletebussines/:business_name', adminFunctionsController.deleteOwner);
 
 //Add routes
 router.get('/detailedProduct/:businessname/:product', productController.reportServiceReview);
@@ -166,20 +63,22 @@ router.post('/advertise/:businessname/:product', productController.addAdvertisme
 router.post('/detailedProduct/:businessname/:product', productController.reportServiceReview);
 router.post('/reply', replyController.Post_Reply);
 router.post('/deletebussines', Deletebussinesowner.deleteowner);
-router.get('/logout', function(req, res) {
+router.get('/logout', function (req, res) {
     req.logout();
     res.redirect('/login');
 });
+router.post('/service_add', serviceController.addservice);
+router.post('/service_edit', serviceController.editservice);
 
 //Passport
 passport.use(new LocalStrategy(
-    function(username, password, done) {
+    function (username, password, done) {
         var already_sent_a_json = 0;
-        UserLoginController.getUserByUsername(username, function(err, user) {
+        UserLoginController.getUserByUsername(username, function (err, user) {
             if (err) throw err;
             if (!user) {
                 // console.log("Reached here!");
-                adminLoginController.getAdminByUsername(username, function(err, admin) {
+                adminLoginController.getAdminByUsername(username, function (err, admin) {
                     //console.log("Reached here 1!");
                     if (err) throw err;
                     if (!admin) {
@@ -187,7 +86,7 @@ passport.use(new LocalStrategy(
                         return done(null, false);
                     }
                     console.log(admin);
-                    adminLoginController.comparePassword(password, admin.password, function(err, isMatch) {
+                    adminLoginController.comparePassword(password, admin.password, function (err, isMatch) {
                         //console.log("Reached here 3");
                         if (err) throw err;
 
@@ -201,7 +100,7 @@ passport.use(new LocalStrategy(
                 //return done(null, false);
             } else {
 
-                UserLoginController.comparePassword(password, user.password, function(err, isMatch) {
+                UserLoginController.comparePassword(password, user.password, function (err, isMatch) {
                     if (err) throw err;
                     if (isMatch && !user.ban) {
                         return done(null, user);
@@ -215,58 +114,77 @@ passport.use(new LocalStrategy(
 
 
 
-passport.serializeUser(function(user, done) {
+passport.serializeUser(function (user, done) {
     done(null, user.id);
 });
-passport.deserializeUser(function(id, done) {
-    UserLoginController.getUserById(id, function(err, user) {
-        done(err, user);
+
+passport.deserializeUser(function (id, done) {
+    UserLoginController.getUserById(id, function (err, user) {
+        if (!user) {
+            adminLoginController.getAdminById(id, function (err, admin) {
+                return done(err, admin);
+            });
+        } else {
+            return done(err, user);
+        }
+
     });
 });
 //  business_owner _service_add page GET
-router.get('/service_add', function(req, res) {
+router.get('/service_add', function (req, res) {
+    res.render('service_add');
+});
+//  business_owner _service_add page GET
+router.get('/service_add', function (req, res) {
     res.render('service_add');
 });
 
-
 //  business_owner _service_edit  pageG ET
-router.get('/service_edit', function(req, res) {
+router.get('/service_edit', function (req, res) {
     res.render('service_edit');
 });
 // Login businessOwner page page GET
-router.get('/businessOwner_login', function(req, res) {
+router.get('/businessowner_login', function (req, res) {
     res.render('login');
 });
 
+
 // Login businessOwner  POST
-router.post('/businessowner_login', function(req, res) {
+router.post('/businessowner_login', function (req, res) {
 
     var personal_email = req.body.personal_email;
     var password = req.body.password;
     if (personal_email == "" || personal_email == null) {
         res.send("you must enter  your personal email to login ");
-        res.render('businessowner_login'); //login view page in front end
+        //    res.render('businessowner_login');//login view page in front end
     } else {
         if (password == "" || password == null) {
             res.send("you must enter  your password for your  email to login ");
-            res.render('businessowner_login'); //login view page in front end
+            //  res.render('businessowner_login');//login view page in front end
         } else {
-            businesses.findOne({ personal_email: personal_email }, function(err, userlogin) {
+            businesses.findOne({ personal_email: personal_email }, function (err, userlogin) {
                 if (err) {
-                    // if no email mathes error appears
-                    res.send("error happened while login no  personal email matches businessOwner please check your email again");
-                    res.render('businessowner_login'); // login view page in front end
-                    res.send(err);
 
+                    res.status(500).send(err);
                 } else {
-                    // chechking the password to match the password in database for this email
-                    if (userlogin.password == password) {
-                        res.send("password matches   personal email password ");
-                        //   res.redirect('/businessowner_logged');// logged  page view in the front end
-                        session.username = req.body.personal_email;
+
+                    if (userlogin == null) {
+                        // if no email mathes error appears
+                        res.send("error happened while login no  personal email matches businessOwner please check your email again");
+
+
                     } else {
-                        res.send("password does not matches    personal email password please try again ");
-                        res.render('businessowner_login'); // login in view page in front end
+                        // chechking the password to match the password in database for this email
+                        if (userlogin.password == password) {
+                            res.send("password matches   personal email password ");
+                            //   res.redirect('/businessowner_logged');// logged  page view in the front end
+                            //  session.username = req.body.personal_email;
+                        } else {
+                            res.send("password does not matches    personal email password please try again ");
+                            //  res.render('businessowner_login'); // login in view page in front end
+                        }
+
+
                     }
 
                 }
@@ -275,97 +193,8 @@ router.post('/businessowner_login', function(req, res) {
     }
 });
 
-// business_owner _service_add POST
-router.post('/service_add', function(req, res) {
-    //getting data from user to add it in his services array
-    var business = new businesses();
-    var personal_email = req.body.personal_email;
-    var service_pic = req.body.service_pic;
-    var service_name = req.body.service_name;
-    var service_Description = req.body.service_Description;
-    var service_price = req.body.service_price;
-    var type_flag = req.body.type_flag;
-    var available_flag = req.body.available_flag;
-    var promotion_offer = req.body.promotion_offer;
-
-    // Validation
-    if (personal_email == "" || personal_email == null) {
-        res.send("you must enter  your personal email to add service");
-        res.render('service_add'); // front end view for service_add
-    } else {
-        if (service_name == "" || service_name == null) {
-            res.send("you must enter  your  service_name to add service");
-            res.render('service_add'); // front end view for service_add
-        } else {
-            if (service_Description == "" || service_Description == null) {
-                res.send("you must enter  your  service_Description to add service ");
-                res.render('service_add'); // front end view for service_add
-            } else {
-                if (service_price == "" || service_price == null) {
-                    res.send("you must enter  your service_price to add service ");
-                    res.render('service_add'); // front end view for service_add
-                } else {
-                    // getting the business owner from the database to add in it the service
-                    businesses.findOne({ personal_email: personal_email }, function(err, Found_data) {
-                        if (err) {
-                            // if no email mathes error appears
-                            res.send("error happened while adding your service no personal email matches businessOwner please check your email again");
-                            res.render('service_add'); // front end view for service_add
-                            res.send(err);
-
-                        } else {
-                            // pushing the data of serivces the business_owner want's to add
-                            Found_data.services.push({
-                                service_pic: service_pic,
-                                service_name: service_name,
-                                service_Description: service_Description,
-                                service_price: service_price,
-                                promotion_offer: promotion_offer,
-                                type_flag: type_flag,
-                                available_flag: available_flag
-                            });
-
-                            Found_data.save(function(err, saved) { //saving the database after pushing
-                                if (err) {
-                                    // error sent to user if error happened while saving database
-                                    res.send("error happened while adding your service please try again");
-                                    res.render('service_add'); // front end view for service_add
-                                    res.send(err);
-                                } else {
-
-                                    res.redirect('/services'); // page of services belong to my servies
-                                    res.send("you added your service");
-                                    // confirmation for adding database
-                                }
-                            })
-
-                        }
-                    });
-
-                }
-            }
-        }
-    }
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // business_owner _service_edit POST
-router.post('/service_edit', function(req, res) {
+router.post('/service_edit', function (req, res) {
     // data we want to edit in the service  business_owner must add personal email so we can get his data from database
     var personal_email = req.body.personal_email;
     var newservice_pic = req.body.newservice_pic;
@@ -387,7 +216,7 @@ router.post('/service_edit', function(req, res) {
             res.render('service_edit'); // front end service edit
         } else {
             // finding the business_owner from database
-            businesses.findOne({ personal_email: personal_email }, function(err, user) {
+            businesses.findOne({ personal_email: personal_email }, function (err, user) {
                 if (err) {
                     // if no matches sending error  because his email not in the database
                     res.send("error happened while editing your service no matched email in the data base please  try again");
@@ -406,7 +235,7 @@ router.post('/service_edit', function(req, res) {
                         }
                     }
 
-                    user.save(function(err, saved_service) { // save database after editing
+                    user.save(function (err, saved_service) { // save database after editing
                         if (err) {
                             // sending error if did not save the database
                             res.send("error happened while editing your service please try again");
@@ -426,29 +255,28 @@ router.post('/service_edit', function(req, res) {
 
 });
 
-
 // Register
-router.get('/register', function(req, res) {
+router.get('/register', function (req, res) {
 
     res.render('register');
 });
 
-router.get('/successRedirect', function(req, res) {
+router.get('/successRedirect', function (req, res) {
     res.send("successRedirect");
 });
-router.get('/failureRedirect', function(req, res) {
+router.get('/failureRedirect', function (req, res) {
     res.send("failureRedirect");
 
 
 });
 // Login
-router.get('/login', function(req, res) {
+router.get('/login', function (req, res) {
     res.render('login');
 
 });
 
 // Register User
-router.post('/register', function(req, res) {
+router.post('/register', function (req, res) {
     var already_sent_a_json = 0;
     var fullName = req.body.fullName;
     var email = req.body.email;
@@ -485,7 +313,7 @@ router.post('/register', function(req, res) {
         });
 
         var query1 = { username: newClient.username };
-        User.findOne(query1, function(err, user) {
+        User.findOne(query1, function (err, user) {
             if (err) {
                 if (already_sent_a_json == 0) {
                     already_sent_a_json = 1
@@ -498,7 +326,7 @@ router.post('/register', function(req, res) {
                 }
             } else {
                 var query2 = { email: newClient.email };
-                User.findOne(query2, function(err1, user2) {
+                User.findOne(query2, function (err1, user2) {
                     if (err1) {
                         if (already_sent_a_json == 0) {
                             already_sent_a_json = 1
@@ -515,7 +343,7 @@ router.post('/register', function(req, res) {
 
         });
 
-        UserRegisterController.createUser(newClient, function(err2, client) {
+        UserRegisterController.createUser(newClient, function (err2, client) {
             if (err2) {
                 if (already_sent_a_json == 0) {
                     already_sent_a_json = 1
@@ -533,102 +361,48 @@ router.post('/register', function(req, res) {
     }
 });
 
-// passport.use(new LocalStrategy(
-//     function(username, password, done) {
-//         UserLoginController.getUserByUsername(username, function(err, user) {
-//             if (err) {
-//                 console.log(err.message);
-//                 res.status(500).send(error.message);
-//             }
-//             if (!user) {
-//                 return done(null, false);
-//             }
-
-//             UserLoginController.comparePassword(password, user.password, function(err, isMatch) {
-//                 if (err) {
-//                     console.log(err.message);
-
-//                 }
-//                 if (isMatch) {
-//                     return done(null, user);
-//                 } else {
-//                     return done(null, false);
-//                 }
-//             });
-//         });
-//     }));
-
-
-
 router.post('/login',
     passport.authenticate('local', { successRedirect: '/routes/successjson', failureRedirect: '/routes/failurejson' }));
 
-router.get('/successjson', function(req, res) {
+router.get('/successjson', function (req, res) {
     res.json({ result: "success", message: "You have successfully logged in" })
 });
 
-router.get('/failurejson', function(req, res) {
+router.get('/failurejson', function (req, res) {
     res.json({ result: "failure", message: "Unknown User" });
 });
 
-router.post('/logout', function(req, res) {
+router.post('/logout', function (req, res) {
     req.logout();
     return res.json({ result: "success", message: "You have successfully logged out" });
 });
 
-router.get('/subscribe', function(req, res, next) {
-    var messages = req.flash('error'); // supply view with the error messages that appeared (if any)
-    res.render('subscribe', { messages: messages, hasErrors: messages.length > 0 });
+router.get('/subscribe', function (req, res, next) {
+    res.render('subscribe');
 });
 
-router.post('/subscribe', upload.single('business_logo'), function(req, res) {
-    // check for any mistakes or lack of input in the input form
-    req.checkBody('personal_email', 'Invalid email').notEmpty().isEmail();
-    req.checkBody('password', 'Invalid password').notEmpty().isLength({ min: 4 });
-    req.checkBody('business_name', 'Please enter business name').notEmpty();
-    req.checkBody('fullname', "Please enter business owner's name").notEmpty();
-    req.checkBody('business_description', 'PLease enter business description').notEmpty();
-    req.checkBody('business_emails', 'Please enter business emails').notEmpty();
-    req.checkBody('associated_bank', 'Please enter associated bank info').notEmpty();
-    var errors = req.validationErrors();
-    var messages = [];
-    var flag = 1;
-    if (!req.file) {
-        flag = 0; // flag set to 0 if no file has been uploaded
-        messages.push('Need to upload a business logo'); //  check whether business logo has been uploaded or not
-    }
-    if (errors) {
-        errors.forEach(function(error) {
-            messages.push(error.msg); // prepare the error messages that will be shown
-        });
-        if (flag) // ** if there are errors, and hence nothing will be inserted into the db, remove the file that upload.single uploaded
-            fs.unlink('./public/businessowner/' + req.file.filename);
-        req.flash('error', messages); // flash error messages
-        return res.redirect('/subscribe');
-    }
-    BusinessOwner.findOne({ 'personal_email': req.body.personal_email }, function(err, owner) { //check that email is unique
+router.post('/subscribe', upload.single('business_logo'), function (req, res) {
+    BusinessOwner.findOne({ 'personal_email': req.body.personal_email }, function (err, owner) { //check that email is unique
         if (err) {
-            return console.error(err);
+            return res.json({ 'result': 'failed', 'message': 'error' });
         }
         if (owner) {
             fs.unlink('./public/businessowner/' + req.file.filename); // same as **
-            req.flash('error', 'Email is already in use.'); // flash error message
-            return res.redirect('/subscribe');
+            return res.json({ 'result': 'failed', 'message': 'email already in use' });
         }
-        BusinessOwner.findOne({ 'business_name': req.body.business_name }, function(err, owner) { // check that business name is unique
+        BusinessOwner.findOne({ 'business_name': req.body.business_name }, function (err, owner) { // check that business name is unique
             if (err) {
-                return console.error(err);
+                return res.json({ 'result': 'failed', 'message': 'error' });
             }
             if (owner) {
                 fs.unlink('./public/businessowner/' + req.file.filename); //  same as **
-                req.flash('error', 'There is already a business with that name.'); // flash error message
-                return res.redirect('/subscribe');
+                return res.json({ 'result': 'failed', 'message': 'business name in use' });
             }
             var newOwner = new BusinessOwner(); // insert data into database
             newOwner.personal_email = req.body.personal_email;
             newOwner.password = newOwner.encryptPassword(req.body.password);
             newOwner.business_name = req.body.business_name;
-            newOwner.fullname = req.body.fullname;
+            newOwner.fullName = req.body.fullName;
             newOwner.business_description = req.body.business_description;
             newOwner.business_logo = req.file.filename;
             var a = req.body.business_emails;
@@ -636,89 +410,191 @@ router.post('/subscribe', upload.single('business_logo'), function(req, res) {
             for (i = 0; i < arr.length; i++) {
                 newOwner.business_emails.push({ email: arr[i] });
             }
+            newOwner.address = req.body.address;
             newOwner.associated_bank = req.body.associated_bank;
             newOwner.business_website = req.body.business_website;
             newOwner.business_reviews_and_reports = [];
             newOwner.rating = [];
             newOwner.accepted = false; // shows that this business is pending approval by the admin to be shown on the directory
-
-
-            newOwner.save(function(err, result) {
-                if (err) return console.error(err);
-                res.redirect('/service_add')
+            newOwner.save(function (err, result) {
+                if (err) return res.json({ 'result': 'failed', 'message': 'error' });
+                return res.json({ 'result': 'success', 'message': 'subscribed to directpry' });
             });
         });
     });
 });
 
-
-router.get('/editboprofile', isLoggedIn, function(req, res, next) {
-    var messages = req.flash('error'); // supply error messages to view
-    res.render('editprofile', { messages: messages, hasErrors: messages.length > 0 });
+router.get('/editboprofile', function (req, res) {
+    res.render('editprofile');
 });
 
-router.post('/editboprofile', upload.single('business_logo'), function(req, res) {
-    BusinessOwner.findOne({ 'personal_email': req.user.personal_email }, function(err, user) { // access the logged in user's information
-        var waitForCallback = 0;
-        if (req.body.business_name) {
-            waitForCallback = 1;
-            BusinessOwner.findOne({ 'business_name': req.body.business_name }, function(err, owner) { // check if new business name is taken
+router.post('/editboprofile', upload.single('business_logo'), function (req, res) {
+
+    BusinessOwner.findOne({ 'personal_email': req.body.personal_email }, function (err, user) {
+        if (err) {
+            return res.json({ 'result': 'failed', 'message': 'error' });
+        }
+        if (!user) {
+            return res.json({ 'result': 'failed', 'message': 'user not found' });
+        }
+        if (!user.validPassword(req.body.password)) {
+            return res.json({ 'result': 'failed', 'message': 'wrong password' });
+        }
+        if (req.body.new_email && req.body.business_name) {
+            BusinessOwner.findOne({ 'personal_email': req.body.new_email }, function (err, owner) {
                 if (err) {
-                    return console.error(err);
+                    return res.json({ 'result': 'failed', 'message': 'error' });
                 }
                 if (owner) {
-                    req.flash('error', 'There is already a business with that name.');
-                    return res.redirect('/editboprofile');
+                    return res.json({ 'result': 'failed', 'message': 'new email already in use' });
                 }
-                req.user.business_name = req.body.business_name;
-                waitForCallback = 0;
+                user.personal_email = req.body.new_email;
+                BusinessOwner.findOne({ 'business_name': req.body.business_name }, function (err, owner) {
+                    if (err) {
+                        return res.json({ 'result': 'failed', 'message': 'error' });
+                    }
+                    if (owner) {
+                        return res.json({ 'result': 'failed', 'message': 'new business name already in use ' });
+                    }
+                    user.business_name = req.body.business_name;
+                    if (req.body.new_password)
+                        user.new_password = user.encryptPassword(req.body.new_password);
+                    if (req.body.fullName)
+                        user.fullName = req.body.fullName;
+                    if (req.body.address)
+                        user.address = req.body.address;
+                    if (req.body.business_emails) {
+                        user.business_emails = [];
+                        var a = req.body.business_emails;
+                        var arr = a.split(',');
+                        for (i = 0; i < arr.length; i++) {
+                            user.business_emails.push({ email: arr[i] });
+                        }
+                    }
+                    if (req.body.business_description)
+                        user.business_description = req.body.business_description;
+                    if (req.body.associated_bank)
+                        user.associated_bank = req.body.associated_bank;
+                    if (req.body.business_website)
+                        user.business_website = req.body.business_website;
+                    if (req.file) {
+                        fs.unlink('./public/businessowner/' + user.business_logo);
+                        user.business_logo = req.file.filename;
+                    }
+                    user.save(function (err, result) {
+                        if (err) return res.json({ 'result': 'failed', 'message': 'error' });
+                        return res.json({ 'result': 'success', 'message': 'business profile updated' });
+                    });
+                });
             });
-        }
-        while (waitForCallback);
-        if (req.body.personal_email) {
-            waitForCallback = 1;
-            BusinessOwner.findOne({ 'personal_email': req.body.personal_email }, function(err, owner) { // check if new email is used already
-                if (err) {
-                    return console.error(err);
-                }
-                if (owner) {
-                    req.flash('error', 'That email address is already in use.');
-                    return res.redirect('/editboprofile');
-                }
-                user.personal_email = req.body.personal_email;
-                waitForCallback = 0;
-            });
-        }
-        while (waitForCallback);
-        if (req.body.password) // keep assigning new values (if any)
-            user.password = user.encryptPassword(req.body.password);
-        if (req.body.address)
-            user.address = req.body.address;
-        if (req.body.fullname)
-            user.fullname = req.body.fullname;
-        if (req.body.business_emails) {
-            user.business_emails = [];
-            var a = req.body.business_emails;
-            var arr = a.split(',');
-            for (i = 0; i < arr.length; i++) {
-                user.business_emails.push({ email: arr[i] });
+        } else
+            if (req.body.business_name) {
+                BusinessOwner.findOne({ 'business_name': req.body.business_name }, function (err, owner) {
+                    if (err) {
+                        return res.json({ 'result': 'failed', 'message': 'error' });
+                    }
+                    if (owner) {
+                        return res.json({ 'result': 'failed', 'message': 'new business name already in use ' });
+                    }
+                    user.business_name = req.body.business_name;
+                    if (req.body.new_password)
+                        user.new_password = user.encryptPassword(req.body.new_password);
+                    if (req.body.fullName)
+                        user.fullName = req.body.fullName;
+                    if (req.body.address)
+                        user.address = req.body.address;
+                    if (req.body.business_emails) {
+                        user.business_emails = [];
+                        var a = req.body.business_emails;
+                        var arr = a.split(',');
+                        for (i = 0; i < arr.length; i++) {
+                            user.business_emails.push({ email: arr[i] });
+                        }
+                    }
+                    if (req.body.business_description)
+                        user.business_description = req.body.business_description;
+                    if (req.body.associated_bank)
+                        user.associated_bank = req.body.associated_bank;
+                    if (req.body.business_website)
+                        user.business_website = req.body.business_website;
+                    if (req.file) {
+                        fs.unlink('./public/businessowner/' + user.business_logo);
+                        user.business_logo = req.file.filename;
+                    }
+                    user.save(function (err, result) {
+                        if (err) return res.json({ 'result': 'failed', 'message': 'error' });
+                        return res.json({ 'result': 'success', 'message': 'business profile updated' });
+                    });
+                });
+            } else if (req.body.new_email) {
+                BusinessOwner.findOne({ 'personal_email': req.body.new_email }, function (err, owner) {
+                    if (err) {
+                        return res.json({ 'result': 'failed', 'message': 'error' });
+                    }
+                    if (owner) {
+                        return res.json({ 'result': 'failed', 'message': 'new email already in use' });
+                    } a
+                    user.personal_email = req.body.new_email;
+                    if (req.body.new_password)
+                        user.new_password = user.encryptPassword(req.body.new_password);
+                    if (req.body.fullName)
+                        user.fullName = req.body.fullName;
+                    if (req.body.address)
+                        user.address = req.body.address;
+                    if (req.body.business_emails) {
+                        user.business_emails = [];
+                        var a = req.body.business_emails;
+                        var arr = a.split(',');
+                        for (i = 0; i < arr.length; i++) {
+                            user.business_emails.push({ email: arr[i] });
+                        }
+                    }
+                    if (req.body.business_description)
+                        user.business_description = req.body.business_description;
+                    if (req.body.associated_bank)
+                        user.associated_bank = req.body.associated_bank;
+                    if (req.body.business_website)
+                        user.business_website = req.body.business_website;
+                    if (req.file) {
+                        fs.unlink('./public/businessowner/' + user.business_logo);
+                        user.business_logo = req.file.filename;
+                    }
+                    user.save(function (err, result) {
+                        if (err) return res.json({ 'result': 'failed', 'message': 'error' });
+                        return res.json({ 'result': 'success', 'message': 'business profile updated' });
+                    });
+                });
             }
-        }
-        if (req.body.business_description)
-            user.business_description = req.body.business_description;
-        if (req.body.associated_bank)
-            user.associated_bank = req.body.associated_bank;
-        if (req.body.business_website)
-            user.business_website = req.body.business_website;
-        if (req.body.address)
-            user.address = req.body.address;
-        if (req.file) {
-            user.business_logo = req.file.filename;
-        }
-        user.save(function(err) {
-            if (err) return console.error(error);
-            res.send('Profile Updated');
-        });
+            else {
+                if (req.body.new_password)
+                    user.new_password = user.encryptPassword(req.body.new_password);
+                if (req.body.fullName)
+                    user.fullName = req.body.fullName;
+                if (req.body.address)
+                    user.address = req.body.address;
+                if (req.body.business_emails) {
+                    user.business_emails = [];
+                    var a = req.body.business_emails;
+                    var arr = a.split(',');
+                    for (i = 0; i < arr.length; i++) {
+                        user.business_emails.push({ email: arr[i] });
+                    }
+                }
+                if (req.body.business_description)
+                    user.business_description = req.body.business_description;
+                if (req.body.associated_bank)
+                    user.associated_bank = req.body.associated_bank;
+                if (req.body.business_website)
+                    user.business_website = req.body.business_website;
+                if (req.file) {
+                    fs.unlink('./public/businessowner/' + user.business_logo);
+                    user.business_logo = req.file.filename;
+                }
+                user.save(function (err, result) {
+                    if (err) return res.json({ 'result': 'failed', 'message': 'error' });
+                    return res.json({ 'result': 'success', 'message': 'business profile updated' });
+                });
+            }
     });
 });
 
@@ -736,22 +612,24 @@ function notLoggedIn(req, res, next) {
     res.redirect('/');
 }
 
-
-
-router.post('/like', function(req, res) {
+router.post('/like', function (req, res) {
     likeBusinessController.likeBusiness(req, res);
 
 })
 
 router.post('/unlike', likeBusinessController.unlikeBusiness);
 
-router.post('/viewliked', function(req, res) {
+router.post('/viewliked', function (req, res) {
     likeBusinessController.viewLikedBusinesses(req, res);
     console.log(res);
 });
 
 router.post('/view_unaccepted_businesses', view_unaccepted_businesses.view_unaccepted);
 router.post('/accept_application/:business', view_unaccepted_businesses.accept_application);
+
+router.get('/somepage', function (req, res) {
+    res.render('somepage');
+});
 
 //Export router
 module.exports = router;

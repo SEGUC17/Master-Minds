@@ -1,8 +1,9 @@
+
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var cookieparser = require('cookie-parser');
+var cookieparser = require ('cookie-parser');
 var mongoose = require('mongoose');
 var session = require('express-session');
 var passport = require('passport');
@@ -27,13 +28,14 @@ var path = require('path');
 
 
 // Express Session
+
 app.use(session({
     secret: 'secret',
     saveUninitialized: true,
     resave: true
 }));
-app.use(passport.initialize());
-app.use(passport.session());
+
+/* PASSPORT WAS HERE*/
 
 // Express Validator
 app.use(expressValidator({
@@ -55,12 +57,12 @@ app.use(expressValidator({
 
 
 mongoose.Promise = global.Promise;
-mongoose.connect(DB_URI, function(err) {
-    if (err) {
-        console.log(err);
-    } else {
-        console.log("Connected to DB successfuly");
-    }
+mongoose.connect(DB_URI,function(err){
+  if(err){
+    console.log(err);
+  }else{
+    console.log("Connected to DB successfuly");
+  }
 });
 
 
@@ -70,7 +72,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/public'));
 app.use('/routes', router);
 
-//app.use(router);
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 app.use(flash());
 
@@ -90,6 +94,7 @@ app.use(function(req, res, next) {
 
 
 //Configure app
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -134,11 +139,7 @@ app.use(function(req, res, next) {
     next();
 });
 //Start the server
-app.listen(8080, function() {
+app.listen(8080, function(){
     console.log("server is listening on port 8080");
 
 })
-
-app.get('*', function(req, res) {
-    res.sendFile(path.join(__dirname + '/public/index.html'));
-});
