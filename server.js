@@ -26,6 +26,7 @@ var expressValidator = require('express-validator');
 var LocalStrategy = require('passport-local').Strategy;
 var path = require('path');
 
+
 // Express Session
 
 app.use(session({
@@ -66,14 +67,14 @@ mongoose.connect(DB_URI,function(err){
 
 
 //Configure app
-
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended:false}));
-app.use(express.static(__dirname+ '/public'));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(__dirname + '/public'));
+app.use('/routes', router);
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(router);
+
 
 app.use(flash());
 

@@ -28,6 +28,11 @@ angular.module('appRoutes', ['ngRoute'])
         controller: 'regCtrl'
     })
 
+    .when('/login', {
+        templateUrl: 'partials/users/login.html',
+        controller: 'loginCtrl'
+    })
+
     .when('/detailedService/:business/:service', {
         templateUrl: function (urlattr){console.log(urlattr.business);return 'partials/serviceView.html';},
         controller: 'serviceController'
