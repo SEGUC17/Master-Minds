@@ -46,7 +46,9 @@ let viewController = {
             if(err){
                 res.send(err);
             }else{
-                res.send(service);
+                console.log(service.services);
+                console.log('Hi');
+                res.json({'result':'success','message':'all services', 'content':service.services});
             }
         });
     }

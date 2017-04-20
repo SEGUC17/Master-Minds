@@ -32,5 +32,10 @@ angular.module('appRoutes', ['ngRoute'])
         controller: 'regCtrl'
     })
 
+    .when('/detailedService/:business/:service', {
+        templateUrl: function (urlattr){console.log(urlattr.business);return 'partials/serviceView.html';},
+        controller: 'serviceController'
+    })
+
     .otherwise({ redirectTo: '/' });
 }]);
