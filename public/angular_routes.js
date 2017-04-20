@@ -17,5 +17,10 @@ angular.module('appRoutes', ['ngRoute'])
         controller: 'regCtrl'
     })
 
+    .when('/login', {
+        templateUrl: 'partials/users/login.html',
+        controller: 'loginCtrl'
+    })
+
     .otherwise({ redirectTo: '/' });
 });

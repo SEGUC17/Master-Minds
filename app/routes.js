@@ -174,20 +174,21 @@ router.get('/logout', function(req, res) {
 //Passport
 passport.use(new LocalStrategy(
     function(username, password, done) {
+        var already_sent_a_json = 0;
         UserLoginController.getUserByUsername(username, function(err, user) {
             if (err) throw err;
             if (!user) {
-                console.log("Reached here!");
+                // console.log("Reached here!");
                 adminLoginController.getAdminByUsername(username, function(err, admin) {
-                    console.log("Reached here 1!");
+                    //console.log("Reached here 1!");
                     if (err) throw err;
                     if (!admin) {
-                        console.log("Reached here 2");
+                        //console.log("Reached here 2");
                         return done(null, false);
                     }
                     console.log(admin);
                     adminLoginController.comparePassword(password, admin.password, function(err, isMatch) {
-                        console.log("Reached here 3");
+                        //console.log("Reached here 3");
                         if (err) throw err;
 
                         if (isMatch) {
@@ -202,7 +203,7 @@ passport.use(new LocalStrategy(
 
                 UserLoginController.comparePassword(password, user.password, function(err, isMatch) {
                     if (err) throw err;
-                    if (isMatch) {
+                    if (isMatch && !user.ban) {
                         return done(null, user);
                     } else {
                         return done(null, false);
@@ -532,44 +533,47 @@ router.post('/register', function(req, res) {
     }
 });
 
-passport.use(new LocalStrategy(
-    function(username, password, done) {
-        UserLoginController.getUserByUsername(username, function(err, user) {
-            if (err) {
-                console.log(err.message);
-                res.status(500).send(error.message);
-            }
-            if (!user) {
-                return done(null, false);
-            }
+// passport.use(new LocalStrategy(
+//     function(username, password, done) {
+//         UserLoginController.getUserByUsername(username, function(err, user) {
+//             if (err) {
+//                 console.log(err.message);
+//                 res.status(500).send(error.message);
+//             }
+//             if (!user) {
+//                 return done(null, false);
+//             }
 
-            UserLoginController.comparePassword(password, user.password, function(err, isMatch) {
-                if (err) {
-                    console.log(err.message);
+//             UserLoginController.comparePassword(password, user.password, function(err, isMatch) {
+//                 if (err) {
+//                     console.log(err.message);
 
-                }
-                if (isMatch) {
-                    return done(null, user);
-                } else {
-                    return done(null, false);
-                }
-            });
-        });
-    }));
+//                 }
+//                 if (isMatch) {
+//                     return done(null, user);
+//                 } else {
+//                     return done(null, false);
+//                 }
+//             });
+//         });
+//     }));
 
 
 
 router.post('/login',
-    passport.authenticate('local', { successRedirect: '/', failureRedirect: '/login', failureFlash: true }),
-    function(req, res) {
-        console.log("i am logged in");
-        res.redirect('/');
-        session.username = req.body.username;
-    });
+    passport.authenticate('local', { successRedirect: '/routes/successjson', failureRedirect: '/routes/failurejson' }));
 
-router.get('/logout', function(req, res) {
+router.get('/successjson', function(req, res) {
+    res.json({ result: "success", message: "You have successfully logged in" })
+});
+
+router.get('/failurejson', function(req, res) {
+    res.json({ result: "failure", message: "Unknown User" });
+});
+
+router.post('/logout', function(req, res) {
     req.logout();
-    res.redirect('/login');
+    return res.json({ result: "success", message: "You have successfully logged out" });
 });
 
 router.get('/subscribe', function(req, res, next) {
