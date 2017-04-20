@@ -1,0 +1,21 @@
+<div ng-controller="HomepageController">
+      
+	<h1>Hi</h1>
+	<div class="verticalmenu" >
+		<div ng-repeat="business in businesses">
+		<article >
+			<div class="trialimage">
+				<img src="http://icons.iconarchive.com/icons/laurent-baumann/blend/256/Location-Generic-icon.png" class="generic-icon" width="80" height="80" align="left">
+			</div>
+			<div class="title">
+				<span class="name">
+					{{business.business_name}}
+				</span>
+			</div>
+
+		</article>
+		</div>
+
+	</div>
+
+</div>

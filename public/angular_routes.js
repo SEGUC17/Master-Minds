@@ -5,33 +5,48 @@ angular.module('appRoutes', ['ngRoute'])
 
     $routeProvider
 
-        .when('/', {
-        templateUrl: 'partials/home.html'
+    .when('/', {
+        templateUrl: 'partials/Homepage/Homepage.html',
+        controller: 'HomepageController'
     })
 
-    .when('/about', {
-        templateUrl: 'partials/about.html'
+    .when('/client_profile', {
+        templateUrl: 'partials/client_profile.html',
+        controller: 'ClientprofileCtrl'
     })
 
-    .when('/Rate_Review_Business/:business', {
-        templateUrl: function (urlattr){console.log(urlattr.business);return 'partials/RateAndReview/RateAndReviewBusiness.html';},
+    .when('/Rate_Review_Business/:business_name', {
+        templateUrl: function (urlattr){return 'partials/RateAndReview/RateAndReviewBusiness.html';},
         controller:'RateAndReviewBusinessCtrl'
     })
-    .when('/Rate_Review_Business/:business/:service', {
-        templateUrl: function (urlattr){console.log(urlattr.business);return 'partials/RateAndReview/RateAndReviewService.html';},
+    .when('/Rate_Review_Business/:business_name/:service_name', {
+        templateUrl: function (urlattr){return 'partials/RateAndReview/RateAndReviewService.html';},
         controller:'RateAndReviewBusinessCtrl'
     })
-
 
     .when('/register', {
         templateUrl: 'partials/users/register.html',
         controller: 'regCtrl'
     })
 
+    .when('/login', {
+        templateUrl: 'partials/users/login.html',
+        controller: 'loginCtrl'
+    })
+
+
     .when('/detailedService/:business/:service', {
-        templateUrl: function (urlattr){console.log(urlattr.business);return 'partials/serviceView.html';},
+        templateUrl: function (urlattr){console.log(urlattr.business+" "+urlattr.service);return 'partials/Service/serviceView.html';},
         controller: 'serviceController'
     })
 
+    .when('/admin-panel', {
+        templateUrl: 'partials/admin-panel/admin-home.html',
+        controller: 'adminController'
+    })
+    .when('/admin-panel/control-reviews', {
+        templateUrl: 'partials/admin-panel/control-reviews.html',
+        controller: 'adminController'
+    })
     .otherwise({ redirectTo: '/' });
 }]);
