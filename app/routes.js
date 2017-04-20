@@ -631,5 +631,17 @@ router.get('/somepage', function (req, res) {
     res.render('somepage');
 });
 
+router.get('/detailedService/:business/:service', function (req, res) {
+    businesses.findOne({ business_name: req.param('business') }, function (err, busi) {
+        for (var i = 0; i < busi.services.length; i++) {
+            if (busi.services[i].service_name == req.param('service')){
+            res.json({ 'result': 'success', 'message': 'service found', 'content':busi.services[i]})
+            }else{
+            res.json({ 'result': 'failure', 'message': 'service not found'})
+            }
+        }
+    })
+});
+
 //Export router
 module.exports = router;

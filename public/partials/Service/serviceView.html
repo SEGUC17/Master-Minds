@@ -1,0 +1,48 @@
+<div ng-controller="serviceController">
+
+  <div class="row">
+    <div class="col-md-11 push-md-1">
+      <h1>Title: {{service_name}}</h1>
+    </div>
+    <form ng-submit="pay()">
+      <input class="col-md-1 push-md-11" type="submit" value="BUY">
+      <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="pk_test_6pRNASCoBOKtIshFeQd4XMUh" data-amount="999"
+        data-name="Stripe.com" data-description="Widget" data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+        data-locale="auto" data-zip-code="true">
+
+        </script>
+    </form>
+  </div><br>
+
+  <div class="row">
+    <div class="col-md-5 push-md-7"> <img src="{{service_pic}}" alt="logo" style="width:300px;height:300px;"></div>
+    <div class="col-md-7 push-md-5">{{service_description}}</div>
+  </div><br>
+
+  <div class="row">
+    <div class="col-md-8 push-md-4">
+      <h2>Price: {{service_price}}</h2>
+    </div>
+    <div class="col-md-4 push-md-8"><h2>SALE: {{promotion_offer}}%</h2></div>
+  </div><br>
+
+  <div>{{service_rating}}</div><br>
+
+  <form>
+    <div ng-repeat="service in service_reviews">
+      <article>
+        <div class="title">
+          <span class="name">
+					{{service.service_reviews}}
+				</span>
+        </div>
+
+      </article>
+    </div>
+  </form><br>
+
+  <form>
+    <div>ADD COMMENT</div>
+  </form><br>
+
+</div>

@@ -34,7 +34,7 @@ angular.module('appRoutes', ['ngRoute'])
     })
 
     .when('/detailedService/:business/:service', {
-        templateUrl: function (urlattr){console.log(urlattr.business);return 'partials/serviceView.html';},
+        templateUrl: function (urlattr){console.log(urlattr.business+" "+urlattr.service);return 'partials/Service/serviceView.html';},
         controller: 'serviceController'
     })
 
