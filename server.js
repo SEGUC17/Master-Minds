@@ -72,7 +72,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/public'));
 app.use('/routes', router);
-
+app.use(router);
 
 app.use(flash());
 

@@ -634,15 +634,35 @@ router.get('/somepage', function (req, res) {
 router.get('/detailedService/:business/:service', function (req, res) {
     businesses.findOne({ business_name: req.param('business') }, function (err, busi) {
         if (busi)
-        for (var i = 0; i < busi.services.length; i++) {
-            if (busi.services[i].service_name == req.param('service')){
-            res.json({ 'result': 'success', 'message': 'service found', 'content':busi.services[i]})
-            }else{
-            res.json({ 'result': 'failure', 'message': 'service not found'})
+            for (var i = 0; i < busi.services.length; i++) {
+                if (busi.services[i].service_name == req.param('service')) {
+                    res.json({ 'result': 'success', 'message': 'service found', 'content': busi.services[i] })
+                } else {
+                    res.json({ 'result': 'failure', 'message': 'service not found' })
+                }
             }
-        }
     })
 });
+    var stripe = require("stripe")("sk_test_v2rYv9d1Ka4fzqRBKLptDEr8");
+
+router.post('/checkout', function (req, res) {
+    // Set your secret key: remember to change this to your live secret key in production
+    // See your keys here: https://dashboard.stripe.com/account/apikeys
+
+    // Token is created using Stripe.js or Checkout!
+    // Get the payment token submitted by the form:
+    var token = req.body.stripeToken; // Using Express
+    // Charge the user's card:
+    var charge = stripe.charges.create({
+        amount: 1000,
+        currency: "usd",
+        description: "Example charge",
+        source: token,
+    }, function (err, charge) {
+        // asynchronously called
+    });
+    res.redirect("/");
+})
 
 //Export router
 module.exports = router;
