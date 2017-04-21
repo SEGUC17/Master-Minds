@@ -1,7 +1,17 @@
 angular.module('NavigationBar', [])
-.controller('navigation', function($scope, $http, $location){
-    $http.get('/routes/viewbusiness').then(function(res){
-        $scope.businesses = res.data.content;
-        console.log(res.data.content[0].business_name);
+
+    .controller('navigation', function ($scope, $http, $location) {
+        $http.get('/nav').then(function (res) {
+            if (res.data.result == 'success') {
+                if (res.data.message != 'business') {
+                    $scope.username = res.data.content.username;
+                    $scope.type = res.data.message;
+                } else {
+                    $scope.username = res.data.content.personal_email;
+                    $scope.type = res.data.message
+                }
+            }else{
+
+            }
+        });
     });
-});
