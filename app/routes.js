@@ -69,7 +69,7 @@ router.get('/logout', function (req, res) {
 });
 router.post('/service_add', serviceController.addservice);
 router.post('/service_edit', serviceController.editservice);
-
+router.get('/isLoggedIn',UserLoginController.isLoggedin);
 //Passport
 passport.use(new LocalStrategy(
     function (username, password, done) {

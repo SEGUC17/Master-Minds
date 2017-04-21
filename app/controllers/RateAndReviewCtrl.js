@@ -2,6 +2,8 @@ var admins= require('../../models/admins.js');
 var clients= require('../../models/clients.js');
 var student_schema= require('../../models/businessOwners.js');
 let businesses = require('../../models/businessOwners');
+
+
 exports.Post_Rate_Business= function(req,res)
 {if(req.user){
   var business = require('mongoose').model('businesses');
