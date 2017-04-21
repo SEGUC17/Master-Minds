@@ -1,17 +1,24 @@
-<div ng-controller="serviceController">
 
+<div ng-controller="serviceController">
   <div class="row">
     <div class="col-md-11 push-md-1">
       <h1>Title: {{service_name}}</h1>
     </div>
-    <form ng-submit="pay()">
-      <input class="col-md-1 push-md-11" type="submit" value="BUY" style="background-color:blue;color:wheat;border: 2px solid blue;border-radius: 8px;box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);">
-      <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="pk_test_6pRNASCoBOKtIshFeQd4XMUh" data-amount="999"
-        data-name="Stripe.com" data-description="Widget" data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-        data-locale="auto" data-zip-code="true">
+    <div class="col-md-1 push-md-11">
+      Stripe:
+<form action="/checkout" method="POST">
+<script
+  src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+  data-key="pk_test_NxzB4uWCnPgIv2pcsnsVEwdd"
+  data-amount="2000"
+  data-name="Demo Site"
+  data-description="2 widgets"
+  data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+  data-locale="auto">
+</script>
+</form>
+    </div>
 
-        </script>
-    </form>
   </div><br>
 
   <div class="row">
@@ -69,3 +76,5 @@
 </div>
 
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
