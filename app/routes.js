@@ -55,8 +55,8 @@ router.put('/admin/ban-bus/:business_name', adminFunctionsController.banbus);
 router.get('/admin/viewReports', adminFunctionsController.viewReportedReviews);
 router.put('/admin/deleteReview/:id', adminFunctionsController.deleteReportedReviews);
 router.put('/admin/deletebussines/:business_name', adminFunctionsController.deleteOwner);
-router.get('/admin/getUsers',adminFunctionsController.getUsers);
-router.get('/admin/getBus',adminFunctionsController.getBusinesses);
+router.get('/admin/getUsers', adminFunctionsController.getUsers);
+router.get('/admin/getBus', adminFunctionsController.getBusinesses);
 
 //Add routes
 router.get('/detailedProduct/:businessname/:product', productController.reportServiceReview);
@@ -66,16 +66,13 @@ router.post('/advertise/:businessname/:product', productController.addAdvertisme
 router.post('/report/:business/:service', productController.reportServiceReview);
 router.post('/reply', replyController.Post_Reply);
 router.post('/deletebussines', Deletebussinesowner.deleteOwner);
-router.get('/logout', function (req, res) {
-    req.logout();
-    res.redirect('/login');
-});
+router.get('/logout', function (req, res) {req.logout();res.json({"result":"success","message":"you have logged out"});});
 router.post('/service_add', serviceController.addservice);
 router.post('/service_edit', serviceController.editservice);
 router.get('/isLoggedIn',UserLoginController.isLoggedin);
 //Passport
 
-passport.use('local.clientsadmins',new LocalStrategy(
+passport.use('local.clientsadmins', new LocalStrategy(
     function (username, password, done) {
         var already_sent_a_json = 0;
         UserLoginController.getUserByUsername(username, function (err, user) {
@@ -127,12 +124,12 @@ passport.deserializeUser(function (id, done) {
     adminLoginController.getAdminById(id, function (err, admin) {
         if (!admin) {
             UserLoginController.getUserById(id, function (err, user) {
-                if(!user){
+                if (!user) {
                     BusinessOwner.findById(id, function (err, owner) {
                         return done(err, owner);
                     });
-                }else{
-                   return done(err, user);
+                } else {
+                    return done(err, user);
                 }
             });
         } else {
@@ -162,15 +159,17 @@ router.get('/businessowner_login', function (req, res) {
 
 
 
+
 router.post('/businessowner_login',passport.authenticate('local.businessowner',
       { successRedirect: '/routes/successjson', failureRedirect: '/routes/failurejson' }));
+
 
 passport.use('local.businessowner', new LocalStrategy({
     usernameField: 'personal_email',
     passwordField: 'password',
     passReqToCallback: true
-}, function(req, email, password, done) {
-    BusinessOwner.findOne({'personal_email': email}, function (err, owner) {
+}, function (req, email, password, done) {
+    BusinessOwner.findOne({ 'personal_email': email }, function (err, owner) {
         if (err) {
             return done(err);
         }
@@ -399,7 +398,7 @@ router.post('/register', function (req, res) {
 
 router.post('/login',
 
-passport.authenticate('local.clientsadmins', { successRedirect: '/routes/successjson', failureRedirect: '/routes/failurejson' }));
+    passport.authenticate('local.clientsadmins', { successRedirect: '/routes/successjson', failureRedirect: '/routes/failurejson' }));
 
 
 router.get('/successjson', function (req, res) {
@@ -681,7 +680,7 @@ router.get('/detailedService/:business/:service', function (req, res) {
             }
     })
 });
-    var stripe = require("stripe")("sk_test_v2rYv9d1Ka4fzqRBKLptDEr8");
+var stripe = require("stripe")("sk_test_v2rYv9d1Ka4fzqRBKLptDEr8");
 
 router.post('/checkout', function (req, res) {
     // Set your secret key: remember to change this to your live secret key in production
@@ -701,6 +700,30 @@ router.post('/checkout', function (req, res) {
     });
     res.redirect("/");
 })
+
+router.get('/nav', function (req, res) {
+    if (!req.user) {
+        return res.json({ 'result': 'failure', 'message': 'user not logged in' });
+    } else {
+        businesses.findOne({ personal_email: req.user.username }, function (err, busi) {
+            if (busi) {
+                return res.json({ 'result': 'success', 'message': 'business', 'content': busi });
+            } else
+                Client.findOne({ username: req.user.username }, function (err, client) {
+                    if (client) {
+                        return res.json({ 'result': 'success', 'message': 'client', 'content': client });
+                    } else
+                        Admin.findOne({ username: req.user.username }, function (err, admin) {
+                            if (admin) {
+                                return res.json({ 'result': 'success', 'message': 'admin', 'content': admin });
+                            } else
+                                return res.json({ 'result': 'failure', 'message': 'username not found' });
+
+                        });
+                });
+        });
+    }
+});
 
 //Export router
 module.exports = router;
