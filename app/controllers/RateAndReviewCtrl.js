@@ -117,6 +117,8 @@ exports.Post_Rate_Service=function(req,res)
             console.log(401); res.json({"result":"failure","message":"please login"});
             return;
           }
+            if (!req.body.rating)
+                  return res.json({"result":"failure","message":"enter rating first"});
 
       var new_rate= {
         "username":req.user.username,
@@ -208,6 +210,11 @@ exports.Post_Review_Service= function(req,res)
           for (var i = 0; i < business.services.length; i++) {
           //  console.log(business)
               if (business.services[i].service_name == req.param('service')) {
+                for (var j = 0; j<business.services[i].service_reviews.length; j++){
+                  if (business.services[i].service_reviews[j].review == req.body.review && business.services[i].service_reviews[j].username == req.user.username){
+                     return res.json({"result":"failure","message":"you have posted the same review before"});
+                  }
+                }
               ffoundbs=1;
           //    console.log(business.services[i])
                   business.services[i].service_reviews.push(new_review);

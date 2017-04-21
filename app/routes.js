@@ -49,18 +49,20 @@ router.get('/viewprofile', profileController.viewProfile);
 router.get('/editprofile', profileController.getEditProfile);
 router.post('/editprofile', upload_client.single('profile_pic'), profileController.editProfile);
 
-router.put('/admin/ban-user/:useremail', adminFunctionsController.banuser);
+router.put('/admin/ban-user/:username', adminFunctionsController.banuser);
 router.put('/admin/ban-bus/:business_name', adminFunctionsController.banbus);
 router.get('/admin/viewReports', adminFunctionsController.viewReportedReviews);
 router.put('/admin/deleteReview/:id', adminFunctionsController.deleteReportedReviews);
 router.put('/admin/deletebussines/:business_name', adminFunctionsController.deleteOwner);
+router.get('/admin/getUsers',adminFunctionsController.getUsers);
+router.get('/admin/getBus',adminFunctionsController.getBusinesses);
 
 //Add routes
 router.get('/detailedProduct/:businessname/:product', productController.reportServiceReview);
 router.get('/viewAdvertisement', productController.viewAdvertisements);
 router.get('/viewbusiness', viewController.viewBusiness);
 router.post('/advertise/:businessname/:product', productController.addAdvertisment);
-router.post('/detailedProduct/:businessname/:product', productController.reportServiceReview);
+router.post('/report/:business/:service', productController.reportServiceReview);
 router.post('/reply', replyController.Post_Reply);
 router.post('/deletebussines', Deletebussinesowner.deleteOwner);
 router.get('/logout', function (req, res) {
@@ -71,7 +73,8 @@ router.post('/service_add', serviceController.addservice);
 router.post('/service_edit', serviceController.editservice);
 router.get('/isLoggedIn',UserLoginController.isLoggedin);
 //Passport
-passport.use(new LocalStrategy(
+
+passport.use('local.clientsadmins',new LocalStrategy(
     function (username, password, done) {
         var already_sent_a_json = 0;
         UserLoginController.getUserByUsername(username, function (err, user) {
@@ -100,6 +103,7 @@ passport.use(new LocalStrategy(
                 //return done(null, false);
             } else {
 
+
                 UserLoginController.comparePassword(password, user.password, function (err, isMatch) {
                     if (err) throw err;
                     if (isMatch && !user.ban) {
@@ -119,13 +123,19 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (id, done) {
-    UserLoginController.getUserById(id, function (err, user) {
-        if (!user) {
-            adminLoginController.getAdminById(id, function (err, admin) {
-                return done(err, admin);
+    adminLoginController.getAdminById(id, function (err, admin) {
+        if (!admin) {
+            UserLoginController.getUserById(id, function (err, user) {
+                if(!user){
+                    BusinessOwner.findById(id, function (err, owner) {
+                        return done(err, owner);
+                    });
+                }else{
+                   return done(err, user);
+                }
             });
         } else {
-            return done(err, user);
+            return done(err, admin);
         }
 
     });
@@ -149,49 +159,74 @@ router.get('/businessowner_login', function (req, res) {
 });
 
 
-// Login businessOwner  POST
-router.post('/businessowner_login', function (req, res) {
-
-    var personal_email = req.body.personal_email;
-    var password = req.body.password;
-    if (personal_email == "" || personal_email == null) {
-        res.send("you must enter  your personal email to login ");
-        //    res.render('businessowner_login');//login view page in front end
-    } else {
-        if (password == "" || password == null) {
-            res.send("you must enter  your password for your  email to login ");
-            //  res.render('businessowner_login');//login view page in front end
-        } else {
-            businesses.findOne({ personal_email: personal_email }, function (err, userlogin) {
-                if (err) {
-
-                    res.status(500).send(err);
-                } else {
-
-                    if (userlogin == null) {
-                        // if no email mathes error appears
-                        res.send("error happened while login no  personal email matches businessOwner please check your email again");
 
 
-                    } else {
-                        // chechking the password to match the password in database for this email
-                        if (userlogin.password == password) {
-                            res.send("password matches   personal email password ");
-                            //   res.redirect('/businessowner_logged');// logged  page view in the front end
-                            //  session.username = req.body.personal_email;
-                        } else {
-                            res.send("password does not matches    personal email password please try again ");
-                            //  res.render('businessowner_login'); // login in view page in front end
-                        }
+router.post('/businessowner_login',passport.authenticate('local.businessowner', 
+      { successRedirect: '/routes/successjson', failureRedirect: '/routes/failurejson' }));
 
-
-                    }
-
-                }
-            });
+passport.use('local.businessowner', new LocalStrategy({
+    usernameField: 'personal_email',
+    passwordField: 'password',
+    passReqToCallback: true
+}, function(req, email, password, done) {
+    BusinessOwner.findOne({'personal_email': email}, function (err, owner) {
+        if (err) {
+            return done(err);
         }
-    }
-});
+        if (!owner) {
+            return done(null, false);
+        }
+        if (!owner.validPassword(password)) {
+            return done(null, false);
+        }
+        return done(null, owner);
+    });
+}));
+
+// Login businessOwner  POST
+// router.post('/businessowner_login', function (req, res) {
+
+//     var personal_email = req.body.personal_email;
+//     var password = req.body.password;
+//     if (personal_email == "" || personal_email == null) {
+//         res.send("you must enter  your personal email to login ");
+//         //    res.render('businessowner_login');//login view page in front end
+//     } else {
+//         if (password == "" || password == null) {
+//             res.send("you must enter  your password for your  email to login ");
+//             //  res.render('businessowner_login');//login view page in front end
+//         } else {
+//             businesses.findOne({ personal_email: personal_email }, function (err, userlogin) {
+//                 if (err) {
+
+//                     res.status(500).send(err);
+//                 } else {
+
+//                     if (userlogin == null) {
+//                         // if no email mathes error appears
+//                         res.send("error happened while login no  personal email matches businessOwner please check your email again");
+
+
+//                     } else {
+//                         // chechking the password to match the password in database for this email
+//                         if (userlogin.password == password) {
+//                             res.send("password matches   personal email password ");
+//                             //   res.redirect('/businessowner_logged');// logged  page view in the front end
+//                             //  session.username = req.body.personal_email;
+//                         } else {
+//                             res.send("password does not matches    personal email password please try again ");
+//                             //  res.render('businessowner_login'); // login in view page in front end
+//                         }
+
+
+//                     }
+
+//                 }
+//             });
+//         }
+//     }
+// });
+
 
 // business_owner _service_edit POST
 router.post('/service_edit', function (req, res) {
@@ -362,7 +397,9 @@ router.post('/register', function (req, res) {
 });
 
 router.post('/login',
-    passport.authenticate('local', { successRedirect: '/routes/successjson', failureRedirect: '/routes/failurejson' }));
+
+passport.authenticate('local.clientsadmins', { successRedirect: '/routes/successjson', failureRedirect: '/routes/failurejson' }));
+
 
 router.get('/successjson', function (req, res) {
     res.json({ result: "success", message: "You have successfully logged in" })
@@ -634,15 +671,35 @@ router.get('/somepage', function (req, res) {
 router.get('/detailedService/:business/:service', function (req, res) {
     businesses.findOne({ business_name: req.param('business') }, function (err, busi) {
         if (busi)
-        for (var i = 0; i < busi.services.length; i++) {
-            if (busi.services[i].service_name == req.param('service')){
-            res.json({ 'result': 'success', 'message': 'service found', 'content':busi.services[i]})
-            }else{
-            res.json({ 'result': 'failure', 'message': 'service not found'})
+            for (var i = 0; i < busi.services.length; i++) {
+                if (busi.services[i].service_name == req.param('service')) {
+                    res.json({ 'result': 'success', 'message': 'service found', 'content': busi.services[i] })
+                } else {
+                    res.json({ 'result': 'failure', 'message': 'service not found' })
+                }
             }
-        }
     })
 });
+    var stripe = require("stripe")("sk_test_v2rYv9d1Ka4fzqRBKLptDEr8");
+
+router.post('/checkout', function (req, res) {
+    // Set your secret key: remember to change this to your live secret key in production
+    // See your keys here: https://dashboard.stripe.com/account/apikeys
+
+    // Token is created using Stripe.js or Checkout!
+    // Get the payment token submitted by the form:
+    var token = req.body.stripeToken; // Using Express
+    // Charge the user's card:
+    var charge = stripe.charges.create({
+        amount: 1000,
+        currency: "usd",
+        description: "Example charge",
+        source: token,
+    }, function (err, charge) {
+        // asynchronously called
+    });
+    res.redirect("/");
+})
 
 //Export router
 module.exports = router;
