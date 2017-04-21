@@ -49,8 +49,8 @@ angular.module('appRoutes', ['ngRoute'])
         templateUrl: 'partials/admin-panel/control-reviews.html',
         controller: 'adminController'
     })
-    .when('/admin-panel/control-users', {
-        templateUrl: 'partials/admin-panel/control-users.html',
+    .when('/admin-panel/control-clients', {
+        templateUrl: 'partials/admin-panel/control-clients.html',
         controller: 'adminController'
     })
     .when('/admin-panel/control-businesses', {
