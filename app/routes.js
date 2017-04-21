@@ -54,6 +54,8 @@ router.put('/admin/ban-bus/:business_name', adminFunctionsController.banbus);
 router.get('/admin/viewReports', adminFunctionsController.viewReportedReviews);
 router.put('/admin/deleteReview/:id', adminFunctionsController.deleteReportedReviews);
 router.put('/admin/deletebussines/:business_name', adminFunctionsController.deleteOwner);
+router.get('/admin/getUsers',adminFunctionsController.getUsers);
+router.get('/admin/getBus',adminFunctionsController.getBusinesses);
 
 //Add routes
 router.get('/detailedProduct/:businessname/:product', productController.reportServiceReview);
@@ -121,19 +123,19 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (id, done) {
-    UserLoginController.getUserById(id, function (err, user) {
-        if (!user) {
-            adminLoginController.getAdminById(id, function (err, admin) {
-                if(!admin){
+    adminLoginController.getAdminById(id, function (err, admin) {
+        if (!admin) {
+            UserLoginController.getUserById(id, function (err, user) {
+                if(!user){
                     BusinessOwner.findById(id, function (err, owner) {
                         return done(err, owner);
                     });
                 }else{
-                   return done(err, admin);
+                   return done(err, user);
                 }
             });
         } else {
-            return done(err, user);
+            return done(err, admin);
         }
 
     });

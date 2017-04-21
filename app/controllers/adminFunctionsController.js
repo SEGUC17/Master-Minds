@@ -197,8 +197,51 @@ let adminFunctionsController = {
         }else{
            res.json({"result": "failure","message":"You are not logged in!"}); //Indicates failure if not admin.
         }
-    }
+    },
 
+    getUsers:function(req,res){
+        if(req.isAuthenticated()){
+        if (req.user.admin){
+             clients.find({}, function(err, users){
+
+                if(users){
+                    res.json({"result": "success","content":users});
+                }else{
+                    res.json({"result": "failure","message":"No users registered yet!"});
+                }
+                
+            });
+
+        }else{
+            res.json({"result": "failure","message":"You are not an admin!"}); //Indicates failure if not admin.
+        }
+
+        }else{
+           res.json({"result": "failure","message":"You are not logged in!"}); //Indicates failure if not admin.
+        }
+    },
+
+    getBusinesses:function(req,res){
+        if(req.isAuthenticated()){
+        if (req.user.admin){
+             businesses.find({}, function(err, busArr){
+
+                if(busArr){
+                    res.json({"result": "success","content":busArr});
+                }else{
+                    res.json({"result": "failure","message":"No businesses registered yet!"});
+                }
+                
+            });
+
+        }else{
+            res.json({"result": "failure","message":"You are not an admin!"}); //Indicates failure if not admin.
+        }
+
+        }else{
+           res.json({"result": "failure","message":"You are not logged in!"}); //Indicates failure if not admin.
+        }
+    }
 
 }
 
