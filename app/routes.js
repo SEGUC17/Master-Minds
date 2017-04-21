@@ -62,7 +62,7 @@ router.get('/detailedProduct/:businessname/:product', productController.reportSe
 router.get('/viewAdvertisement', productController.viewAdvertisements);
 router.get('/viewbusiness', viewController.viewBusiness);
 router.post('/advertise/:businessname/:product', productController.addAdvertisment);
-router.post('/detailedProduct/:businessname/:product', productController.reportServiceReview);
+router.post('/report/:business/:service', productController.reportServiceReview);
 router.post('/reply', replyController.Post_Reply);
 router.post('/deletebussines', Deletebussinesowner.deleteOwner);
 router.get('/logout', function (req, res) {
