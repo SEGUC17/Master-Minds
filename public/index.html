@@ -66,6 +66,9 @@
                             <li><a href="#/subscribe">Business Register</a></li>
                         </ul>
                     </li>
+                    <li ng-show="username && type == 'client'"><a href="#/client_profile">{{username}}</a></li>
+                    <li ng-show="username && type == 'business'"><a href="#/business_profile">{{username}}</a></li>
+                    <li ng-show="username && type == 'admin'"><a href="#/admin_profile">{{username}}</a></li>
                 </ul>
             </div>
             <!--/.nav-collapse -->
