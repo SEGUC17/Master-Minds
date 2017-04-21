@@ -2,7 +2,8 @@
   <P ng-init="message=''">
   <span ng-bind="message"></span>
   </p>
-  <div ng-init="fullName=''" ng-init="username=''" ng-init="email=''" ng-init="address=''" ng-init="phone_number=''">
+  <div ng-init="profile_pic=''" ng-init="fullName=''" ng-init="username=''" ng-init="email=''" ng-init="address=''" ng-init="phone_number=''">
+  <img class="img-thumbnail" src="../../client/{{profile_pic}}"  alt="personal photo" class="generic-icon" height="150" width="150" ></br>
   <label class="jumbotron">full name:</label> <span ng-bind="fullName"></span></br>
   <label class="jumbotron">username:</label><span ng-bind="username"></span></br>
   <label class="jumbotron">email:</label><span ng-bind="email"></span></br>

@@ -87,16 +87,21 @@ passport.use('local.clientsadmins', new LocalStrategy(
                         return done(null, false);
                     }
                     console.log(admin);
-                    adminLoginController.comparePassword(password, admin.password, function (err, isMatch) {
-                        //console.log("Reached here 3");
-                        if (err) throw err;
+//                     adminLoginController.comparePassword(password, admin.password, function (err, isMatch) {
+//                         //console.log("Reached here 3");
+//                         if (err) throw err;
 
-                        if (isMatch) {
-                            return done(null, admin);
-                        } else {
-                            return done(null, false);
-                        }
-                    });
+//                         if (isMatch) {
+//                             return done(null, admin);
+//                         } else {
+//                             return done(null, false);
+//                         }
+//                     });
+                    if (!adminLoginController.comparePassword(password, admin.password)) {
+                        return done(null, false);
+                    } else {
+                        return done(null, admin);
+                    }
                 });
                 //return done(null, false);
             } else {

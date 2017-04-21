@@ -6,7 +6,9 @@ let Clients = require('../../models/clients');
 let Admin = require('../../models/admins');
 let profileController = {
     viewProfileWithUsername:function(req,res)
-    {
+    { console.log("here");
+      console.log(req.user);
+      console.log("here");
       if(req.user)
           Admin.findOne({ personal_email: req.user.username }, function (err, adm) {
 
@@ -28,12 +30,12 @@ let profileController = {
 
             else
             {
-              res.json({"result":"success","message":"you are not admin"});
+              res.json({"result":"failure","message":"you are not admin"});
             }
         });
         else
         {
-            res.json({"result":"success","message":"you didn't login"});
+            res.json({"result":"failure","message":"you didn't login"});
         }
 
       }
