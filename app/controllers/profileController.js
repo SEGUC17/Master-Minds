@@ -5,7 +5,28 @@ var bcrypt = require('bcryptjs');
 let Clients = require('../../models/clients');
 
 let profileController = {
+    viewProfileWithUsername:function(req,res)
+    {
+      if(!req.user)
 
+      {if(!req.user.admin)
+        console.log("hi");
+      }
+      var user = req.param("username");
+      Clients.findOne({username: user}, function(err, user){
+          if(err){
+              res.status(200).json({"result":"failure","message":"error happened in the database"});
+          }else{
+              if(user){
+              res.json({"result":"success","message":"Found user", "content": user});
+          }
+          else{
+              res.status(200).json({"result":"failure","message":"User not found"});
+          }
+          }
+      });
+    }
+    ,
     viewProfile: function(req, res){
         if(!req.user){
             res.status(200).json({"result":"failure","message":"Unauthorized user detected, purging database!"});

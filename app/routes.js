@@ -46,6 +46,7 @@ router.get('/', homepageController.test);
 router.get('/viewbusiness', viewController.viewBusiness);
 router.get('/viewservices', viewController.viewServices);
 router.get('/viewprofile', profileController.viewProfile);
+router.get('/viewprofile/:username', profileController.viewProfileWithUsername);
 router.get('/editprofile', profileController.getEditProfile);
 router.post('/editprofile', upload_client.single('profile_pic'), profileController.editProfile);
 
@@ -161,7 +162,7 @@ router.get('/businessowner_login', function (req, res) {
 
 
 
-router.post('/businessowner_login',passport.authenticate('local.businessowner', 
+router.post('/businessowner_login',passport.authenticate('local.businessowner',
       { successRedirect: '/routes/successjson', failureRedirect: '/routes/failurejson' }));
 
 passport.use('local.businessowner', new LocalStrategy({
