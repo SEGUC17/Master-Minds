@@ -17,6 +17,7 @@
     <script src="js/controllers/RateAndReview.js"></script>
     <script src="js/controllers/userCtrl.js"></script>
     <script src="js/controllers/Homepage.js"></script>
+    <script src="js/controllers/navbar.js"></script>
     <script src="js/controllers/client_profile.js"></script>
     <script src="js/controllers/serviceControllers.js"></script>
     <script src="js/controllers/adminApp.js"></script>
@@ -54,9 +55,9 @@
                     <li class="active"><a href="#/">Home</a></li>
                     <li><a href="#/about">About</a></li>
                 </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#/login">Login</a></li>
-                    <li class="dropdown">
+                <ul class="nav navbar-nav navbar-right" ng-controller="navigation">
+                    <li ng-show="!username"><a href="#/login">Login</a></li>
+                    <li ng-show="!username" class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Register <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <!--<li role="separator" class="divider"></li>-->
