@@ -37,6 +37,8 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
+/* PASSPORT WAS HERE*/
+
 
 // Express Validator
 app.use(expressValidator({
