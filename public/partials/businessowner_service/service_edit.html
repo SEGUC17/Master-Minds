@@ -1,0 +1,85 @@
+<div class="page-header">
+    <h1>business owner editing service </h1>
+</div>
+
+<div ng-controller="editCtrl">
+
+      <div class="jumbotron text-center" ng-show="loading">
+          <span class="glyphicon glyphicon-repeat spinner"></span>
+          <p>Loading...</p>
+      </div>
+
+      <br>
+
+      <div class="row show-hide-message" ng-show="successMsg">
+          <div class="alert alert-success">{{successMsg}}</div>
+      </div>
+
+      <br>
+
+      <div class="row show-hide-message" ng-show="errorMsg">
+          <div class="alert alert-danger">{{errorMsg}}</div>
+      </div>
+
+      <br>
+      <div class="form-group" ng-class="{ 'has-error' : serviceeditform.personal_email.$invalid && !serviceeditform.personal_email.$pristine }">
+          <label>personal email</label>
+          <input class="form-control" type="text" name="personal_email" placeholder="please enter your personal email" ng-model="regData.personal_email" required>
+          <p ng-show="serviceeditform.personal_email.$invalid && !serviceeditform.personal_email.$pristine" class="help-block">Enter a valid personal_email.</p>
+      </div>
+
+      <br>
+
+      <form name="serviceeditform" ng-submit="editservice(regData,serviceeditform.$valid)" novalidate>
+          <div class="form-group" ng-class="{ 'has-error' : serviceeditform.oldservice_name.$invalid && !serviceeditform.oldservice_name.$pristine }">
+              <label>old service name</label>
+              <input class="form-control" type="text" name="oldservice_name" placeholder="please enter your old service name" ng-model="regData.oldservice_name" required>
+              <p ng-show="serviceeditform.oldservice_name.$invalid && !serviceeditform.oldservice_name.$pristine" class="help-block">old service name is required.</p>
+          </div>
+
+          <br>
+          <div class="form-group" ng-class="{ 'has-error' : serviceeditform.newservice_name.$invalid && !serviceeditform.newservice_name.$pristine }">
+              <label>new service name</label>
+              <input class="form-control" type="text" name="newservice_name" placeholder="please enter your new service name" ng-model="regData.newservice_name" required>
+              <p ng-show="serviceeditform.newservice_name.$invalid && !serviceeditform.newservice_name.$pristine" class="help-block">new service  name is required.</p>
+          </div>
+
+          <br>
+
+
+
+          <div class="form-group" ng-class="{ 'has-error' : serviceeditform.newservice_Description.$invalid && !serviceeditform.newservice_Description.$pristine }">
+              <label>new service Description</label>
+              <input class="form-control" type="text" name="newservice_Description" placeholder="please enter your new service Description" ng-model="regData.newservice_Description" required >
+
+          </div>
+
+          <br>
+
+
+
+          <div class="form-group" ng-class="{ 'has-error' : serviceeditform.newservice_price.$invalid && !serviceeditform.newservice_price.$pristine }">
+              <label>new service price</label>
+              <input class="form-control" type="number" name="newservice_price" placeholder="please enter your new  service price " ng-model="regData.newservice_price" required>
+              <p ng-show="serviceeditform.newservice_price.$invalid && !serviceeditform.newservice_price.$pristine" class="help-block">Your new service price is required.</p>
+          </div>
+          <br>
+          <div class="form-group" ng-class="{ 'has-error' : serviceeditform.newpromotion_offer.$invalid && !serviceeditform.newpromotion_offer.$pristine }">
+              <label>new promotion offer</label>
+              <input class="form-control" type="number" name="newpromotion_offer" placeholder="please enter your new percentage dicount on service if available  " ng-model="regData.promotion_offer" >
+              <p ng-show="serviceeditform.newpromotion_offer.$invalid && !serviceeditform.newpromotion_offer.$pristine" class="help-block"></p>
+          </div>
+          <br>
+          <div class="form-group" >
+              <label>new service type</label>
+              <input class="form-control" type="checkbox" name="newtype_flag"  value="true"  ng-model="regData.newtype_flag" >please  if service type is time-based (check) or product-based (uncheck)
+          </div>
+          <br>
+          <div class="form-group" >
+              <label>availability</label>
+              <input class="form-control" type="checkbox" name="newavailable_flag"  value="true" ng-model="regData.newavailable_flag" >  please if  service is available (check) or not available (uncheck)
+          </div>
+          <button class="btn btn-primary" type="submit" ng-disabled="serviceeditform.$invalid">Submit</button>
+
+      </form>
+  </div>
