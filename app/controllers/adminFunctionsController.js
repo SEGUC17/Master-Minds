@@ -17,10 +17,14 @@ let adminFunctionsController = {
            //     res.send(err);
 
             if(user){
-            user.ban = true;
+            if(user.ban){
+                user.ban = false;
+            }else{
+                user.ban = true;
+            }
             user.save(function(err, user){
                 if(err){
-                    res.json({"result": "failure","message":"Error in saving banned user in database!"});
+                    res.json({"result": "failure","message":"Error in saving banned/unbanned user in database!"});
                 }else{
                     res.json({"result": "success"}); //Confirm success by returning JSON object with result field set to "Success".
                 }
@@ -47,10 +51,15 @@ let adminFunctionsController = {
             //    res.send(err);
 
             if(user){
-            user.ban = true;
+            if(user.ban){
+                user.ban = false;
+            }else{
+                user.ban = true;
+            }
+            
             user.save(function(err, user){
                 if(err){
-                    res.json({"result": "failure","message":"Error in saving banned business in database!"});
+                    res.json({"result": "failure","message":"Error in saving banned/unbanned business in database!"});
                 }else{
                     res.json({"result": "success"}); //Confirm success by returning JSON object with result field set to "Success".
                 }

@@ -15,16 +15,18 @@ angular.module('adminApp', [])
     
     $scope.banUser = function(username){
         $http.put('/routes/admin/ban-user/'+username,{}).then(function(res) {
-            $timeout(function() {
-                $route.reload();
-            }, 500);
+           // $timeout(function() {
+           //     $route.reload();
+           // }, 500);
+           $scope.getUsers();
         });
     };
     $scope.banBus = function(username){
         $http.put('/routes/admin/ban-bus/'+username,{}).then(function(res) {
-            $timeout(function() {
-                $route.reload();
-            }, 500);
+            //$timeout(function() {
+            //    $route.reload();
+            //}, 500);
+            $scope.getBus();
         });
     };
     $scope.deleteReview = function(id){
