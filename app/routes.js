@@ -156,8 +156,7 @@ router.get('/businessowner_login', function (req, res) {
     res.render('login');
 });
 
-                    res.status(500).send(err);
-                } else {
+
 
 
 router.post('/businessowner_login',passport.authenticate('local.businessowner', 
