@@ -23,7 +23,7 @@ app.controller('regCtrl', function ($scope, $http, $location, $timeout) {
     };
 });
 
-app.controller('loginCtrl', function ($scope, $http, $location, $timeout, $route) {
+app.controller('loginCtrl', function ($scope, $http, $location, $timeout, $route, $document, $window) {
     $scope.logUser = function (logData, isValid) {
         if (isValid) {
             $scope.loading = true;
@@ -35,6 +35,7 @@ app.controller('loginCtrl', function ($scope, $http, $location, $timeout, $route
                     $scope.successMsg = res.data.message + '......Redirecting to the homepage';
                     $timeout(function () {
                         $location.path('#/');
+                        $window.location.reload();
                     }, 2000);
                 } else {
                     $scope.loading = false;

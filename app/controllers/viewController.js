@@ -7,8 +7,6 @@ let viewController = {
 
     viewBusiness : function(req, res){
         var search = req.query.search;
-        console.log(search);
-
                 if (search){
             
             BusinessOwner.find({business_name: search}, function(err, business){
