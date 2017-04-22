@@ -52,6 +52,7 @@ router.post('/editprofile', upload_client.single('profile_pic'), profileControll
 
 //Admin related routes
 router.put('/admin/ban-user/:username', adminFunctionsController.banuser);
+router.put('/admin/only-ban-user/:username', adminFunctionsController.onlybanuser);
 router.put('/admin/ban-bus/:business_name', adminFunctionsController.banbus);
 router.get('/admin/viewReports', adminFunctionsController.viewReportedReviews);
 router.put('/admin/deleteReview/:id', adminFunctionsController.deleteReportedReviews);
