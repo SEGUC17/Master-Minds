@@ -1,6 +1,6 @@
 angular.module('NavigationBar', [])
 
-    .controller('navigation', function ($scope, $http, $location) {
+    .controller('navigation', function ($scope, $http, $location, $window) {
         $http.get('/routes/nav').then(function (res) {
             if (res.data.result == 'success') {
                 if (res.data.message != 'business') {
