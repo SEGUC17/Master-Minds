@@ -65,10 +65,10 @@ router.post('/advertise/:businessname/:product', productController.addAdvertisme
 router.post('/report/:business/:service', productController.reportServiceReview);
 router.post('/reply', replyController.Post_Reply);
 router.post('/deletebussines', Deletebussinesowner.deleteOwner);
-router.get('/logout', function (req, res) {
-    req.logout();
-    res.redirect('/login');
-});
+// // router.get('/logout', function (req, res) {
+// //     req.logout();
+// //     res.redirect('/login');
+// });
 router.post('/service_add', serviceController.addservice);
 router.post('/service_edit', serviceController.editservice);
 
@@ -355,7 +355,7 @@ router.get('/failurejson', function (req, res) {
 
 router.post('/logout', function (req, res) {
     req.logout();
-    return res.json({ result: "success", message: "You have successfully logged out" });
+    res.json({ result: "success", message: "You have successfully logged out" });
 });
 
 router.get('/subscribe', function (req, res, next) {

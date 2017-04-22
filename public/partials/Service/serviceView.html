@@ -50,11 +50,16 @@
       <h1>Title: {{service_name}}</h1>
     </div>
     <div class="col-md-1 push-md-11">
+      stripe:
       <form action="/checkout" method="POST">
-        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="pk_test_NxzB4uWCnPgIv2pcsnsVEwdd" data-amount="2000"
-          data-name="Demo Site" data-description="2 widgets" data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-          data-locale="auto">
-
+          <script
+            src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+            data-key="pk_test_NxzB4uWCnPgIv2pcsnsVEwdd"
+            data-amount="2000"
+            data-name="Demo Site"
+            data-description="2 widgets"
+            data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+            data-locale="auto">
           </script>
       </form>
     </div>
@@ -119,7 +124,3 @@
   </form><br><br>
 
 </div>
-
-<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
