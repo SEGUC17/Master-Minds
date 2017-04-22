@@ -1,6 +1,38 @@
 <div ng-controller="HomepageController">
-      
-      <input type="text" placeholder="Search" ng-model="Search"/>
+
+
+  <style type="text/css">
+
+
+  .verticalmenu{
+    width: 500px;
+    border: 5px solid #7c7c7c;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .verticalmenu a{
+    color: white;
+    background-color: #3f3f3f;
+    display: block;
+    padding: 12px;
+    text-decoration: none;
+
+  }
+  .verticalmenu a:hover{
+    background-color: #7c7c7c;
+  }
+  .verticalmenu article{
+    color: white;
+    height: 200px;
+    background-color: #3f3f3f;
+  }
+  .verticalmenu article:hover{
+    background-color: #7c7c7c;
+  }
+
+  </style>
+
+      <input type="text" placeholder="Search" ng-model="Search" />
       <br>
       <button ng-click="getSearch()">Submit</button>
       <br><br>
@@ -14,13 +46,19 @@
 			<div class="title">
 				<span class="name">
 					<a href="#/{{business.business_name}}"> {{business.business_name}}</a>
-					<br>
-					<a href="#/Rate_Review_Business/{{business.business_name}}"><button type="button" class="btn btn-default">Rate and review</button></a>
-					<br>
+
+
+
 				</span>
-				<br>
+        <br>
+        <span class="RateAndReview">
+          <a href="#/Rate_Review_Business/{{business.business_name}}" class="btn btn-default btn-lg">Rate And Review</a>
+        </span>
+        <br>
 			</div>
 		</article>
 		</div>
 	</div>
+
 </div>
+

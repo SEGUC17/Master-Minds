@@ -5,15 +5,14 @@ angular.module('Ang_Homepage', [])
         $scope.businesses = res.data.content;
         console.log(res.data.content);
     });
+
     $scope.getSearch = function(){
-       
+
         bSearch($scope.Search);
     }
 
     function bSearch(search){
         if(search){
-             $scope.flag = true;
-            console.log(search);    
         $http.get("/routes/viewbusiness", {params:{"search": search}})
     .then(function (res) {
 
@@ -30,3 +29,4 @@ angular.module('Ang_Homepage', [])
     }
 
 });
+

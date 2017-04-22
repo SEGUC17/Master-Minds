@@ -172,6 +172,79 @@ router.get('/businessowner_login', function (req, res) {
     res.render('login');
 });
 
+
+
+
+
+
+router.post('/businessowner_login',passport.authenticate('local.businessowner',
+      { successRedirect: '/routes/successjson', failureRedirect: '/routes/failurejson' }));
+
+passport.use('local.businessowner', new LocalStrategy({
+    usernameField: 'personal_email',
+    passwordField: 'password',
+    passReqToCallback: true
+}, function (req, email, password, done) {
+    BusinessOwner.findOne({ 'personal_email': email }, function (err, owner) {
+        if (err) {
+            return done(err);
+        }
+        if (!owner) {
+            return done(null, false);
+        }
+        if (!owner.validPassword(password)) {
+            return done(null, false);
+        }
+        return done(null, owner);
+    });
+}));
+
+// Login businessOwner  POST
+// router.post('/businessowner_login', function (req, res) {
+
+//     var personal_email = req.body.personal_email;
+//     var password = req.body.password;
+//     if (personal_email == "" || personal_email == null) {
+//         res.send("you must enter  your personal email to login ");
+//         //    res.render('businessowner_login');//login view page in front end
+//     } else {
+//         if (password == "" || password == null) {
+//             res.send("you must enter  your password for your  email to login ");
+//             //  res.render('businessowner_login');//login view page in front end
+//         } else {
+//             businesses.findOne({ personal_email: personal_email }, function (err, userlogin) {
+//                 if (err) {
+
+//                     res.status(500).send(err);
+//                 } else {
+
+//                     if (userlogin == null) {
+//                         // if no email mathes error appears
+//                         res.send("error happened while login no  personal email matches businessOwner please check your email again");
+
+
+//                     } else {
+//                         // chechking the password to match the password in database for this email
+//                         if (userlogin.password == password) {
+//                             res.send("password matches   personal email password ");
+//                             //   res.redirect('/businessowner_logged');// logged  page view in the front end
+//                             //  session.username = req.body.personal_email;
+//                         } else {
+//                             res.send("password does not matches    personal email password please try again ");
+//                             //  res.render('businessowner_login'); // login in view page in front end
+//                         }
+
+
+//                     }
+
+//                 }
+//             });
+//         }
+//     }
+// });
+
+
+
 // business_owner _service_edit POST
 router.post('/service_edit', function (req, res) {
     // data we want to edit in the service  business_owner must add personal email so we can get his data from database

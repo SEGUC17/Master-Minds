@@ -20,12 +20,20 @@ angular.module('appRoutes', ['ngRoute'])
 
     })
 
+    .when('/:business_name', {
+      templateUrl: function (urlattr){console.log(urlattr.business_name);return 'partials/viewbusiness.html';},
+      controller: 'ViewBusinessCtrl'
+
+    })
+
     .when('/Rate_Review_Business/:business_name', {
-        templateUrl: function (urlattr){return 'partials/RateAndReview/RateAndReviewBusiness.html';},
+        templateUrl: function (urlattr){console.log(urlattr.business);return 'partials/RateAndReview/RateAndReviewBusiness.html';},
         controller:'RateAndReviewBusinessCtrl'
     })
+
     .when('/Rate_Review_Business/:business_name/:service_name', {
         templateUrl: function (urlattr){return 'partials/RateAndReview/RateAndReviewService.html';},
+
 
         controller:'RateAndReviewBusinessCtrl'
     })
@@ -71,5 +79,6 @@ angular.module('appRoutes', ['ngRoute'])
         templateUrl: 'partials/admin-panel/control-businesses.html',
         controller: 'adminController'
     })
+
     .otherwise({ redirectTo: '/' });
 }]);
