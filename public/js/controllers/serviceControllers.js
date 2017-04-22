@@ -22,13 +22,17 @@ angular.module('serviceControllers', [])
                                 } else {
                                         $scope.service_price = res.data.content.service_price;
                                 }
-                        } else{
+                        } else {
                                 $scope.service_price = "0.00";
                         }
-                        if (res.data.content.service_rating.length != 0)
-                                $scope.service_rating = res.data.content.service_rating;
-                        else
+                        if (res.data.content.service_rating.length != 0) {
+                                var num = 0;
+                                for (var i = 0; i < res.data.content.service_rating.length; i++)
+                                        num += Number(res.data.content.service_rating[i].rating);
+                                $scope.service_rating = num / Number(res.data.content.service_rating.length);
+                        } else {
                                 $scope.service_rating = "No Rating";
+                        }
                         if (res.data.content.service_reviews)
                                 $scope.service_reviews = res.data.content.service_reviews;
                         else
@@ -43,6 +47,51 @@ angular.module('serviceControllers', [])
                                 $scope.available_flag = "No Flag";
 
                         console.log($scope);
+
+                        $scope.reviewService = function (service) {
+                                console.log(service);
+                                var str_url = $location.url().split('/');
+                                $http.post('/routes/reviews/' + str_url[str_url.length - 2] + '/' + str_url[str_url.length - 1], service).then(function (res) {
+                                        console.log(res.data.message);
+                                        $scope.reviewFailureMessage = null;
+                                        $scope.reviewSuccessMessage = null;
+                                        if (res.data.result == "failure")
+                                                $scope.reviewFailureMessage = res.data.message;
+                                        else
+                                                $scope.reviewSuccessMessage = res.data.message;
+
+                                });
+                        };
+
+                        $scope.rateService = function (service) {
+                                console.log(service);
+                                var str_url = $location.url().split('/');
+                                $http.post('/routes/rating/' + str_url[str_url.length - 2] + '/' + str_url[str_url.length - 1], service).then(function (res) {
+                                        console.log(res.data.message);
+                                        $scope.rateFailureMessage = null;
+                                        $scope.rateSuccessMessage = null;
+                                        if (res.data.result == "failure")
+                                                $scope.rateFailureMessage = res.data.message;
+                                        else
+                                                $scope.rateSuccessMessage = res.data.message;
+
+                                });
+                        };
+
+                        $scope.reportReview = function (service) {
+                                console.log(service);
+                                var str_url = $location.url().split('/');
+                                $http.post('/routes/report/' + str_url[str_url.length - 2] + '/' + str_url[str_url.length - 1], service).then(function (res) {
+                                        console.log(res.data.message);
+                                        $scope.reportFailureMessage = null;
+                                        $scope.reportSuccessMessage = null;
+                                        if (res.data.result == "failure")
+                                                $scope.reportFailureMessage = res.data.message;
+                                        else
+                                                $scope.reportSuccessMessage = res.data.message;
+
+                                });
+                        };
                 });
         });
 
