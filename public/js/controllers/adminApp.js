@@ -57,4 +57,29 @@ angular.module('adminApp', [])
             }
         });
     }
+    $scope.getUnaccepted = function(){
+        $http.get('/routes/admin/view_unaccepted_businesses').then(function(res){
+            if(res.data.result == "success"){
+                $scope.unacceptedBusList = res.data.content;
+            }
+        });
+    }
+    $scope.acceptBus = function(business){
+        //console.log("acceptBus has been reached!");
+        //console.log(business);
+        $http.put('/routes/admin/accept_application/'+business,{}).then(function(res){
+                //console.log(business);
+                $scope.getUnaccepted();
+                $timeout(function() {
+                $route.reload();
+                }, 500);
+        });
+    }
+    $scope.isAdminCheck = function(){
+        $http.get('/routes/admin/isAdmin').then(function(res) {
+            if(res.data.result == "success"){
+                $scope.isAdmin = true;
+            }
+        });
+    }
 });

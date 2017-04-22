@@ -46,9 +46,11 @@ router.get('/', homepageController.test);
 router.get('/viewbusiness', viewController.viewBusiness);
 router.get('/viewservices', viewController.viewServices);
 router.get('/viewprofile', profileController.viewProfile);
+router.get('/viewprofile/:username', profileController.viewProfileWithUsername);
 router.get('/editprofile', profileController.getEditProfile);
 router.post('/editprofile', upload_client.single('profile_pic'), profileController.editProfile);
 
+//Admin related routes
 router.put('/admin/ban-user/:username', adminFunctionsController.banuser);
 router.put('/admin/ban-bus/:business_name', adminFunctionsController.banbus);
 router.get('/admin/viewReports', adminFunctionsController.viewReportedReviews);
@@ -56,6 +58,10 @@ router.put('/admin/deleteReview/:id', adminFunctionsController.deleteReportedRev
 router.put('/admin/deletebussines/:business_name', adminFunctionsController.deleteOwner);
 router.get('/admin/getUsers', adminFunctionsController.getUsers);
 router.get('/admin/getBus', adminFunctionsController.getBusinesses);
+router.get('/admin/view_unaccepted_businesses', view_unaccepted_businesses.view_unaccepted);
+router.put('/admin/accept_application/:business', view_unaccepted_businesses.accept_application);
+router.get('/admin/isAdmin',adminFunctionsController.isAdmin);
+
 
 //Add routes
 router.get('/detailedProduct/:businessname/:product', productController.reportServiceReview);
@@ -601,6 +607,7 @@ function notLoggedIn(req, res, next) {
 }
 
 router.post('/like', function (req, res) {
+    console.log('in like')
     likeBusinessController.likeBusiness(req, res);
 
 })
@@ -612,8 +619,6 @@ router.post('/viewliked', function (req, res) {
     console.log(res);
 });
 
-router.post('/view_unaccepted_businesses', view_unaccepted_businesses.view_unaccepted);
-router.post('/accept_application/:business', view_unaccepted_businesses.accept_application);
 
 router.get('/somepage', function (req, res) {
     res.render('somepage');
