@@ -601,6 +601,7 @@ function notLoggedIn(req, res, next) {
 }
 
 router.post('/like', function (req, res) {
+    console.log('in like')
     likeBusinessController.likeBusiness(req, res);
 
 })

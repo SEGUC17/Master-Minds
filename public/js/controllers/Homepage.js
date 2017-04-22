@@ -6,27 +6,27 @@ angular.module('Ang_Homepage', [])
         console.log(res.data.content);
     });
 
-    $scope.getSearch = function(){
+    // $scope.getSearch = function(){
 
-        bSearch($scope.Search);
-    }
+    //     bSearch($scope.Search);
+    // }
 
-    function bSearch(search){
-        if(search){
-        $http.get("/routes/viewbusiness", {params:{"search": search}})
-    .then(function (res) {
+    // function bSearch(search){
+    //     if(search){
+    //     $http.get("/routes/viewbusiness", {params:{"search": search}})
+    // .then(function (res) {
 
-            console.log(res.data.content);
-        for(var i = 0; i < res.data.content.length;i++){
-            if(res.data.content[i].business_name == search){
-                $scope.businesses = res.data.content[i];
-                console.log($scope.businesses)
-                console.log($scope.flag)
-            }
-        }
-    });
-        }
-    }
+    //         console.log(res.data.content);
+    //     for(var i = 0; i < res.data.content.length;i++){
+    //         if(res.data.content[i].business_name == search){
+    //             $scope.businesses = res.data.content[i];
+    //             console.log($scope.businesses)
+    //             console.log($scope.flag)
+    //         }
+    //     }
+    // });
+    //     }
+    // }
 
 });
 

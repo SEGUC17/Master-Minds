@@ -6,7 +6,7 @@ let clientsController = {
     likeBusiness:function(req,res){
       //Get name of business to be liked from the request
       var business = req.body.name;
-
+      console.log(buisness);
       //var email = "client1";  Was used for testing
 
       //Get current user's email
@@ -14,16 +14,17 @@ let clientsController = {
       //locates the current client
       clients.findOne({email:email},function(err,client){
         if(err){
-          res.status(404).send();
+          res.json({"result":"failure","message":"There was a problem"});
         }else{
           //adds the liked business to the liked Array
           client.liked.push({"business_names":business});
           //Updates the client in the database
           client.save(function(err){
             if(err){
-              res.status(500).send();
+              res.json({"result":"failure","message":"There was a problem"});
             }else{
               console.log("Business added to favorites");
+              res.json({"result":"success","message":"successfully added"});
             }
           });
 

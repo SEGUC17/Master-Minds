@@ -10,6 +10,8 @@ angular.module('appRoutes', ['ngRoute'])
         templateUrl: 'partials/Homepage/Homepage.html',
         controller: 'HomepageController'
     })
+    
+
 
     .when('/client_profile/:username', {
         templateUrl: 'partials/client_profile.html',
@@ -65,6 +67,10 @@ angular.module('appRoutes', ['ngRoute'])
     .when('/admin-panel/control-businesses', {
         templateUrl: 'partials/admin-panel/control-businesses.html',
         controller: 'adminController'
+    })
+        .when('/:business_name', {
+        templateUrl: 'partials/viewbusiness.html',
+        controller: 'ViewBusinessCtrl'
     })
     .otherwise({ redirectTo: '/' });
 }]);
