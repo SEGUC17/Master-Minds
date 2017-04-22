@@ -45,3 +45,14 @@ app.controller('loginCtrl', function ($scope, $http, $location, $timeout, $route
         }
     };
 });
+// app.controller('logoutCtrl',function($scope,$http){
+//     $scope.logout = function(){
+//         $http.post('/routes/logout').then(function(res){
+//             if(res.data.result == "success")
+//             {
+//                 $scope.username = null;
+//                     $scope.type = null;
+//             }
+//         });
+//     }
+// });

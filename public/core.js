@@ -1,7 +1,9 @@
 
-angular.module('userApp', ['appRoutes','Ang_RateAndReviewCtrl','userControllers','serviceControllers','Ang_Homepage','Ang_Client_profile','adminApp','NavigationBar','Ang_view_rateandreview'])
+
+var userApp = angular.module('userApp', ['appRoutes','Ang_RateAndReviewCtrl','userControllers','serviceControllers','Ang_Homepage','Ang_Client_profile','adminApp','NavigationBar','subeditCtrl','Ang_view_rateandreview']);
 
 
-.config(['$locationProvider', function($locationProvider) {
+
+userApp.config(['$locationProvider', function($locationProvider) {
     $locationProvider.hashPrefix('');
 }]);

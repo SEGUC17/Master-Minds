@@ -7,9 +7,10 @@ angular.module('Ang_view_rateandreview', [])
 	.then(function(res)
     {
     	console.log(res.data.content.rate);
-    }
+    });
 
-}
+});
+
 	/*$scope.Post_Rate_Business= function(RateData)
   {
 
@@ -27,7 +28,7 @@ angular.module('Ang_view_rateandreview', [])
 
 
 
-	
+
 	$http.get('/routes/viewRateBusiness').then(function(res)
   {console.log(res.data);
   if(res.data.result=="success")
