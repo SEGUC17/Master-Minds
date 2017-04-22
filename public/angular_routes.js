@@ -70,5 +70,9 @@ angular.module('appRoutes', ['ngRoute'])
         templateUrl: 'partials/admin-panel/control-businesses.html',
         controller: 'adminController'
     })
+    .when('/admin-panel/control-applications', {
+        templateUrl: 'partials/admin-panel/control-applications.html',
+        controller: 'adminController'
+    })
     .otherwise({ redirectTo: '/' });
 }]);
