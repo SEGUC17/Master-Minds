@@ -1,6 +1,5 @@
 angular.module('Ang_Homepage', [])
 .controller('HomepageController', function($scope, $http, $location){
-    $scope.flag = false;
 
         $http.get('/routes/viewbusiness').then(function(res){
         $scope.businesses = res.data.content;
@@ -8,14 +7,12 @@ angular.module('Ang_Homepage', [])
     });
 
     $scope.getSearch = function(){
-       
         bSearch($scope.Search);
     }
 
     function bSearch(search){
         if(search){
-             $scope.flag = true;
-            console.log(search);    
+            console.log(search);
         $http.get("/routes/viewbusiness", {params:{"search": search}})
     .then(function (res) {
 

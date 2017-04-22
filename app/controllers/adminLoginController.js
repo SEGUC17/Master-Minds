@@ -11,9 +11,15 @@ module.exports.getAdminById = function(id, callback) {
     Admin.findById(id, callback);
 }
 
-module.exports.comparePassword = function(candidatePassword, hash, callback) {
-    bcrypt.compare(candidatePassword, hash, function(err, isMatch) {
-        if (err) throw err;
-        callback(null, isMatch);
-    });
+// module.exports.comparePassword = function(candidatePassword, hash, callback) {
+//     bcrypt.compare(candidatePassword, hash, function(err, isMatch) {
+//         if (err) throw err;
+//         callback(null, isMatch);
+//     });
+// }
+module.exports.comparePassword = function(writtenPassword, realPassword) {
+    if (writtenPassword == realPassword)
+        return true;
+    else
+        return false;
 }

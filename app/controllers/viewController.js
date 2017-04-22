@@ -9,19 +9,19 @@ let viewController = {
         var search = req.query.search;
 
                 if (search){
-            
+
             BusinessOwner.find({business_name: search}, function(err, business){
                 if(err){
                     res.status(500).json({"result":"failure","message":"Database error, purging database!"});
                 }else{
-                
+
                     if (business.length == 0){
                         res.status(404).json({"result":"failure","message":"Businesses not found, purging database!"});
                     }else{
-                        res.json({"result":"success","message":"Eureka!! We found it","content": business}); 
+                        res.json({"result":"success","message":"Eureka!! We found it","content": business});
                     }
-                }         
-            });          
+                }
+            });
             }else{
              BusinessOwner.find({}, function(err, business){
                 if(err){
@@ -30,11 +30,11 @@ let viewController = {
                 if (business.length == 0){
                         res.status(404).json({"result":"failure","message":"Businesses not found, purging database!"});
                     }else{
-                        res.json({"result":"success","message":"Eureka!! We found it","content": business}); 
-                        
+                        res.json({"result":"success","message":"Eureka!! We found it","content": business});
+
                     }
-                 }         
-            });          
+                 }
+            });
 
         }
 
@@ -52,7 +52,7 @@ let viewController = {
             }
         });
     }
-    
+
 
 }
 

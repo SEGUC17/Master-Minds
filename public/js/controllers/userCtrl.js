@@ -1,16 +1,16 @@
 var app = angular.module('userControllers', []);
 
-app.controller('regCtrl', function($scope, $http, $location, $timeout) {
-    $scope.regUser = function(regData, isValid) {
+app.controller('regCtrl', function ($scope, $http, $location, $timeout) {
+    $scope.regUser = function (regData, isValid) {
         if (isValid) {
             $scope.loading = true;
             $scope.errorMsg = false;
             console.log("form submitted");
-            $http.post('/routes/register', $scope.regData).then(function(res) {
+            $http.post('/routes/register', $scope.regData).then(function (res) {
                 if (res.data.result == "success") {
                     $scope.loading = false;
                     $scope.successMsg = res.data.message + '....Redirecting to the homepage';
-                    $timeout(function() {
+                    $timeout(function () {
                         $location.path('#/');
                     }, 2000);
 
@@ -23,18 +23,19 @@ app.controller('regCtrl', function($scope, $http, $location, $timeout) {
     };
 });
 
-app.controller('loginCtrl', function($scope, $http, $location, $timeout) {
-    $scope.logUser = function(logData, isValid) {
+app.controller('loginCtrl', function ($scope, $http, $location, $timeout, $route, $document, $window) {
+    $scope.logUser = function (logData, isValid) {
         if (isValid) {
             $scope.loading = true;
             $scope.errorMsg = false;
             console.log("login form submitted");
-            $http.post('/routes/login', $scope.logData).then(function(res) {
+            $http.post('/routes/login', $scope.logData).then(function (res) {
                 if (res.data.result == "success") {
                     $scope.loading = false;
                     $scope.successMsg = res.data.message + '......Redirecting to the homepage';
-                    $timeout(function() {
+                    $timeout(function () {
                         $location.path('#/');
+                        $window.location.reload();
                     }, 2000);
                 } else {
                     $scope.loading = false;
