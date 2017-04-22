@@ -10,17 +10,10 @@ angular.module('appRoutes', ['ngRoute'])
         templateUrl: 'partials/Homepage/Homepage.html',
         controller: 'HomepageController'
     })
-    
-
 
     .when('/client_profile', {
         templateUrl: 'partials/client_profile.html',
         controller: 'ClientprofileCtrl'
-    })
-    
-    .when('/client_profile/:username', {
-        templateUrl: function (urlattr){return 'partials/admin_client_profile.html';},
-        controller: 'AdminClientprofileCtrl'
     })
 
     .when('/Rate_Review_Business/:business_name', {
@@ -77,16 +70,16 @@ angular.module('appRoutes', ['ngRoute'])
         templateUrl: 'partials/admin-panel/control-businesses.html',
         controller: 'adminController'
     })
-
-        .when('/:business_name', {
-        templateUrl: 'partials/viewbusiness.html',
-        controller: 'ViewBusinessCtrl'
-        })
-
     .when('/admin-panel/control-applications', {
         templateUrl: 'partials/admin-panel/control-applications.html',
         controller: 'adminController'
-
     })
+
+       .when('/:business_name', {
+        templateUrl: 'partials/viewbusiness.html',
+        controller: 'ViewBusinessCtrl'
+        })
     .otherwise({ redirectTo: '/' });
 }]);
+
+       
