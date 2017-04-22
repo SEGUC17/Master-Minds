@@ -634,18 +634,15 @@ router.get('/detailedService/:business/:service', function (req, res) {
 var stripe = require("stripe")("sk_test_v2rYv9d1Ka4fzqRBKLptDEr8");
 
 router.post('/checkout', function (req, res) {
-    // Set your secret key: remember to change this to your live secret key in production
-    // See your keys here: https://dashboard.stripe.com/account/apikeys
-
     // Token is created using Stripe.js or Checkout!
     // Get the payment token submitted by the form:
-    var token = req.body.stripeToken; // Using Express
+    var token = req.body.id; // Using Express
     // Charge the user's card:
     var charge = stripe.charges.create({
-        amount: 1000,
+        amount: Number(req.body.price),
         currency: "usd",
         description: "Example charge",
-        source: token,
+        source: req.body.token.id,
     }, function (err, charge) {
         // asynchronously called
     });

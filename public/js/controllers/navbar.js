@@ -17,6 +17,7 @@ angular.module('NavigationBar', [])
                 $http.post('/routes/logout').then(function (res) {
                     $scope.username = null;
                     $scope.type = null;
+                    $window.location.reload();
                 });
             };
         });
