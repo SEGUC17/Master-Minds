@@ -1,12 +1,10 @@
 angular.module('Ang_Homepage', [])
 .controller('HomepageController', function($scope, $http, $location){
-    $scope.flag = false;
 
         $http.get('/routes/viewbusiness').then(function(res){
         $scope.businesses = res.data.content;
         console.log(res.data.content);
     });
-
     $scope.getSearch = function(){
        
         bSearch($scope.Search);
@@ -30,6 +28,5 @@ angular.module('Ang_Homepage', [])
     });
         }
     }
-
 
 });
