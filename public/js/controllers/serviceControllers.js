@@ -51,8 +51,10 @@ angular.module('serviceControllers', [])
                         $scope.reviewService = function (service) {
                                 console.log(service);
                                 var str_url = $location.url().split('/');
-                                $http.post('/routes/reviews/' + str_url[str_url.length - 2] + '/' + str_url[str_url.length - 1], $scope.service).then(function (res) {
+                                $http.post('/routes/reviews/' + str_url[str_url.length - 2] + '/' + str_url[str_url.length - 1], service).then(function (res) {
                                         console.log(res.data.message);
+                                        $scope.reviewFailureMessage = null;
+                                        $scope.reviewSuccessMessage = null;
                                         if (res.data.result == "failure")
                                                 $scope.reviewFailureMessage = res.data.message;
                                         else
@@ -64,12 +66,29 @@ angular.module('serviceControllers', [])
                         $scope.rateService = function (service) {
                                 console.log(service);
                                 var str_url = $location.url().split('/');
-                                $http.post('/routes/rating/' + str_url[str_url.length - 2] + '/' + str_url[str_url.length - 1], $scope.service).then(function (res) {
+                                $http.post('/routes/rating/' + str_url[str_url.length - 2] + '/' + str_url[str_url.length - 1], service).then(function (res) {
                                         console.log(res.data.message);
+                                        $scope.rateFailureMessage = null;
+                                        $scope.rateSuccessMessage = null;
                                         if (res.data.result == "failure")
                                                 $scope.rateFailureMessage = res.data.message;
                                         else
                                                 $scope.rateSuccessMessage = res.data.message;
+
+                                });
+                        };
+
+                        $scope.reportReview = function (service) {
+                                console.log(service);
+                                var str_url = $location.url().split('/');
+                                $http.post('/routes/report/' + str_url[str_url.length - 2] + '/' + str_url[str_url.length - 1], service).then(function (res) {
+                                        console.log(res.data.message);
+                                        $scope.reportFailureMessage = null;
+                                        $scope.reportSuccessMessage = null;
+                                        if (res.data.result == "failure")
+                                                $scope.reportFailureMessage = res.data.message;
+                                        else
+                                                $scope.reportSuccessMessage = res.data.message;
 
                                 });
                         };

@@ -5,7 +5,8 @@ angular.module('appRoutes', ['ngRoute'])
 
     $routeProvider
 
-        .when('/', {
+
+    .when('/', {
         templateUrl: 'partials/Homepage/Homepage.html',
         controller: 'HomepageController'
     })
@@ -45,5 +46,21 @@ angular.module('appRoutes', ['ngRoute'])
         controller: 'ViewRateAndReviewCtrl'
     })
 
+    .when('/admin-panel', {
+        templateUrl: 'partials/admin-panel/admin-home.html',
+        controller: 'adminController'
+    })
+    .when('/admin-panel/control-reviews', {
+        templateUrl: 'partials/admin-panel/control-reviews.html',
+        controller: 'adminController'
+    })
+    .when('/admin-panel/control-clients', {
+        templateUrl: 'partials/admin-panel/control-clients.html',
+        controller: 'adminController'
+    })
+    .when('/admin-panel/control-businesses', {
+        templateUrl: 'partials/admin-panel/control-businesses.html',
+        controller: 'adminController'
+    })
     .otherwise({ redirectTo: '/' });
 }]);

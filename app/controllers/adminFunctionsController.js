@@ -12,15 +12,19 @@ let adminFunctionsController = {
         console.log(req.body);
         if(req.isAuthenticated()){
         if (req.user.admin){
-        clients.findOne({email: req.param('useremail')}, function(err, user){
+        clients.findOne({username: req.param('username')}, function(err, user){
            // if(err)
            //     res.send(err);
 
             if(user){
-            user.ban = true;
+            if(user.ban){
+                user.ban = false;
+            }else{
+                user.ban = true;
+            }
             user.save(function(err, user){
                 if(err){
-                    res.json({"result": "failure","message":"Error in saving banned user in database!"});
+                    res.json({"result": "failure","message":"Error in saving banned/unbanned user in database!"});
                 }else{
                     res.json({"result": "success"}); //Confirm success by returning JSON object with result field set to "Success".
                 }
@@ -47,10 +51,15 @@ let adminFunctionsController = {
             //    res.send(err);
 
             if(user){
-            user.ban = true;
+            if(user.ban){
+                user.ban = false;
+            }else{
+                user.ban = true;
+            }
+            
             user.save(function(err, user){
                 if(err){
-                    res.json({"result": "failure","message":"Error in saving banned business in database!"});
+                    res.json({"result": "failure","message":"Error in saving banned/unbanned business in database!"});
                 }else{
                     res.json({"result": "success"}); //Confirm success by returning JSON object with result field set to "Success".
                 }
@@ -133,9 +142,11 @@ let adminFunctionsController = {
                         { $pull: { "services.service_reviews" : { _id : req.param('id') } } },
                         function removeReviews(err, obj) {
                                 if(err){
-                                res.json(500, {"result": "failure","message":"Could not remove review from review list"});
+
+                                res.json({"result": "failure","message":"Could not remove review from review list"});
                                 }else{
-                                res.json(200, {"result": "success"}); //I added the result part
+                                res.json({"result": "success"}); //I added the result part
+
                                 }
                         });
                     }else{
@@ -152,9 +163,9 @@ let adminFunctionsController = {
                         { $pull: { "business_reviews" : { _id : req.param('id')} } },
                         function removeReviews(err, obj) {
                                 if(err){
-                                res.json(500, {message:"Could not remove review from review list"});
+                                res.json({message:"Could not remove review from review list"});
                                 }else{
-                                res.json(200);
+                                res.json({"result": "success"});
                                 }
                     });
 
@@ -195,8 +206,51 @@ let adminFunctionsController = {
         }else{
            res.json({"result": "failure","message":"You are not logged in!"}); //Indicates failure if not admin.
         }
-    }
+    },
 
+    getUsers:function(req,res){
+        if(req.isAuthenticated()){
+        if (req.user.admin){
+             clients.find({}, function(err, users){
+
+                if(users){
+                    res.json({"result": "success","content":users});
+                }else{
+                    res.json({"result": "failure","message":"No users registered yet!"});
+                }
+                
+            });
+
+        }else{
+            res.json({"result": "failure","message":"You are not an admin!"}); //Indicates failure if not admin.
+        }
+
+        }else{
+           res.json({"result": "failure","message":"You are not logged in!"}); //Indicates failure if not admin.
+        }
+    },
+
+    getBusinesses:function(req,res){
+        if(req.isAuthenticated()){
+        if (req.user.admin){
+             businesses.find({}, function(err, busArr){
+
+                if(busArr){
+                    res.json({"result": "success","content":busArr});
+                }else{
+                    res.json({"result": "failure","message":"No businesses registered yet!"});
+                }
+                
+            });
+
+        }else{
+            res.json({"result": "failure","message":"You are not an admin!"}); //Indicates failure if not admin.
+        }
+
+        }else{
+           res.json({"result": "failure","message":"You are not logged in!"}); //Indicates failure if not admin.
+        }
+    }
 
 }
 

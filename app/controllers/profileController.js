@@ -3,9 +3,44 @@ var fs = require('fs');
 var bcrypt = require('bcryptjs');
 
 let Clients = require('../../models/clients');
-
+let Admin = require('../../models/admins');
 let profileController = {
+    viewProfileWithUsername:function(req,res)
+    { console.log("here");
+      console.log(req.user);
+      console.log("here");
+      if(req.user)
+          Admin.findOne({ personal_email: req.user.username }, function (err, adm) {
 
+            if (adm) {
+              var user = req.param("username");
+              Clients.findOne({username: user}, function(err, user){
+                  if(err){
+                      res.status(200).json({"result":"failure","message":"error happened in the database"});
+                  }else{
+                      if(user){
+                      res.json({"result":"success","message":"Found user", "content": user});
+                  }
+                  else{
+                      res.status(200).json({"result":"failure","message":"User not found"});
+                  }
+                  }
+              });
+            }
+
+            else
+            {
+              res.json({"result":"failure","message":"you are not admin"});
+            }
+        });
+        else
+        {
+            res.json({"result":"failure","message":"you didn't login"});
+        }
+
+      }
+
+    ,
     viewProfile: function(req, res){
         if(!req.user){
             res.status(200).json({"result":"failure","message":"Unauthorized user detected, purging database!"});
