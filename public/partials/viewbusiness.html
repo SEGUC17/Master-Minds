@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head ng-controller ='ViewBusinessCtrl as business'>
+  <div >
+    <img src=../businessowner/{{business_logo}} class="logo"> </img>
+    <h1>{{business_name}}</h1>
+    <button type="button" class="btn btn-default" ng-click="getLikeBusiness()">Like</button>
+    <br>
+  </div>
+
+  <section ng-controller = "tabController as tab">
+    <ul class="nav nav-pills">
+      <li ng-class = "{active: tab.isSelected(1)}">
+        <a href ng-click = "tab.selectTab(1)">Description</a>
+      </li>
+      <li ng-class = "{active: tab.isSelected(2)}">
+        <a href ng-click = "tab.selectTab(2)">Services</a>
+      </li>
+      <li ng-class = "{active: tab.isSelected(3)}">
+        <a href ng-click = "tab.selectTab(3)">FAQ</a>
+      </li>
+    </ul>
+
+    <div class="tab" ng-show ="tab.isSelected(1)">
+      <h2>Description</h2>
+      <p>{{business_description}}</p>
+    </div>
+
+    <div class="tab" ng-show ="tab.isSelected(2)" ng-repeat="service in services">
+      <h3>Services</h3>
+      <img src=../businessowner/{{service.service_pic}} class="service_logo"></img>
+      <p>{{service.service_name}}</p>
+    </div>
+
+    <div class="tab" ng-show ="tab.isSelected(3)">
+      <h4>FAQ</h4>
+      <p>{{FAQ}}</p>
+
+    </div>
+  </section>
+
+</head>
