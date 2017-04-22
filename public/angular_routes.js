@@ -11,7 +11,7 @@ angular.module('appRoutes', ['ngRoute'])
         controller: 'HomepageController'
     })
 
-    .when('/client_profile', {
+    .when('/client_profile/:username', {
         templateUrl: 'partials/client_profile.html',
         controller: 'ClientprofileCtrl'
     })

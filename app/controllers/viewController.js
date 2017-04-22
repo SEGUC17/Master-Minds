@@ -29,6 +29,15 @@ let viewController = {
                 if (business.length == 0){
                         res.status(404).json({"result":"failure","message":"Businesses not found, purging database!"});
                     }else{
+                        for (var i = business.length-1; i >= 0; i--){
+                            if(business[i].ban == true){
+                                business.splice(i, 1);
+                            }else{
+                            if (business[i].accepted == false){
+                            business.splice(i, 1);
+                             }
+                            }
+                        }
                         res.json({"result":"success","message":"Eureka!! We found it","content": business}); 
                         
                     }
