@@ -6,11 +6,9 @@ let Clients = require('../../models/clients');
 let Admin = require('../../models/admins');
 let profileController = {
     viewProfileWithUsername:function(req,res)
-    { console.log("here");
-      console.log(req.user);
-      console.log("here");
+    {
       if(req.user)
-          Admin.findOne({ personal_email: req.user.username }, function (err, adm) {
+          Admin.findOne({ username: req.user.username }, function (err, adm) {
 
             if (adm) {
               var user = req.param("username");

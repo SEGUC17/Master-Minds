@@ -74,7 +74,7 @@ router.get('/isLoggedIn',UserLoginController.isLoggedin);
 
 passport.use('local.clientsadmins', new LocalStrategy(
     function (username, password, done) {
-        var already_sent_a_json = 0;
+        //var already_sent_a_json = 0;
         UserLoginController.getUserByUsername(username, function (err, user) {
             if (err) throw err;
             if (!user) {

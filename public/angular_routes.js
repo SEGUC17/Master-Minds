@@ -15,7 +15,10 @@ angular.module('appRoutes', ['ngRoute'])
         templateUrl: 'partials/client_profile.html',
         controller: 'ClientprofileCtrl'
     })
-
+    .when('/client_profile/:username', {
+        templateUrl: function (urlattr){return 'partials/admin_client_profile.html';},
+        controller: 'AdminClientprofileCtrl'
+    })
     .when('/Rate_Review_Business/:business_name', {
         templateUrl: function (urlattr){return 'partials/RateAndReview/RateAndReviewBusiness.html';},
         controller:'RateAndReviewBusinessCtrl'
