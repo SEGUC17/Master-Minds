@@ -35,6 +35,15 @@ angular.module('appRoutes', ['ngRoute'])
         controller: 'loginCtrl'
     })
 
+    .when('/subscribe', {
+        templateUrl: 'partials/businessowner/subscribe.html',
+        controller: 'subCtrl'
+    })
+
+    .when('/editboprofile', {
+        templateUrl: 'partials/businessowner/editboprofile.html',
+        controller: 'editbopCtrl'
+    })
 
     .when('/detailedService/:business/:service', {
         templateUrl: function (urlattr){console.log(urlattr.business+" "+urlattr.service);return 'partials/Service/serviceView.html';},
