@@ -5,8 +5,11 @@ let clientsController = {
 
     likeBusiness:function(req,res){
       //Get name of business to be liked from the request
-      var business = req.body.name;
-      console.log(buisness);
+      var name = req.body.name;
+      //checks if user is logged in
+      if(!req.user){
+        res.json({"result":"failure","message":"You need to login"});
+      }else{
       //var email = "client1";  Was used for testing
 
       //Get current user's email
@@ -16,8 +19,15 @@ let clientsController = {
         if(err){
           res.json({"result":"failure","message":"There was a problem"});
         }else{
+          // checks for duplicate likes
+          for(var i = 0; i<client.liked.length;i++){
+                if(client.liked[i].business_names == name){
+                  res.json({"result":"failure","message":"This Business is already liked"})
+                  return;
+                }
+          };
           //adds the liked business to the liked Array
-          client.liked.push({"business_names":business});
+          client.liked.push({"business_names":name});
           //Updates the client in the database
           client.save(function(err){
             if(err){
@@ -30,6 +40,7 @@ let clientsController = {
 
         }
       });
+      }
 
     },
 

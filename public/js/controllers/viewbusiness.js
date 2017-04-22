@@ -58,7 +58,7 @@ angular.module('Ang_viewbusiness',[])
                   function likeBusiness(name){
                     console.log($scope.name);
                    
-                    $http.post('/routes/like', $scope.name).then(function(res){
+                    $http.post('/routes/like',{name: $scope.name}).then(function(res){
                       
                       alert(res.data.message);
                     });
