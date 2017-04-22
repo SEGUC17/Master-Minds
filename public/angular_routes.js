@@ -5,16 +5,20 @@ angular.module('appRoutes', ['ngRoute'])
 
     $routeProvider
 
-        .when('/', {
+
+    .when('/', {
         templateUrl: 'partials/Homepage/Homepage.html',
         controller: 'HomepageController'
     })
 
-    .when('/about', {
-        templateUrl: 'partials/about.html'
+    .when('/client_profile', {
+        templateUrl: 'partials/client_profile.html',
+        controller: 'ClientprofileCtrl'
     })
-    
+
     .when('/:business_name', {
+      templateUrl: function (urlattr){console.log(urlattr.business_name);return 'partials/viewbusiness.html';},
+      controller: 'ViewBusinessCtrl'
 
     })
 
@@ -24,6 +28,7 @@ angular.module('appRoutes', ['ngRoute'])
     })
     .when('/Rate_Review_Business/:business_name/:service', {
         templateUrl: function (urlattr){console.log(urlattr.business);return 'partials/RateAndReview/RateAndReviewService.html';},
+
         controller:'RateAndReviewBusinessCtrl'
     })
 
@@ -37,9 +42,27 @@ angular.module('appRoutes', ['ngRoute'])
         controller: 'loginCtrl'
     })
 
+
     .when('/detailedService/:business/:service', {
         templateUrl: function (urlattr){console.log(urlattr.business+" "+urlattr.service);return 'partials/Service/serviceView.html';},
         controller: 'serviceController'
+    })
+
+    .when('/admin-panel', {
+        templateUrl: 'partials/admin-panel/admin-home.html',
+        controller: 'adminController'
+    })
+    .when('/admin-panel/control-reviews', {
+        templateUrl: 'partials/admin-panel/control-reviews.html',
+        controller: 'adminController'
+    })
+    .when('/admin-panel/control-users', {
+        templateUrl: 'partials/admin-panel/control-users.html',
+        controller: 'adminController'
+    })
+    .when('/admin-panel/control-businesses', {
+        templateUrl: 'partials/admin-panel/control-businesses.html',
+        controller: 'adminController'
     })
 
     .otherwise({ redirectTo: '/' });

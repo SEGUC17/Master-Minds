@@ -35,7 +35,10 @@ app.use(session({
     resave: true
 }));
 
+app.use(passport.initialize());
+app.use(passport.session());
 /* PASSPORT WAS HERE*/
+
 
 // Express Validator
 app.use(expressValidator({
@@ -71,10 +74,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/public'));
 app.use('/routes', router);
-
-app.use(passport.initialize());
-app.use(passport.session());
-
+app.use(router);
 
 app.use(flash());
 

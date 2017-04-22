@@ -8,18 +8,18 @@ let profileController = {
 
     viewProfile: function(req, res){
         if(!req.user){
-            res.status(401).json({"result":"failure","message":"Unauthorized user detected, purging database!"});
+            res.status(200).json({"result":"failure","message":"Unauthorized user detected, purging database!"});
         }else{
         var user = req.user.username;
         Clients.findOne({username: user}, function(err, user){
             if(err){
-                res.status().json({"result":"failure","message":"error happened in the database"});
+                res.status(200).json({"result":"failure","message":"error happened in the database"});
             }else{
                 if(user){
                 res.json({"result":"success","message":"Found user", "content": user});
             }
             else{
-                res.status(404).json({"result":"failure","message":"User not found"});
+                res.status(200).json({"result":"failure","message":"User not found"});
             }
             }
         });
@@ -41,7 +41,7 @@ let profileController = {
         var email = req.body.email;
         var address = req.body.address;
         var phone_number = req.body.phone_number;
-        var fullname = req.body.fullname; 
+        var fullname = req.body.fullname;
         if(req.file){
              var profile_pic = req.file.filename;
         }
@@ -51,7 +51,7 @@ let profileController = {
                 console.log(err);
                 res.status(404).json({"result":"failure","message":" user not found, purging database!"});
             }else{
-               
+
         bcrypt.genSalt(10, function(err, salt) {
         bcrypt.hash(password, salt, function(err, hash) {
             user.password = hash;
@@ -78,15 +78,15 @@ let profileController = {
                 res.status(404).send('user not found');
             }
           });
-            
+
         });
     });
-   
+
             }
         });
     }
 }
-    
+
 }
 
 //Export Controller

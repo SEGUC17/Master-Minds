@@ -1,0 +1,24 @@
+<div ng-controller="adminController">
+<div ng-show="isAdmin">
+<div class="page-header">
+    <h1>Reported Reviews</h1>
+</div>
+<ul>
+<li data-ng-repeat="rev in reviews">
+	Review: {{rev.review}}
+	<br> By: {{rev.username}}
+	<br> Number of reports: {{rev.reported}}
+	<br> ID: {{rev._id}}
+	<br>
+	<button ng-click="banUser(rev.username)">Ban User</button>
+	<button data-ng-click="deleteReview(rev._id)">Delete Review</button>
+</li>
+</ul>
+</div>
+<div class="page-header" ng-hide="isAdmin">
+	<center>
+	<h1>An error occurred!</h1> 
+	<br><h1>{{reason}}</h1>
+	</center>
+</div>
+</div>
