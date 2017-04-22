@@ -46,6 +46,7 @@ router.get('/', homepageController.test);
 router.get('/viewbusiness', viewController.viewBusiness);
 router.get('/viewservices', viewController.viewServices);
 router.get('/viewprofile', profileController.viewProfile);
+router.get('/viewprofile/:username', profileController.viewProfileWithUsername);
 router.get('/editprofile', profileController.getEditProfile);
 router.post('/editprofile', upload_client.single('profile_pic'), profileController.editProfile);
 
@@ -60,6 +61,7 @@ router.get('/admin/getBus', adminFunctionsController.getBusinesses);
 router.get('/admin/view_unaccepted_businesses', view_unaccepted_businesses.view_unaccepted);
 router.put('/admin/accept_application/:business', view_unaccepted_businesses.accept_application);
 router.get('/admin/isAdmin',adminFunctionsController.isAdmin);
+
 
 //Add routes
 router.get('/detailedProduct/:businessname/:product', productController.reportServiceReview);
