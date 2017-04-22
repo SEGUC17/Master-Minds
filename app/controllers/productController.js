@@ -19,27 +19,29 @@ let productContoller = {
         //   business.save();
         //   business.services.push({service_name: "room", service_reviews:[{review: "hello" }]});
         //   business.save();
-        console.log("report here");
-        if (req.param('report') == 'true' && session.username != null) {
-            businesses.findOne({ business_name: req.param('businessname') }, function (err, business) {
-                for (var i = 0; i < business.services.length; i++) {
-                    if (business.services[i].service_name == req.param('product')) {
-                        for (var j = 0; j < business.services[i].service_reviews.length; j++) {
-                            if (business.services[i].service_reviews[j].review == req.body.review) {
-                                business.services[i].service_reviews[j].reported++;
-                                business.save();
-                                res.render('detailedProductView', { 'review': req.param('review') }); //To change the report button on this review as reported
-                                return;
-                            }
+        console.log(req.body)
+        if (!req.user)
+            return res.json({ 'result': 'failure', 'message': 'please login' });
+        businesses.findOne({ business_name: req.param('business') }, function (err, business) {
+            if (err)
+                return res.json({ 'result': 'failure', 'message': 'business not found' });
+            if (!business)
+                return res.json({ 'result': 'failure', 'message': 'business not found' });
+            for (var i = 0; i < business.services.length; i++) {
+                if (business.services[i].service_name == req.param('service')) {
+                    for (var j = 0; j < business.services[i].service_reviews.length; j++) {
+                        if (business.services[i].service_reviews[j].review == req.body.review && req.body.username == business.services[i].service_reviews[j].username) {
+                            if (req.user.username == business.services[i].service_reviews[j].username)
+                                return res.json({ 'result': 'failure', 'message': 'you cannot report yourself' });
+                            business.services[i].service_reviews[j].reported++;
+                            business.save();
+                            return res.json({ 'result': 'success', 'message': 'reported successfully' });
                         }
                     }
                 }
-                business.save();
-                res.render('detailedProductView');
-                return;
-            });
-        } else
-            res.render('detailedProductView');
+            }
+            return res.json({ 'result': 'failure', 'message': 'review not found' });
+        });
     },
 
     addAdvertisment: function (req, res) {
@@ -83,17 +85,17 @@ let productContoller = {
                                 ad.date = new Date();
                                 ad.save();  //Saving the new advertisement to the database
                             } else {
-                                res.json({'result':'failed','message':'You already have a service advertised'});
+                                res.json({ 'result': 'failed', 'message': 'You already have a service advertised' });
                             }
                         }
                     })
-                }else{
-                    res.json({'result':'failed', 'message':'This is not one of your products'});
+                } else {
+                    res.json({ 'result': 'failed', 'message': 'This is not one of your products' });
                 }
             })
 
         }
-        res.json({'result':'success', 'message':'detailedProductView'});
+        res.json({ 'result': 'success', 'message': 'detailedProductView' });
     },
 
     viewAdvertisements: function (req, res) {
@@ -120,7 +122,7 @@ let productContoller = {
                 }
             }
             // console.log(adArray);
-            res.json({'result':'success', 'message':'advertisementsView', 'content': adArray });    //Pass the chosen ads to the view
+            res.json({ 'result': 'success', 'message': 'advertisementsView', 'content': adArray });    //Pass the chosen ads to the view
         })
     }
 

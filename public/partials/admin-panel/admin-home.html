@@ -1,0 +1,23 @@
+<div ng-controller="adminController">
+	<div ng-show="isAdmin">
+
+		<div class="page-header">
+    		<center><h1>Admin Control Panel</h1></center>
+		</div>
+
+		<center>
+			<a href="#/admin-panel/control-reviews" class="myButton">View Reported Reviews</a>
+			<a href="#/admin-panel/control-clients" class="myButton" style="margin-top:20px;">Clients Control Panel</a>
+			<a href="#/admin-panel/control-businesses" class="myButton" style="margin-top:20px;width:300px;">Businesses Control Panel</a>
+		</center>
+
+	</div>
+
+<div class="page-header" ng-hide="isAdmin">
+	<center>
+	<h1>An error occurred!</h1> 
+	<br><h1>{{reason}}</h1>
+	</center>
+</div>
+
+</div>

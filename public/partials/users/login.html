@@ -1,0 +1,46 @@
+<div class="page-header">
+    <h1>Login</h1>
+</div>
+
+<div ng-controller="loginCtrl">
+
+    <div class="jumbotron text-center" ng-show="loading">
+        <span class="glyphicon glyphicon-repeat spinner"></span>
+        <p>Loading...</p>
+    </div>
+
+    <br>
+
+    <div class="row show-hide-message" ng-show="successMsg">
+        <div class="alert alert-success">{{successMsg}}</div>
+    </div>
+
+    <br>
+
+    <div class="row show-hide-message" ng-show="errorMsg">
+        <div class="alert alert-danger">{{errorMsg}}</div>
+    </div>
+
+    <br>
+
+    <form name="userForm" ng-submit="logUser(logData,userForm.$valid)" novalidate>
+        <div class="form-group" ng-class="{ 'has-error' : userForm.username.$invalid && !userForm.username.$pristine }">
+            <label>write your email if you are a business owner or write your username if you are a client or an admin</label>
+            <input class="form-control" type="text" name="username" placeholder="please enter your name" ng-model="logData.username" required>
+            <p ng-show="userForm.username.$invalid && !userForm.username.$pristine" class="help-block">Your name is required.</p>
+        </div>
+
+        <br>
+
+        <div class="form-group" ng-class="{ 'has-error' : userForm.password.$invalid && !userForm.password.$pristine }">
+            <label>Password</label>
+            <input class="form-control" type="password" name="password" placeholder="please enter your password" ng-model="logData.password" required ng-minlength="6" ng-maxlength="30">
+            <p ng-show="userForm.password.$invalid && !userForm.password.$pristine" class="help-block">Your password is required.</p>
+        </div>
+
+        <br>
+
+        <button class="btn btn-primary" type="submit" ng-disabled="userForm.$invalid">Login</button>
+
+    </form>
+</div>
