@@ -41,8 +41,8 @@ angular.module('appRoutes', ['ngRoute'])
         controller: 'serviceController'
     })
 
-    .when('/', {
-        templateUrl: 'partials/RateAndReview/ViewRateAndReviewBusiness.html',
+    .when('/getrateandreview/:business', {
+        templateUrl: function (urlattr){ return 'partials/RateAndReview/ViewRateAndReviewBusiness.html'},
         controller: 'ViewRateAndReviewCtrl'
     })
 

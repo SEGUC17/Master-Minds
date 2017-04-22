@@ -1,1 +1,16 @@
 <div ng-controller="ViewRateAndReviewCtrl">
+
+<P ng-init="message=''">
+  <span ng-bind="message"></span>
+  </p>
+  {{business}}
+  <div ng-init="business=''" ng-init="rating=''" ng-init="review=''">
+  <label class="jumbotron">business:</label> <span ng-bind="business"></span></br>
+  <label class="jumbotron">rating:</label> <span ng-bind="resp_rate"></span></br>
+  
+	
+	<div class="jumbotron" ng-repeat="business in resp_review">
+    <label ><span ng-bind="business.username"></span> : <span ng-bind="business.review"></span>  <span ng-bind="business.reported"></span></label>
+  </div> 
+
+  </div>
