@@ -15,6 +15,10 @@ angular.module('appRoutes', ['ngRoute'])
         templateUrl: 'partials/client_profile.html',
         controller: 'ClientprofileCtrl'
     })
+    
+    .when('/:business_name', {
+
+    })
 
     .when('/:business_name', {
       templateUrl: function (urlattr){console.log(urlattr.business_name);return 'partials/viewbusiness.html';},
@@ -26,8 +30,10 @@ angular.module('appRoutes', ['ngRoute'])
         templateUrl: function (urlattr){console.log(urlattr.business);return 'partials/RateAndReview/RateAndReviewBusiness.html';},
         controller:'RateAndReviewBusinessCtrl'
     })
-    .when('/Rate_Review_Business/:business_name/:service', {
-        templateUrl: function (urlattr){console.log(urlattr.business);return 'partials/RateAndReview/RateAndReviewService.html';},
+
+    .when('/Rate_Review_Business/:business_name/:service_name', {
+        templateUrl: function (urlattr){return 'partials/RateAndReview/RateAndReviewService.html';},
+
 
         controller:'RateAndReviewBusinessCtrl'
     })

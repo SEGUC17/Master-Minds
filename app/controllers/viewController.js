@@ -14,7 +14,6 @@ let viewController = {
                 if(err){
                     res.status(500).json({"result":"failure","message":"Database error, purging database!"});
                 }else{
-
                     if (business.length == 0){
                         res.status(404).json({"result":"failure","message":"Businesses not found, purging database!"});
                     }else{

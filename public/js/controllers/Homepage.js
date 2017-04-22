@@ -7,12 +7,12 @@ angular.module('Ang_Homepage', [])
     });
 
     $scope.getSearch = function(){
+
         bSearch($scope.Search);
     }
 
     function bSearch(search){
         if(search){
-            console.log(search);
         $http.get("/routes/viewbusiness", {params:{"search": search}})
     .then(function (res) {
 
@@ -28,5 +28,5 @@ angular.module('Ang_Homepage', [])
         }
     }
 
-
 });
+
