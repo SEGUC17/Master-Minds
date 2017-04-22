@@ -50,9 +50,11 @@ let productContoller = {
         save it in the database or reject it
         */
         var found = false;
-        if (req.param('ad') == 'true' && session.username != null) {  //If business owner press the 'advertise' button
-            businesses.findOne({ personal_email: session.username }, function (err, business) { //Get the business
-                if (err) err.message('You are not a business owner');
+        if (req.user) {  //If business owner press the 'advertise' button
+            businesses.findOne({ personal_email: req.user.username }, function (err, business) { //Get the business
+                if (err) return res.json({ 'result': 'failure', 'message': 'error on database' });
+                if (!business)
+                    return res.json({ 'result': 'failure', 'message': 'business not found' })
                 for (var i = 0; i < business.services.length; i++) {
                     if (business.services[i].service_name == req.param('product')) {
                         found = true;
@@ -61,8 +63,7 @@ let productContoller = {
                 if (found == true) {
                     advertisements.find({}, function (err, ads) {
                         if (ads.length > 12) {  //Cannot advertise more than 12 advertisements on the website
-                            err.message('Cannot add another advertisement at the moment');
-                            res.render('detailedProductView');
+                            return res.json({ 'result': 'failure', 'message': 'number of ads on website exceeded' })
                         } else {
                             var advertised = false;
                             for (var i = 0; i < ads.length; i++) {
@@ -84,18 +85,18 @@ let productContoller = {
                                 ad.service_name = req.param('product');
                                 ad.date = new Date();
                                 ad.save();  //Saving the new advertisement to the database
+                                return res.json({ 'result': 'success', 'message': 'advertisement successful' });
                             } else {
-                                res.json({ 'result': 'failed', 'message': 'You already have a service advertised' });
+                                return res.json({ 'result': 'failure', 'message': 'you already have a service advertised' });
                             }
                         }
                     })
                 } else {
-                    res.json({ 'result': 'failed', 'message': 'This is not one of your products' });
+                    return res.json({ 'result': 'failure', 'message': 'this is not one of your products' });
                 }
             })
 
         }
-        res.json({ 'result': 'success', 'message': 'detailedProductView' });
     },
 
     viewAdvertisements: function (req, res) {

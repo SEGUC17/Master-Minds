@@ -92,6 +92,60 @@ angular.module('serviceControllers', [])
 
                                 });
                         };
+
+                        $scope.checkout = function () {
+                                $scope.logged = null;
+                                var logged = false;
+                                $http.get('/routes/nav').then(function (res) {
+                                        if (res.data.result == 'success') {
+                                                logged = true;
+                                        }
+
+
+                                        if (logged) {
+                                                var handler = StripeCheckout.configure({
+                                                        key: 'pk_test_NxzB4uWCnPgIv2pcsnsVEwdd',
+                                                        image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+                                                        locale: 'auto',
+                                                        token: function (token) {
+                                                                var input = { 'token': token, 'price': Number($scope.service_price) * 100 };
+                                                                $http.post('/routes/checkout', input).then(function (res) {
+                                                                });
+                                                        }
+                                                });
+
+                                                document.getElementById('customButton').addEventListener('click', function () {
+                                                        // Open Checkout with further options:
+                                                        handler.open({
+                                                                name: str_url[str_url.length - 1].replace("%20", " "),
+                                                                description: $scope.service_name,
+                                                                amount: Number($scope.service_price) * 100
+                                                        });
+                                                });
+
+                                                // Close Checkout on page navigation:
+                                                window.addEventListener('popstate', function () {
+                                                        handler.close();
+                                                });
+                                                $scope.logged = null;
+                                        } else {
+                                                $scope.logged = "please login";
+                                        }
+                                });
+                        };
+
+                        $scope.advertise = function () {
+                                var str_url = $location.url().split('/');
+                                $http.post('/routes/advertise/' + str_url[str_url.length - 2] + '/' + str_url[str_url.length - 1]).then(function (res) {
+                                        $scope.advertiseFailureMessage = null;
+                                        $scope.avertiseSuccessMessage = null;
+                                        if (res.data.result == "failure")
+                                                $scope.advertiseFailureMessage = res.data.message;
+                                        else
+                                                $scope.advertiseSuccessMessage = res.data.message;
+
+                                });
+                        };
                 });
         });
 
