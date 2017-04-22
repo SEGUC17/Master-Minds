@@ -76,7 +76,6 @@ app.use(express.static(__dirname + '/public'));
 app.use('/routes', router);
 //app.use(router);
 
-
 app.use(flash());
 
 

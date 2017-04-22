@@ -44,6 +44,11 @@ angular.module('appRoutes', ['ngRoute'])
         controller: 'serviceController'
     })
 
+    .when('/', {
+        templateUrl: 'partials/RateAndReview/ViewRateAndReviewBusiness.html',
+        controller: 'ViewRateAndReviewCtrl'
+    })
+
     .when('/admin-panel', {
         templateUrl: 'partials/admin-panel/admin-home.html',
         controller: 'adminController'
