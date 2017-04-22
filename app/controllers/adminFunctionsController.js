@@ -8,8 +8,8 @@ let adminFunctionsController = {
     
     //Banning User
     banuser:function(req,res){
-        console.log(req.user);
-        console.log(req.body);
+        //console.log(req.user);
+        //console.log(req.body);
         if(req.isAuthenticated()){
         if (req.user.admin){
         clients.findOne({username: req.param('username')}, function(err, user){
@@ -79,10 +79,10 @@ let adminFunctionsController = {
         }
     },
     viewReportedReviews:function(req,res){
-        console.log("View reported reviews is requested!");
+        //console.log("View reported reviews is requested!");
        if(req.isAuthenticated()){
        if (req.user.admin){ 
-        console.log("View reported reviews is working correctly!");
+        //console.log("View reported reviews is working correctly!");
             businesses.find({'business_reviews.reported': {$gte: 0}},function(err1, arr1){
                 businesses.find({'services.service_reviews.reported': {$gte: 0}},function(err2, arr2){
 
@@ -131,7 +131,7 @@ let adminFunctionsController = {
             businesses.findOne({'business_reviews._id': req.param('id')},function(err1, bus1){
             //if(err1)
             //    res.send(err1);
-            console.log(bus1);
+            //console.log(bus1);
             if(!bus1){
                 businesses.findOne({'services.service_reviews._id': req.param('id')},function(err2, bus2){
                   //  if(err2)
@@ -243,6 +243,18 @@ let adminFunctionsController = {
                 
             });
 
+        }else{
+            res.json({"result": "failure","message":"You are not an admin!"}); //Indicates failure if not admin.
+        }
+
+        }else{
+           res.json({"result": "failure","message":"You are not logged in!"}); //Indicates failure if not admin.
+        }
+    },
+    isAdmin:function(req,res){
+        if(req.isAuthenticated()){
+        if (req.user.admin){
+            res.json({"result":"success"});
         }else{
             res.json({"result": "failure","message":"You are not an admin!"}); //Indicates failure if not admin.
         }

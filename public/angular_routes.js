@@ -56,6 +56,10 @@ angular.module('appRoutes', ['ngRoute'])
         templateUrl: function (urlattr){console.log(urlattr.business+" "+urlattr.service);return 'partials/Service/serviceView.html';},
         controller: 'serviceController'
     })
+    .when('/client_profile/:username', {
+        templateUrl: function (urlattr){ return 'partials/admin_client_profile.html';},
+        controller: 'AdminClientprofileCtrl'
+    })
 
     .when('/admin-panel', {
         templateUrl: 'partials/admin-panel/admin-home.html',
@@ -73,9 +77,16 @@ angular.module('appRoutes', ['ngRoute'])
         templateUrl: 'partials/admin-panel/control-businesses.html',
         controller: 'adminController'
     })
+
         .when('/:business_name', {
         templateUrl: 'partials/viewbusiness.html',
         controller: 'ViewBusinessCtrl'
+        })
+
+    .when('/admin-panel/control-applications', {
+        templateUrl: 'partials/admin-panel/control-applications.html',
+        controller: 'adminController'
+
     })
     .otherwise({ redirectTo: '/' });
 }]);
