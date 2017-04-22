@@ -65,10 +65,10 @@ router.post('/advertise/:businessname/:product', productController.addAdvertisme
 router.post('/report/:business/:service', productController.reportServiceReview);
 router.post('/reply', replyController.Post_Reply);
 router.post('/deletebussines', Deletebussinesowner.deleteOwner);
-router.get('/logout', function (req, res) {
-    req.logout();
-    res.redirect('/login');
-});
+// // router.get('/logout', function (req, res) {
+// //     req.logout();
+// //     res.redirect('/login');
+// });
 router.post('/service_add', serviceController.addservice);
 router.post('/service_edit', serviceController.editservice);
 
@@ -89,16 +89,16 @@ passport.use('local.clientsadmins', new LocalStrategy(
                         return done(null, false);
                     }
                     console.log(admin);
-//                     adminLoginController.comparePassword(password, admin.password, function (err, isMatch) {
-//                         //console.log("Reached here 3");
-//                         if (err) throw err;
+                    //                     adminLoginController.comparePassword(password, admin.password, function (err, isMatch) {
+                    //                         //console.log("Reached here 3");
+                    //                         if (err) throw err;
 
-//                         if (isMatch) {
-//                             return done(null, admin);
-//                         } else {
-//                             return done(null, false);
-//                         }
-//                     });
+                    //                         if (isMatch) {
+                    //                             return done(null, admin);
+                    //                         } else {
+                    //                             return done(null, false);
+                    //                         }
+                    //                     });
                     if (!adminLoginController.comparePassword(password, admin.password)) {
                         return done(null, false);
                     } else {
@@ -416,7 +416,7 @@ router.get('/failurejson', function (req, res) {
 
 router.post('/logout', function (req, res) {
     req.logout();
-    return res.json({ result: "success", message: "You have successfully logged out" });
+    res.json({ result: "success", message: "You have successfully logged out" });
 });
 
 router.get('/subscribe', function (req, res, next) {
