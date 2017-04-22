@@ -414,13 +414,9 @@ router.post('/register', function (req, res) {
 });
 
 router.post('/login',
-<<<<<<< HEAD
-    passport.authenticate('local', { successRedirect: '/successjson', failureRedirect: '/failurejson' }));
-=======
+
 
     passport.authenticate('local.clientsadmins', { successRedirect: '/routes/successjson', failureRedirect: '/routes/failurejson' }));
-
->>>>>>> bc61f27bd90c0e194e0f6128124d4f223d07ddd4
 
 router.get('/successjson', function (req, res) {
     res.json({ result: "success", message: "You have successfully logged in" })
