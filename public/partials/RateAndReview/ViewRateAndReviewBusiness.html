@@ -10,7 +10,11 @@
   
 	
 	<div class="jumbotron" ng-repeat="business in resp_review">
-    <label ><span ng-bind="business.username"></span> : <span ng-bind="business.review"></span>  <span ng-bind="business.reported"></span></label>
+    <label ><span ng-bind="business.username"></span> : <span ng-bind="business.review"></span></br>
+    <div>
+     <label>this review had  <span ng-bind="business.reported"></span> reports</label>
+    </div>
+    </label>
   </div> 
 
   </div>
