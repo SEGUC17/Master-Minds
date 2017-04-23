@@ -223,27 +223,14 @@ router.post('/service_edit', function (req, res) {
 
 });
 
-// Register
-router.get('/register', function (req, res) {
-
-    res.render('register');
-});
-
 router.get('/successRedirect', function (req, res) {
     res.send("successRedirect");
 });
 router.get('/failureRedirect', function (req, res) {
     res.send("failureRedirect");
-
-
-});
-// Login
-router.get('/login', function (req, res) {
-    res.render('login');
-
 });
 
-// Register User
+// Register Client
 router.post('/register', function (req, res) {
     var already_sent_a_json = 0; // this flag is for making sure that this method don't send 2 res.json to the frontend
     var fullName = req.body.fullName;
