@@ -45,6 +45,11 @@ angular.module('appRoutes', ['ngRoute'])
         controller: 'editbopCtrl'
     })
 
+    .when('/editprofile', {
+        templateUrl: 'partials/editclientprofile.html',
+        controller: 'editClientCtrl'
+    })
+
     .when('/detailedService/:business/:service', {
         templateUrl: function (urlattr){console.log(urlattr.business+" "+urlattr.service);return 'partials/Service/serviceView.html';},
         controller: 'serviceController'
