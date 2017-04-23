@@ -38,7 +38,7 @@ angular.module('adminApp', [])
         });
     };
     $scope.deleteReview = function(id){
-        $http.put('/routes/admin/deleteReview/'+id,{}).then(function(res) {
+            $http.put('/routes/admin/deleteReview/'+id,{}).then(function(res) {
             $timeout(function() {
                 $route.reload();
             }, 500);
