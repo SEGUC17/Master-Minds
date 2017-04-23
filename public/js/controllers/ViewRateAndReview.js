@@ -1,7 +1,14 @@
 angular.module('Ang_view_rateandreview', [])
 
-.controller('ViewRateAndReviewCtrl',function($scope,$http,$location, $window)
+.controller('ViewRateAndReviewCtrl',function($scope,$http,$location, $window,$route)
 {
+	$scope.isAdmin = false;
+
+  	$http.get('/routes/admin/isAdmin').then(function (res) {
+    	if (res.data.result == "success") {
+    		$scope.isAdmin = true;
+   		}
+ 	});
 	var str_url = $location.url().split('/');
 	
 	$http.get('/routes/viewRateBusiness/'+str_url[str_url.length-1])
@@ -47,4 +54,27 @@ angular.module('Ang_view_rateandreview', [])
 					$window.location.reload();
 					});
 	};
+	$scope.deleteReview = function (id) {
+      if ($scope.isAdmin) {
+        console.log(id);
+        $http.put('/routes/admin/deleteReview/' + id, {}).then(function (res) {
+                                       
+          $route.reload();
+                                       
+         });
+      }
+    };
+    $scope.onlyBanUser = function (username) {
+      if ($scope.isAdmin) {
+        console.log($scope.isAdmin);
+        console.log(username);
+        $http.put('/routes/admin/only-ban-user/' + username, {}).then(function (res) {
+                                      
+          $route.reload();
+                                       
+        });
+      }
+    };
+
+v
 });
