@@ -94,6 +94,7 @@ angular.module('Ang_Client_profile', [])
             $location.path('#/');
         }, 1000);
   }
+
   $scope.editProfile = function(){
     if($scope.userForm.$pristine){
       $scope.message = "Fill at least one field to edit your profile."

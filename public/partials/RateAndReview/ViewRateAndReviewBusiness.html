@@ -50,8 +50,9 @@
   </p>
 
   <div ng-init="bus_review=''" ng-init="rating=''" ng-init="review=''">
-  <label class="jumbotron">business:</label> <span ng-bind="business"></span></br>
-  <label class="jumbotron">rating:</label> <span ng-bind="resp_rate"></span></br>
+  <label class="jumbotron">Business:</label> <span ng-bind="business"></span></br>
+  <label class="jumbotron">Rating:</label> <span ng-bind="resp_rate"></span></br>
+
 
   <P ng-init="Message=''">
     <span ng-bind="Message"></span>
@@ -59,11 +60,13 @@
 	<div class="jumbotron" ng-repeat="bus_review in resp_review">
     <label ><span ng-bind="bus_review.username"></span> : <span ng-bind="bus_review.review"></span></br>
     <div>
-     <label>this review had  <span ng-bind="bus_review.reported"></span> reports</label>
+     <label>This review has  <span ng-bind="bus_review.reported"></span> reports.</label>
     </div>
     </label>
 
-   <button ng-click="reportReview(bus_review)">report</button>
+   <button ng-click="reportReview(bus_review)" ng-hide="isAdmin">Report</button>
+   <button  onfocus="blur()" data-ng-click="deleteReview(bus_review._id)"  ng-show="isAdmin">Delete review</button>
+   <button  onfocus="blur()" data-ng-click="onlyBanUser(bus_review.username)" ng-show="isAdmin">Ban User</button>
   </div>
 
   </div>
