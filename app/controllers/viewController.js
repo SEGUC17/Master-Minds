@@ -17,7 +17,7 @@ let viewController = {
                     console.log(business);
                     //checks if empty
                     if (business.length == 0){
-                        res.status(404).json({"result":"failure","message":"Businesses not found, purging database!"});
+                        res.json({"result":"failure","message":"Businesses not found, purging database!"});
                     }else{
                     // returns business
                         res.json({"result":"success","message":"Eureka!! We found it","content": business}); 
@@ -33,7 +33,7 @@ let viewController = {
                 }else{
                     // Checks not empty
                 if (business.length == 0){
-                        res.status(404).json({"result":"failure","message":"Businesses not found, purging database!"});
+                        res.json({"result":"failure","message":"Businesses not found, purging database!"});
                     }else{
                         // Checks for ban and removes from return array
                         for (var i = business.length-1; i >= 0; i--){
