@@ -21,6 +21,15 @@ angular.module('adminApp', [])
            $scope.getUsers();
         });
     };
+    $scope.onlyBanUser = function(username){
+        $http.put('/routes/admin/only-ban-user/'+username,{}).then(function(res) {
+           // $timeout(function() {
+           //     $route.reload();
+           // }, 500);
+           $scope.getUsers();
+           $route.reload();
+        });
+    };
     $scope.banBus = function(username){
         $http.put('/routes/admin/ban-bus/'+username,{}).then(function(res) {
             //$timeout(function() {
@@ -30,7 +39,7 @@ angular.module('adminApp', [])
         });
     };
     $scope.deleteReview = function(id){
-        $http.put('/routes/admin/deleteReview/'+id,{}).then(function(res) {
+            $http.put('/routes/admin/deleteReview/'+id,{}).then(function(res) {
             $timeout(function() {
                 $route.reload();
             }, 500);

@@ -42,6 +42,39 @@ let adminFunctionsController = {
             res.json({"result": "failure","message":"You are not logged in!"}); //Indicates failure if not admin.
         }
     },
+    onlybanuser:function(req,res){
+        //console.log(req.user);
+        //console.log(req.body);
+        if(req.isAuthenticated()){
+        if (req.user.admin){
+        clients.findOne({username: req.param('username')}, function(err, user){
+           // if(err)
+           //     res.send(err);
+
+            if(user){
+            
+            user.ban = true;
+            
+            user.save(function(err, user){
+                if(err){
+                    res.json({"result": "failure","message":"Error in saving banned user in database!"});
+                }else{
+                    res.json({"result": "success"}); //Confirm success by returning JSON object with result field set to "Success".
+                }
+            });
+            }else{
+                res.json({"result": "failure","message":"User not found!"}); //Indicates failure to find user by returning JSON object with result field set to "Failed".
+            }
+
+        });
+        }else{
+            res.json({"result": "failure","message":"You are not an admin!"}); //Indicates failure if not admin.
+        }
+
+        }else{
+            res.json({"result": "failure","message":"You are not logged in!"}); //Indicates failure if not admin.
+        }
+    },
     banbus:function(req,res){
         if(req.isAuthenticated()){
         if (req.user.admin){
@@ -89,9 +122,11 @@ let adminFunctionsController = {
                     var tempreviewsArr1 = arr1.map(function(a) {return a.business_reviews;});
                     var reviewsArr1 = [].concat.apply([], tempreviewsArr1);
 
-                    var tempreviewsArr2 = arr2.map(function(a) {return a.services.service_reviews;});
+                    var tempServicesArr = arr2.map(function(a) {return a.services;});
+                    var tempServicesArr2 = [].concat.apply([], tempServicesArr);
+                    var tempreviewsArr2 = tempServicesArr2.map(function(a) {return a.service_reviews;});
                     var reviewsArr2 = [].concat.apply([], tempreviewsArr2);
-
+                    //console.log(reviewsArr2);
                     function isNumber(obj) {
                         return obj!== undefined && typeof(obj) === 'number' && !isNaN(obj);
                     }

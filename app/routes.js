@@ -52,6 +52,7 @@ router.post('/editprofile', upload_client.single('profile_pic'), profileControll
 
 //Admin related routes
 router.put('/admin/ban-user/:username', adminFunctionsController.banuser);
+router.put('/admin/only-ban-user/:username', adminFunctionsController.onlybanuser);
 router.put('/admin/ban-bus/:business_name', adminFunctionsController.banbus);
 router.get('/admin/viewReports', adminFunctionsController.viewReportedReviews);
 router.put('/admin/deleteReview/:id', adminFunctionsController.deleteReportedReviews);
@@ -60,7 +61,7 @@ router.get('/admin/getUsers', adminFunctionsController.getUsers);
 router.get('/admin/getBus', adminFunctionsController.getBusinesses);
 router.get('/admin/view_unaccepted_businesses', view_unaccepted_businesses.view_unaccepted);
 router.put('/admin/accept_application/:business', view_unaccepted_businesses.accept_application);
-router.get('/admin/isAdmin',adminFunctionsController.isAdmin);
+router.get('/admin/isAdmin', adminFunctionsController.isAdmin);
 
 
 //Add routes
@@ -94,7 +95,7 @@ passport.use('local.clientsadmins', new LocalStrategy(
                         //console.log("Reached here 2");
                         //return done(null, false);
                         console.log('Right before businessowner.findone');
-                        BusinessOwner.findOne({'personal_email': username}, function (err, owner) {
+                        BusinessOwner.findOne({ 'personal_email': username }, function (err, owner) {
                             if (err) {
                                 console.log(err);
                                 return done(err);
@@ -110,7 +111,7 @@ passport.use('local.clientsadmins', new LocalStrategy(
                             return done(null, owner);
                         });
                     }
-                    else{
+                    else {
                         console.log(admin);
                         if (!adminLoginController.comparePassword(password, admin.password)) {
                             return done(null, false);
@@ -397,7 +398,7 @@ router.post('/subscribe',/* upload.single('business_logo'),*/ function (req, res
             var a = req.body.business_emails;
             var arr = a.split(',');
             for (i = 0; i < arr.length; i++) {
-              newOwner.business_emails.push({ email: arr[i] });
+                newOwner.business_emails.push({ email: arr[i] });
             }
             newOwner.address = req.body.address;
             newOwner.associated_bank = req.body.associated_bank;
@@ -629,28 +630,25 @@ router.get('/detailedService/:business/:service', function (req, res) {
         if (busi)
             for (var i = 0; i < busi.services.length; i++) {
                 if (busi.services[i].service_name == req.param('service')) {
-                    res.json({ 'result': 'success', 'message': 'service found', 'content': busi.services[i] })
-                } else {
-                    res.json({ 'result': 'failure', 'message': 'service not found' })
+                    return res.json({ 'result': 'success', 'message': 'service found', 'content': busi.services[i] })
                 }
             }
+        return res.json({ 'result': 'failure', 'message': 'service not found' })
+
     })
 });
 var stripe = require("stripe")("sk_test_v2rYv9d1Ka4fzqRBKLptDEr8");
 
 router.post('/checkout', function (req, res) {
-    // Set your secret key: remember to change this to your live secret key in production
-    // See your keys here: https://dashboard.stripe.com/account/apikeys
-
     // Token is created using Stripe.js or Checkout!
     // Get the payment token submitted by the form:
-    var token = req.body.stripeToken; // Using Express
+    var token = req.body.id; // Using Express
     // Charge the user's card:
     var charge = stripe.charges.create({
-        amount: 1000,
+        amount: Number(req.body.price),
         currency: "usd",
         description: "Example charge",
-        source: token,
+        source: req.body.token.id,
     }, function (err, charge) {
         // asynchronously called
     });
@@ -661,7 +659,7 @@ router.get('/nav', function (req, res) {
     if (!req.user) {
         return res.json({ 'result': 'failure', 'message': 'user not logged in' });
     } else {
-        businesses.findOne({ personal_email: req.user.username }, function (err, busi) {
+        businesses.findOne({ personal_email: req.user.personal_email }, function (err, busi) {
             if (busi) {
                 return res.json({ 'result': 'success', 'message': 'business', 'content': busi });
             } else

@@ -1,6 +1,6 @@
 angular.module('Ang_Client_profile', [])
 
-.controller('ClientprofileCtrl',function($scope,$http,$location)
+.controller('ClientprofileCtrl',function($scope,$http,$location,$route)
 {
   ///viewprofile
   //  console.log("rolling");
@@ -31,7 +31,7 @@ angular.module('Ang_Client_profile', [])
 
   });
 })
-.controller('AdminClientprofileCtrl',function($scope,$http,$location)
+.controller('AdminClientprofileCtrl',function($scope,$http,$location,$route)
 {var str_url = $location.url().split('/');
   ///viewprofile
   //  console.log("rolling");
@@ -49,6 +49,7 @@ angular.module('Ang_Client_profile', [])
         $scope.phone_number=res.data.content.phone_number;
         $scope.liked = res.data.content.liked;
         $scope.profile_pic=res.data.content.profile_pic;
+        $scope.banned=res.data.content.ban;
         if(res.data.content.liked.length==0)
         {
           $scope.liked=[{business_names:"you didn't like any pages"}];
@@ -61,4 +62,13 @@ angular.module('Ang_Client_profile', [])
       }
 
       });
+  $scope.banUser = function(username){
+        $http.put('/routes/admin/ban-user/'+username,{}).then(function(res) {
+           // $timeout(function() {
+           //     $route.reload();
+           // }, 500);
+           //$scope.getUsers();
+           $route.reload();
+        });
+    };
 });

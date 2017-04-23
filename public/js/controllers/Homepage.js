@@ -3,30 +3,48 @@ angular.module('Ang_Homepage', [])
 
         $http.get('/routes/viewbusiness').then(function(res){
         $scope.businesses = res.data.content;
-        console.log(res.data.content);
     });
 
-    // $scope.getSearch = function(){
+    $http.get('/viewAdvertisement').then(function(res){
+        $scope.ads = res.data.content;
+    });
 
-    //     bSearch($scope.Search);
-    // }
+    $scope.getSearch = function(){
+        bSearch($scope.Search);
+    }
 
-    // function bSearch(search){
-    //     if(search){
-    //     $http.get("/routes/viewbusiness", {params:{"search": search}})
-    // .then(function (res) {
+    function refresh(){
+        $http.get('/routes/viewbusiness').then(function(res){
+        $scope.businesses = res.data.content;
+    });
+    }
 
-    //         console.log(res.data.content);
-    //     for(var i = 0; i < res.data.content.length;i++){
-    //         if(res.data.content[i].business_name == search){
-    //             $scope.businesses = res.data.content[i];
-    //             console.log($scope.businesses)
-    //             console.log($scope.flag)
-    //         }
-    //     }
-    // });
-    //     }
-    // }
+    function bSearch(search){
+
+        $http.get("/routes/viewbusiness", {params:{"search": search}})
+    .then(function (res) {
+        if (search == undefined){
+            refresh();
+        }
+        else{
+        if (res.data.content){
+            console.log(res.data.content);
+            console.log(res.data.content[0].ban);
+            console.log(res.data.content[0].accepted);
+            if(res.data.content[0].ban == false && res.data.content[0].accepted == true ){
+                $scope.businesses = res.data.content;
+            }else{
+                $scope.businesses = undefined;
+                alert('The business you are looking for is either banned or not accepted yet');
+            }
+        }else{
+            $scope.business = undefined;
+            alert(res.data.message);
+         }
+        }
+    });
+        
+    }
 
 });
 
