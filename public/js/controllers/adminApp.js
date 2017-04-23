@@ -27,6 +27,7 @@ angular.module('adminApp', [])
            //     $route.reload();
            // }, 500);
            $scope.getUsers();
+           $route.reload();
         });
     };
     $scope.banBus = function(username){
@@ -38,7 +39,7 @@ angular.module('adminApp', [])
         });
     };
     $scope.deleteReview = function(id){
-        $http.put('/routes/admin/deleteReview/'+id,{}).then(function(res) {
+            $http.put('/routes/admin/deleteReview/'+id,{}).then(function(res) {
             $timeout(function() {
                 $route.reload();
             }, 500);
