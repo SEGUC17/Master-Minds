@@ -74,52 +74,52 @@ angular.module('Ang_Client_profile', [])
 
 .controller('editClientCtrl', function($scope,$http,$location,$timeout){
   $scope.message = "";
-  var fullName="";
-  var username="";
-  var email="";
-  var address="";
-  var phone_number="";
+  // var fullName="";
+  // var username="";
+  // var email="";
+  // var address="";
+  // var phone_number="";
 
-  $http.get('/routes/viewprofile').then(function(res){
-    if(res.data.result=="success"){
-      fullName=res.data.content.fullName;
-      username=res.data.content.username;
-      email=res.data.content.email;
-      address=res.data.content.address;
-      phone_number=res.data.content.phone_number;
-      //$scope.profile_pic=res.data.content.profile_pic;
-    }else{
-      $scope.message=res.data.message;
-    }
-  });
+  // $http.get('/routes/viewprofile').then(function(res){
+  //   if(res.data.result=="success"){
+  //     fullName=res.data.content.fullName;
+  //     username=res.data.content.username;
+  //     email=res.data.content.email;
+  //     address=res.data.content.address;
+  //     phone_number=res.data.content.phone_number;
+  //     //$scope.profile_pic=res.data.content.profile_pic;
+  //   }else{
+  //     $scope.message=res.data.message;
+  //   }
+  // });
   $scope.cancel = function(){
     $timeout(function(){
             $location.path('#/');
         }, 1000);
   }
-  $scope.editProfile = function(data){
+  $scope.editProfile = function(){
     if($scope.userForm.$pristine){
       $scope.message = "Fill at least one field to edit your profile."
     }else{
-      if(!$scope.data.fullName)
-        $scope.data.fullName = fullName;
-      if(!$scope.data.username)
-        $scope.data.username = username;
-      if(!$scope.data.email)
-        $scope.data.email = email;
-      if(!$scope.data.address)
-        $scope.data.address = address;
-      if(!$scope.data.phone_number)
-        $scope.data.phone_number = phone_number;
-      $http.post('/routes/editprofile', $scope.data).then(function(res){
-          if (res.data.result == "success"){
+      // if(!$scope.data.fullName)
+      //   $scope.data.fullName = fullName;
+      // if(!$scope.data.username)
+      //   $scope.data.username = username;
+      // if(!$scope.data.email)
+      //   $scope.data.email = email;
+      // if(!$scope.data.address)
+      //   $scope.data.address = address;
+      // if(!$scope.data.phone_number)
+      //   $scope.data.phone_number = phone_number;
+      // $http.post('/routes/editprofile', $scope.data).then(function(res){
+      //     if (res.data.result == "success"){
               $timeout(function(){
                   $location.path('#/');
               }, 2000);
-          }else{
-              $scope.message = res.data.message;
-          }
-      });
+          // }else{
+          //     $scope.message = res.data.message;
+          // }
+      //});
     }
   }
 });

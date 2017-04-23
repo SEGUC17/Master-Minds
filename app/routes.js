@@ -92,7 +92,7 @@ passport.use('local.clientsadmins', new LocalStrategy(
                             if (!owner) {
                                 return done(null, false);
                             }
-                            if (!owner.validPassword(password)) { // comparing the password of the business owner and the given password
+                            if (!owner.validPassword(password) || owner.ban) { // comparing the password of the business owner and the given password
                                 return done(null, false);
                             }
                             return done(null, owner);
@@ -335,24 +335,24 @@ router.get('/subscribe', function (req, res, next) {
     res.render('subscribe');
 });
 
-router.post('/subscribe',/* upload.single('business_logo'),*/ function (req, res) {
+router.post('/subscribe', upload.single('business_logo'), function (req, res) {
     console.log('arrived in routesjs subscribe');
-    //console.log(req.file.filename);
+    console.log(req.file.filename);
     BusinessOwner.findOne({ 'personal_email': req.body.personal_email }, function (err, owner) { //check that email is unique
         if (err) {
-            return res.json({ result: 'failed', message: 'error' });
+            return res.status(400).send('An error occured.');
         }
         if (owner) {
-            //fs.unlink('./public/businessowner/' + req.file.filename); // same as **
-            return res.json({ result: 'failed', message: 'email already in use' });
+            fs.unlink('./public/businessowner/' + req.file.filename); // same as **
+            return res.status(400).send('Personal email already in use.');
         }
         BusinessOwner.findOne({ 'business_name': req.body.business_name }, function (err, owner) { // check that business name is unique
             if (err) {
                 return res.json({ result: 'failed', message: 'error' });
             }
             if (owner) {
-                //fs.unlink('./public/businessowner/' + req.file.filename); //  same as **
-                return res.json({ result: 'failed', message: 'business name in use' });
+                fs.unlink('./public/businessowner/' + req.file.filename); //  same as **
+                return res.status(400).send('Business name already in use.');
             }
             var newOwner = new BusinessOwner(); // insert data into database
             newOwner.personal_email = req.body.personal_email;
@@ -360,7 +360,7 @@ router.post('/subscribe',/* upload.single('business_logo'),*/ function (req, res
             newOwner.business_name = req.body.business_name;
             newOwner.fullName = req.body.fullName;
             newOwner.business_description = req.body.business_description;
-            //newOwner.business_logo = req.file.filename;
+            newOwner.business_logo = req.file.filename;
             var a = req.body.business_emails;
             var arr = a.split(',');
             for (i = 0; i < arr.length; i++) {
@@ -377,9 +377,8 @@ router.post('/subscribe',/* upload.single('business_logo'),*/ function (req, res
             newOwner.save(function (err, result) {
                 if (err) {
                     console.log(err);
-                    return res.json({ result: 'failed', message: 'error123' });
+                    return res.status(400).send('An error occured.');
                 }
-                return res.json({ result: 'success', message: 'subscribed to directory' });
             });
         });
     });
@@ -394,25 +393,25 @@ router.post('/editboprofile', upload.single('business_logo'), function (req, res
     BusinessOwner.findOne({ 'personal_email': req.user.personal_email }, function (err, user) {
         if (err) {
             console.log(err);
-            return res.json({ result: 'failed', message: 'error' });
+            return res.status(400).send('An error occured.');
         }
         if (req.body.new_email && req.body.business_name) {
             BusinessOwner.findOne({ 'personal_email': req.body.new_email }, function (err, owner) {
                 if (err) {
                     console.log(err);
-                    return res.json({ result: 'failed', message: 'error' });
+                    return res.status(400).send('An error occured.');
                 }
                 if (owner) {
-                    return res.json({ result: 'failed', message: 'new email already in use' });
+                    return res.status(400).send('New email already in use.');
                 }
                 user.personal_email = req.body.new_email;
                 BusinessOwner.findOne({ 'business_name': req.body.business_name }, function (err, owner) {
                     if (err) {
                         console.log(err);
-                        return res.json({ result: 'failed', message: 'error' });
+                        return res.status(400).send('An error occured.');
                     }
                     if (owner) {
-                        return res.json({ result: 'failed', message: 'new business name already in use ' });
+                        return res.status(400).send('New business name already in use.');
                     }
                     user.business_name = req.body.business_name;
                     if (req.body.new_password)
@@ -442,9 +441,8 @@ router.post('/editboprofile', upload.single('business_logo'), function (req, res
                     user.save(function (err, result) {
                         if (err) {
                             console.log(err);
-                            return res.json({ result: 'failed', message: 'error' });
+                            return res.status(400).send('An error occured.');
                         }
-                        return res.json({ result: 'success', message: 'business profile updated' });
                     });
                 });
             });
@@ -452,10 +450,10 @@ router.post('/editboprofile', upload.single('business_logo'), function (req, res
             if (req.body.business_name) {
                 BusinessOwner.findOne({ 'business_name': req.body.business_name }, function (err, owner) {
                     if (err) {
-                        return res.json({ result: 'failed', message: 'error' });
+                        return res.status(400).send('An error occured.');
                     }
                     if (owner) {
-                        return res.json({ result: 'failed', message: 'new business name already in use ' });
+                        return res.status(400).send('New business name already in use.');
                     }
                     user.business_name = req.body.business_name;
                     if (req.body.new_password)
@@ -483,8 +481,7 @@ router.post('/editboprofile', upload.single('business_logo'), function (req, res
                         user.business_logo = req.file.filename;
                     }
                     user.save(function (err, result) {
-                        if (err) return res.json({ result: 'failed', message: 'error' });
-                        return res.json({ result: 'success', message: 'business profile updated' });
+                        if (err) return res.status(400).send('An error occured.');
                     });
                 });
             } else if (req.body.new_email) {
@@ -521,8 +518,7 @@ router.post('/editboprofile', upload.single('business_logo'), function (req, res
                         user.business_logo = req.file.filename;
                     }
                     user.save(function (err, result) {
-                        if (err) return res.json({ result: 'failed', message: 'error' });
-                        return res.json({ result: 'success', message: 'business profile updated' });
+                        if (err) res.status(400).send('An error occured.');
                     });
                 });
             }
@@ -552,8 +548,7 @@ router.post('/editboprofile', upload.single('business_logo'), function (req, res
                     user.business_logo = req.file.filename;
                 }
                 user.save(function (err, result) {
-                    if (err) return res.json({ result: 'failed', message: 'error' });
-                    return res.json({ result: 'success', message: 'business profile updated' });
+                    if (err) return res.status(400).send('An error occured.');
                 });
             }
     });
