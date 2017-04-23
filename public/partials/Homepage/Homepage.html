@@ -34,7 +34,7 @@
 
       <input type="text" placeholder="Search" ng-model="Search" />
       <br>
-      <button ng-click="getSearch()">Submit</button>
+      <!-- <button ng-click="getSearch()">Submit</button> -->
       <br><br>
       <div ng-repeat="ad in ads" align = "margin-right">
         <p> {{ad.business_name}} </p>
@@ -42,7 +42,7 @@
       </div>
 
 	<div class="verticalmenu" >
-		<div ng-repeat="business in businesses">
+		<div ng-repeat="business in businesses | filter:{business_name:Search}">
 		<article >
 			<div class="trialimage">
 				<img src="../../businessowner/{{business.business_logo}}" class="generic-icon" width="80" height="80" align="left">
