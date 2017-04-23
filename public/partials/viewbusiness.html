@@ -26,9 +26,9 @@
       <p>{{business_description}}</p>
     </div>
 
+      <h3 ng-show ="tab.isSelected(2)">Services</h3>
     <div class="tab" ng-show ="tab.isSelected(2)" ng-repeat="service in services">
-      <h3>Services</h3>
-      <img src=../businessowner/{{service.service_pic}} class="service_logo"></img>
+      <img href="#/detailedService{{location}}/{{service.service_name}}" src=../businessowner/{{service.service_pic}} class="service_logo" style="width:70px;height:50px;"></img>
       <a href="#/detailedService{{location}}/{{service.service_name}}">{{service.service_name}}</a>
 
     </div>
@@ -38,8 +38,5 @@
       <p>{{FAQ}}</p>
 
     </div>
-  </section>
-
-{{service.service_name}}
-{{location}}
+  </section><br><br>
 </head>

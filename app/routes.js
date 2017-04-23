@@ -629,9 +629,9 @@ router.get('/detailedService/:business/:service', function (req, res) {
         if (busi)
             for (var i = 0; i < busi.services.length; i++) {
                 if (busi.services[i].service_name == req.param('service')) {
-                    res.json({ 'result': 'success', 'message': 'service found', 'content': busi.services[i] })
+                    return res.json({ 'result': 'success', 'message': 'service found', 'content': busi.services[i] })
                 } else {
-                    res.json({ 'result': 'failure', 'message': 'service not found' })
+                    return res.json({ 'result': 'failure', 'message': 'service not found' })
                 }
             }
     })
