@@ -3,6 +3,8 @@ angular.module('Ang_viewbusiness',[])
     var str_url = $location.url().split('/');
     var index = str_url.length - 1;
     var element = str_url[index];
+    $scope.location = $location.url();
+
 
     $http.get("/routes/viewbusiness", {params:{"search": element}})
 .then(function (res) {
