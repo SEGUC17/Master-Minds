@@ -3,7 +3,7 @@ angular.module('Ang_viewbusiness', [])
     var str_url = $location.url().split('/');
     var index = str_url.length - 1;
     var element = str_url[index];
-    $scope.location = $location.url();
+    $scope.location =str_url[str_url.length - 1];
     $scope.isAdmin = false;
     $scope.banned = false;
     $http.get('/routes/admin/isAdmin').then(function (res) {
