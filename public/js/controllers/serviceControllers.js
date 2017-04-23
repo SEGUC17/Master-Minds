@@ -1,6 +1,6 @@
 angular.module('serviceControllers', [])
 
-        .controller('serviceController', function ($scope, $http, $location, $route) {
+        .controller('serviceController', function ($scope, $http, $location, $route,$window) {
                 var str_url = $location.url().split('/');
                 $http.get('/routes/admin/isAdmin').then(function (res) {
                         if (res.data.result == "success") {
@@ -114,7 +114,13 @@ angular.module('serviceControllers', [])
                                 console.log(username);
                                 $http.put('/routes/admin/only-ban-user/' + username, {}).then(function (res) {
                                       
-                                                $route.reload();
+                                if(res.data.result == "success"){
+                                    $scope.msg = 'The user has been banned!';
+                                    }else{
+                                    $scope.msg = 'Banning user not successful!';
+                                    }
+                                    
+                                    $window.alert($scope.msg);
                                        
                                 });
                         }
