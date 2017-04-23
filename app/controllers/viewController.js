@@ -10,7 +10,7 @@ let viewController = {
         //search field
                 if (search){
             
-            BusinessOwner.find({business_name: search}, function(err, business){
+            BusinessOwner.find({business_name: { "$regex": search, "$options": "i" }}, function(err, business){
                 if(err){
                     res.status(500).json({"result":"failure","message":"Database error, purging database!"});
                 }else{
