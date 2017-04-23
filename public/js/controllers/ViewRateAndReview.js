@@ -76,5 +76,4 @@ angular.module('Ang_view_rateandreview', [])
       }
     };
 
-v
 });
