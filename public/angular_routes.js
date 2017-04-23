@@ -89,5 +89,13 @@ angular.module('appRoutes', ['ngRoute'])
         templateUrl: 'partials/viewbusiness.html',
         controller: 'ViewBusinessCtrl'
         })
+        .when('/service_add',{
+    templateUrl:'partials/businessowner_service/service_add.html',
+    controller:'addCtrl'
+  })
+  .when('/service_edit',{
+  templateUrl:'partials/businessowner_service/service_edit.html',
+  controller:'editCtrl'
+})
     .otherwise({ redirectTo: '/' });
 }]);
