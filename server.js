@@ -11,7 +11,7 @@ var flash = require('connect-flash');
 var validator = require('express-validator');
 var multer = require('multer');
 var fs = require('fs');
-// var DB_URI = "mongodb://BreakOut:root@ds117251.mlab.com:17251/heroku_gj9hvr81";
+var DB_URI = "mongodb://BreakOut:root@ds117251.mlab.com:17251/heroku_gj9hvr81";
 var expressValidator = require('express-validator');
 var flash = require('connect-flash');
 var session = require('express-session');
@@ -59,14 +59,14 @@ app.use(expressValidator({
 }));
 
 
-// mongoose.Promise = global.Promise;
-// mongoose.connect(DB_URI,function(err){
-//   if(err){
-//     console.log(err);
-//   }else{
-//     console.log("Connected to DB successfuly");
-//   }
-// });
+mongoose.Promise = global.Promise;
+mongoose.connect(DB_URI,function(err){
+  if(err){
+    console.log(err);
+  }else{
+    console.log("Connected to DB successfuly");
+  }
+});
 
 
 //Configure app
