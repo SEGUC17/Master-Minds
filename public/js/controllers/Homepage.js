@@ -6,6 +6,11 @@ angular.module('Ang_Homepage', [])
         console.log(res.data.content);
     });
 
+    $http.get('/viewAdvertisement').then(function(res){
+        $scope.ads = res.data.content;
+        console.log(res.data.content);
+    });
+
     // $scope.getSearch = function(){
 
     //     bSearch($scope.Search);
