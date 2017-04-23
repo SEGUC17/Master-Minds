@@ -1,8 +1,10 @@
 angular.module('Ang_Client_profile', [])
 
 .controller('ClientprofileCtrl',function($scope,$http,$location,$route)
-{
- 
+{/*this controller will be loaded when the page is viewed 
+   automatically it will load the user details
+   and the business that he liked
+ */
   $http.get('/routes/viewprofile').then(function(res)
   {
 
@@ -29,7 +31,10 @@ angular.module('Ang_Client_profile', [])
   });
 })
 .controller('AdminClientprofileCtrl',function($scope,$http,$location,$route)
-{var str_url = $location.url().split('/');
+{/*this controller will be loaded when the page is viewed 
+   automatically it will load the user details so the admin can ban him if he wants to
+ */
+ var str_url = $location.url().split('/');
  
   $http.get('/routes/viewprofile/'+str_url[str_url.length-1]).then(function(res)
   {
