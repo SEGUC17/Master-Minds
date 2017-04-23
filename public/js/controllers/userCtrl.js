@@ -10,9 +10,9 @@ app.controller('regCtrl', function ($scope, $http, $location, $timeout) {
             $http.post('/routes/register', $scope.regData).then(function (res) {
                 if (res.data.result == "success") {
                     $scope.loading = false;
-                    $scope.successMsg = res.data.message + '....Redirecting to the homepage'; // showing the success message
+                    $scope.successMsg = res.data.message + '....Redirecting to the login page'; // showing the success message
                     $timeout(function () {
-                        $location.path('#/'); // on success redirect to the homepage
+                        $location.path('/login'); // on success redirect to the homepage
                     }, 2000); // 2 seconds delay
 
                 } else {
