@@ -1,0 +1,44 @@
+
+    <div ng-controller="RateAndReviewBusinessCtrl">
+      <P ng-init="resp_rate=''">
+      <span ng-bind="resp_rate"></span>
+      </p>
+      <form class ="form-group" ng-submit= "Post_Rate_Business(RateData)" ng-init="initbs()">
+        <p class="jumbotron" >your rating is important to us </p>
+        <div class="btn-group" data-toggle="radio">
+        <label class="btn btn-primary active">
+          <input type="radio" name="rating" id="rating" value =1 ng-model="RateData.rating" autocomplete="off" checked>1 star
+        </label>
+        <label class="btn btn-primary">
+          <input type="radio" name="rating" id="rating"  value =2 ng-model="RateData.rating" autocomplete="off">2 stars
+        </label>
+        <label class="btn btn-primary">
+          <input type="radio" name="rating" id="rating" value =3 ng-model="RateData.rating" autocomplete="off">3 stars
+        </label>
+      </label>
+      <label class="btn btn-primary">
+        <input type="radio" name="rating" id="rating" value =4 ng-model="RateData.rating" autocomplete="off">4 stars
+      </label>
+      <label class="btn btn-primary">
+        <input type="radio" name="rating" id="rating" value =5 ng-model="RateData.rating" autocomplete="off">5 stars
+      </label>
+    </div></br></br>
+      <input class ="btn btn-primary" type="submit" value = "add">
+      <input class ="btn btn-primary" type="reset" value="clear">
+      </form>
+
+
+      <P ng-init="resp_review=''">
+      <span ng-bind="resp_review"></span>
+      </p>
+
+
+      <p class="jumbotron">please provide us with your review</p>
+      <form ng-submit ="Post_Review_Business(RateData)" class ="form-group" >
+        <label for="comment">review:</label>
+      <textarea name="review"  class="form-control" id="review"  rows="5" ng-model="RateData.review"></textarea> </br>
+        <input class ="btn btn-primary" type="submit" value = "add">
+        <input class ="btn btn-primary" type="reset" value="clear">
+      </form>
+
+    </div>

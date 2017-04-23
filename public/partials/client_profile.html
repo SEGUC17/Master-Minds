@@ -1,0 +1,17 @@
+<div ng-controller = "ClientprofileCtrl">
+  <P ng-init="message=''">
+  <span ng-bind="message"></span>
+  </p>
+  <div ng-init="fullName=''" ng-init="username=''" ng-init="email=''" ng-init="address=''" ng-init="phone_number=''">
+  <label class="jumbotron">full name:</label> <span ng-bind="fullName"></span></br>
+  <label class="jumbotron">username:</label><span ng-bind="username"></span></br>
+  <label class="jumbotron">email:</label><span ng-bind="email"></span></br>
+  <label class="jumbotron">address:</label><span ng-bind="address"></span></br>
+  <label class="jumbotron">phone_number:</label><span ng-bind="phone_number"></span>
+  </div>
+  <a class="btn btn-primary" href="#/editprofile">edit profile</a>
+  <div class="h1">you liked these businesses</div>
+  <div class="jumbotron" ng-repeat="business in liked">
+    <label ><span ng-bind="business.business_names"></span></label>
+  </div>
+</div>

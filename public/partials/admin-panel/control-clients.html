@@ -1,0 +1,35 @@
+<div ng-controller="adminController">
+	<div ng-show="isAdmin" data-ng-init="getUsers()">
+		<div class="page-header">
+    		<h1>Control Clients</h1>
+		</div>
+		<a href="#/admin-panel">Back to Admin Control Panel Home</a>
+		<br>
+<!--<input type="text" name="username" placeholder="Please enter a name" ng-model="" > -->
+		<div ng-hide="userList.length">No users in the database yet!</div>
+		<form name="myForm">
+			<input name="myInput" ng-model="searchText" ng-minlength="3" placeholder="Search for a client..">
+			<br>
+			<br>
+			<ul ng-if="myForm.myInput.$valid && searchText.length">
+				<li data-ng-repeat="user in userList | filter:{username:searchText}" style="margin-bottom:20px;">
+	 				Username: <a ng-href="#/client_profile/{{user.username}}">{{user.username}}</a>
+					<br> Fullname: {{user.fullname}}
+					<br> Email: {{user.reported}}
+					<br> Banned: {{user.ban}}
+					<br> ID: {{user._id}}
+					<br>
+					<button ng-click="banUser(user.username)">Ban/Unban User</button>
+				</li>
+			</ul>
+			<br>
+			<br>
+		</form>
+	</div>
+<div class="page-header" ng-hide="isAdmin">
+	<center>
+	<h1>An error occurred!</h1> 
+	<br><h1>{{reason}}</h1>
+	</center>
+</div>
+</div>
