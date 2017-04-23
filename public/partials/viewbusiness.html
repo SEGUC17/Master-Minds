@@ -4,7 +4,7 @@
   <div >
     <img src=../businessowner/{{business_logo}} class="logo" style="width:500px;height:350px;"> </img>
     <h1>{{business_name}}</h1>
-    <button type="button" class="btn btn-default" ng-click="getLikeBusiness()">Like</button>
+    <button type="button" class="btn btn-default" ng-hide="isAdmin" ng-click="getLikeBusiness()">Like</button>
     <br>
   </div>
   <form class ="form-group" ng-show="isAdmin">
