@@ -105,14 +105,23 @@ let productContoller = {
         Should be view in the directory page
         */
         advertisements.find({}, function (err, ad) {
+            if(ad.length == 0){
+                res.json({ 'result': 'failure', 'message': 'There are no ads to view' });
+                return;
+            }
+            else{
             for (var i = 0; i < ad.length; i++) {
                 if (((new Date().getDate()) - ad[i].date.getDate()) > 7 || ((new Date().getDate()) - ad[i].date.getDate()) >= -24 || ((new Date().getMonth()) - ad[i].date.getMonth()) > 1) {
                     ad[i].remove();
                 }
             }
-        })
-        var adArray = [];   //Array of 4 randomly chosen advertisements
+                var adArray = [];   //Array of 4 randomly chosen advertisements
         advertisements.find({}, function (err, ads) {
+              if(ads.length == 0){
+                res.json({ 'result': 'failure', 'message': 'There are no ads to view' });
+                return;
+            }
+            else{
             if (ads.length > 1) {   //There must be atleast 1 advertisement in the database
                 for (var i = 0; i < 4;) {   //To add only 4 ads to the view
                     var random = Math.floor(Math.random() * 11);    //Choose a random from the max. of 12 ads you can have in the database
@@ -124,10 +133,17 @@ let productContoller = {
             }
             // console.log(adArray);
             res.json({ 'result': 'success', 'message': 'advertisementsView', 'content': adArray });    //Pass the chosen ads to the view
+        }   
+     })
+    
+}
         })
+
+        
+     }
     }
 
-}
+
 
 //Export controller
 module.exports = productContoller;

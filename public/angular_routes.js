@@ -75,7 +75,7 @@ angular.module('appRoutes', ['ngRoute'])
         controller: 'adminController'
     })
 
-       .when('/:business_name', {
+       .when('/business/:business_name', {
         templateUrl: 'partials/viewbusiness.html',
         controller: 'ViewBusinessCtrl'
         })
