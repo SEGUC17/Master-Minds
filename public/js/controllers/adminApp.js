@@ -27,6 +27,7 @@ angular.module('adminApp', [])
            //     $route.reload();
            // }, 500);
            $scope.getUsers();
+           $route.reload();
         });
     };
     $scope.banBus = function(username){

@@ -2,11 +2,16 @@
 <html>
 <head ng-controller ='ViewBusinessCtrl as business'>
   <div >
-    <img src=../businessowner/{{business_logo}} class="logo"> </img>
+    <img src=../businessowner/{{business_logo}} class="logo" style="width:500px;height:350px;"> </img>
     <h1>{{business_name}}</h1>
     <button type="button" class="btn btn-default" ng-click="getLikeBusiness()">Like</button>
     <br>
   </div>
+  <form class ="form-group" ng-show="isAdmin">
+  <input class ="btn btn-primary" type="submit" value = "Ban" ng-hide="banned" ng-click="banBus(business_name)">
+  <input class ="btn btn-primary" type="submit" value = "Unban" ng-show="banned" ng-click="banBus(business_name)">
+  <input class ="btn btn-primary" type="submit" value = "Delete Business"  ng-click="deleteBus(business_name)">
+  </form>
 
   <section ng-controller = "tabController as tab">
     <ul class="nav nav-pills">
