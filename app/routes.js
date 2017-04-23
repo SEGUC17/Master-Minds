@@ -31,31 +31,38 @@ var serviceController = require('./controllers/serviceController');
 var path = require('path');
 
 //Add routes
-router.post('/rating/:business', function (req, res) { RateAndReviewCtrl.Post_Rate_Business(req, res); });
-router.post('/rating/:business/:service', function (req, res) { RateAndReviewCtrl.Post_Rate_Service(req, res); });
-router.post('/reviews/:business', function (req, res) { RateAndReviewCtrl.Post_Review_Business(req, res); });
-router.post('/reviews/:business/:service', function (req, res) { RateAndReviewCtrl.Post_Review_Service(req, res); });
-router.get('/viewRateBusiness/:business', function (req, res) { RateAndReviewCtrl.Get_Rate_Business(req, res); });
-router.get('/viewRateService/:business/:service', function (req, res) { RateAndReviewCtrl.Get_Rate_Service(req, res); });
-router.get('/viewReviewBusiness/:business', function (req, res) { RateAndReviewCtrl.Get_Review_Business(req, res); });
-router.get('/viewReviewService/:business/:service', function (req, res) { RateAndReviewCtrl.Get_Review_Service(req, res); });
-router.post('/reportBusiness/:business', function (req, res) { RateAndReviewCtrl.Report_Business_Review(req, res); });
+router.post('/rating/:business', function (req, res) { RateAndReviewCtrl.Post_Rate_Business(req, res); });//post new rating in the business_rating in the database
+router.post('/rating/:business/:service', function (req, res) { RateAndReviewCtrl.Post_Rate_Service(req, res); });//post new rating in the service_rating in the database
+router.post('/reviews/:business', function (req, res) { RateAndReviewCtrl.Post_Review_Business(req, res); });//post new review in the business_reviews in the database
+router.post('/reviews/:business/:service', function (req, res) { RateAndReviewCtrl.Post_Review_Service(req, res); });//post new review in the service_review in the database
+router.get('/viewRateBusiness/:business', function (req, res) { RateAndReviewCtrl.Get_Rate_Business(req, res); });//get the rating of a business from the database
+router.get('/viewRateService/:business/:service', function (req, res) { RateAndReviewCtrl.Get_Rate_Service(req, res); });// get the rating of the service from the database
+router.get('/viewReviewBusiness/:business', function (req, res) { RateAndReviewCtrl.Get_Review_Business(req, res); });// get the reviews of the business from the database
+router.get('/viewReviewService/:business/:service', function (req, res) { RateAndReviewCtrl.Get_Review_Service(req, res); });//get the reviews of the service from the database
+router.post('/reportBusiness/:business', function (req, res) { RateAndReviewCtrl.Report_Business_Review(req, res); });//add a new report in the database
 
 //Add routes
 router.get('/', homepageController.test);
 router.get('/viewbusiness', viewController.viewBusiness);
 router.get('/viewservices', viewController.viewServices);
 router.get('/viewprofile', profileController.viewProfile);
+router.get('/viewprofile/:username', profileController.viewProfileWithUsername);
 router.get('/editprofile', profileController.getEditProfile);
 router.post('/editprofile', upload_client.single('profile_pic'), profileController.editProfile);
 
+//Admin related routes
 router.put('/admin/ban-user/:username', adminFunctionsController.banuser);
+router.put('/admin/only-ban-user/:username', adminFunctionsController.onlybanuser);
 router.put('/admin/ban-bus/:business_name', adminFunctionsController.banbus);
 router.get('/admin/viewReports', adminFunctionsController.viewReportedReviews);
 router.put('/admin/deleteReview/:id', adminFunctionsController.deleteReportedReviews);
 router.put('/admin/deletebussines/:business_name', adminFunctionsController.deleteOwner);
 router.get('/admin/getUsers', adminFunctionsController.getUsers);
 router.get('/admin/getBus', adminFunctionsController.getBusinesses);
+router.get('/admin/view_unaccepted_businesses', view_unaccepted_businesses.view_unaccepted);
+router.put('/admin/accept_application/:business', view_unaccepted_businesses.accept_application);
+router.get('/admin/isAdmin', adminFunctionsController.isAdmin);
+
 
 //Add routes
 router.get('/detailedProduct/:businessname/:product', productController.reportServiceReview);
@@ -65,10 +72,6 @@ router.post('/advertise/:businessname/:product', productController.addAdvertisme
 router.post('/report/:business/:service', productController.reportServiceReview);
 router.post('/reply', replyController.Post_Reply);
 router.post('/deletebussines', Deletebussinesowner.deleteOwner);
-// // router.get('/logout', function (req, res) {
-// //     req.logout();
-// //     res.redirect('/login');
-// });
 router.post('/service_add', serviceController.addservice);
 router.post('/service_edit', serviceController.editservice);
 
@@ -76,49 +79,35 @@ router.post('/service_edit', serviceController.editservice);
 
 passport.use('local.clientsadmins', new LocalStrategy(
     function (username, password, done) {
-        var already_sent_a_json = 0;
-        UserLoginController.getUserByUsername(username, function (err, user) {
+        UserLoginController.getUserByUsername(username, function (err, user) { //searching for a matching username in the clients using the clientLoginController
             if (err) throw err;
-            if (!user) {
-                // console.log("Reached here!");
-                adminLoginController.getAdminByUsername(username, function (err, admin) {
-                    //console.log("Reached here 1!");
+            if (!user) { // if not found
+                adminLoginController.getAdminByUsername(username, function (err, admin) { //searching for a matching username in the admins using the AdminLoginController
                     if (err) throw err;
-                    if (!admin) {
-                        //console.log("Reached here 2");
-                        //return done(null, false);
-                        console.log('Right before businessowner.findone');
-                        BusinessOwner.findOne({'personal_email': username}, function (err, owner) {
+                    if (!admin) { // if not found
+                        BusinessOwner.findOne({ 'personal_email': username }, function (err, owner) { // searching for a matching email in the business owners
                             if (err) {
-                                console.log(err);
                                 return done(err);
                             }
                             if (!owner) {
-                                console.log('business not found');
                                 return done(null, false);
                             }
-                            if (!owner.validPassword(password)) {
-                                console.log('wrong password');
+                            if (!owner.validPassword(password)) { // comparing the password of the business owner and the given password
                                 return done(null, false);
                             }
                             return done(null, owner);
                         });
                     }
-                    else{
-                        console.log(admin);
-                        if (!adminLoginController.comparePassword(password, admin.password)) {
+                    else {
+                        if (!adminLoginController.comparePassword(password, admin.password)) { // comparing the password of the admin and the given password
                             return done(null, false);
                         } else {
                             return done(null, admin);
                         }
                     }
                 });
-
-                //return done(null, false);
             } else {
-
-
-                UserLoginController.comparePassword(password, user.password, function (err, isMatch) {
+                UserLoginController.comparePassword(password, user.password, function (err, isMatch) { // comparing the password of the client and the given password
                     if (err) throw err;
                     if (isMatch && !user.ban) {
                         return done(null, user);
@@ -132,11 +121,11 @@ passport.use('local.clientsadmins', new LocalStrategy(
 
 
 
-passport.serializeUser(function (user, done) {
+passport.serializeUser(function (user, done) { // saving the session by the id of the user
     done(null, user.id);
 });
 
-passport.deserializeUser(function (id, done) {
+passport.deserializeUser(function (id, done) { // return the logged in user using the saved id
     adminLoginController.getAdminById(id, function (err, admin) {
         if (!admin) {
             UserLoginController.getUserById(id, function (err, user) {
@@ -234,36 +223,22 @@ router.post('/service_edit', function (req, res) {
 
 });
 
-// Register
-router.get('/register', function (req, res) {
-
-    res.render('register');
-});
-
 router.get('/successRedirect', function (req, res) {
     res.send("successRedirect");
 });
 router.get('/failureRedirect', function (req, res) {
     res.send("failureRedirect");
-
-
-});
-// Login
-router.get('/login', function (req, res) {
-    res.render('login');
-
 });
 
-// Register User
+// Register Client
 router.post('/register', function (req, res) {
-    var already_sent_a_json = 0;
+    var already_sent_a_json = 0; // this flag is for making sure that this method don't send 2 res.json to the frontend
     var fullName = req.body.fullName;
     var email = req.body.email;
     var username = req.body.username;
     var address = req.body.address;
     var phone_number = req.body.phone_number;
     var password = req.body.password;
-    //  var password2 = req.body.password2;
 
     // Validation
     req.checkBody('fullName', 'Name is required').notEmpty();
@@ -273,16 +248,15 @@ router.post('/register', function (req, res) {
     req.checkBody('address', 'Address is required').notEmpty();
     req.checkBody('phone_number', 'Phone Number is required').notEmpty();
     req.checkBody('password', 'Password is required').notEmpty();
-    //    req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
 
     var errors = req.validationErrors();
     if (errors) {
         if (already_sent_a_json == 0) {
             already_sent_a_json = 1
-            return res.json({ result: "failure", message: "The email is not valid" });
+            return res.json({ result: "failure", message: "The email is not valid" }); // this is the only validator error that will be sent from the backend because the others are handled properly in the frontend
         }
     } else {
-        var newClient = new User({
+        var newClient = new User({ // making a new client with the given attributes
             fullName: fullName,
             email: email,
             username: username,
@@ -291,7 +265,7 @@ router.post('/register', function (req, res) {
             password: password
         });
 
-        var query1 = { username: newClient.username };
+        var query1 = { username: newClient.username }; // making sure that the username is unique
         User.findOne(query1, function (err, user) {
             if (err) {
                 if (already_sent_a_json == 0) {
@@ -303,7 +277,7 @@ router.post('/register', function (req, res) {
                     already_sent_a_json = 1
                     return res.json({ result: "failure", message: "this username has been already taken" });
                 }
-            } else {
+            } else { // making sure that the email is unique
                 var query2 = { email: newClient.email };
                 User.findOne(query2, function (err1, user2) {
                     if (err1) {
@@ -322,7 +296,7 @@ router.post('/register', function (req, res) {
 
         });
 
-        UserRegisterController.createUser(newClient, function (err2, client) {
+        UserRegisterController.createUser(newClient, function (err2, client) { // making a new client in the clientRegisterController
             if (err2) {
                 if (already_sent_a_json == 0) {
                     already_sent_a_json = 1
@@ -331,8 +305,6 @@ router.post('/register', function (req, res) {
             } else {
                 if (already_sent_a_json == 0) {
                     already_sent_a_json = 1
-                    console.log(client);
-                    console.log("backend");
                     return res.json({ result: "success", message: "The registration was successful" });
                 }
             }
@@ -340,20 +312,21 @@ router.post('/register', function (req, res) {
     }
 });
 
+// the login route that will call the passport method from up there and will redirect to successjson if the user has successfully logged in and will redirect to failurejson if the user has failed to log in
 router.post('/login',
 
     passport.authenticate('local.clientsadmins', { successRedirect: '/routes/successjson', failureRedirect: '/routes/failurejson' }));
 
 
-router.get('/successjson', function (req, res) {
+router.get('/successjson', function (req, res) { // if the user has successfully logged in
     res.json({ result: "success", message: "You have successfully logged in" })
 });
 
-router.get('/failurejson', function (req, res) {
+router.get('/failurejson', function (req, res) { // if the user has failed to log in
     res.json({ result: "failure", message: "Unknown User" });
 });
 
-router.post('/logout', function (req, res) {
+router.post('/logout', function (req, res) { // the logout route 
     req.logout();
     res.json({ result: "success", message: "You have successfully logged out" });
 });
@@ -391,7 +364,7 @@ router.post('/subscribe',/* upload.single('business_logo'),*/ function (req, res
             var a = req.body.business_emails;
             var arr = a.split(',');
             for (i = 0; i < arr.length; i++) {
-              newOwner.business_emails.push({ email: arr[i] });
+                newOwner.business_emails.push({ email: arr[i] });
             }
             newOwner.address = req.body.address;
             newOwner.associated_bank = req.body.associated_bank;
@@ -601,6 +574,7 @@ function notLoggedIn(req, res, next) {
 }
 
 router.post('/like', function (req, res) {
+    console.log('in like')
     likeBusinessController.likeBusiness(req, res);
 
 })
@@ -612,8 +586,6 @@ router.post('/viewliked', function (req, res) {
     console.log(res);
 });
 
-router.post('/view_unaccepted_businesses', view_unaccepted_businesses.view_unaccepted);
-router.post('/accept_application/:business', view_unaccepted_businesses.accept_application);
 
 router.get('/somepage', function (req, res) {
     res.render('somepage');
@@ -624,28 +596,25 @@ router.get('/detailedService/:business/:service', function (req, res) {
         if (busi)
             for (var i = 0; i < busi.services.length; i++) {
                 if (busi.services[i].service_name == req.param('service')) {
-                    res.json({ 'result': 'success', 'message': 'service found', 'content': busi.services[i] })
-                } else {
-                    res.json({ 'result': 'failure', 'message': 'service not found' })
+                    return res.json({ 'result': 'success', 'message': 'service found', 'content': busi.services[i] })
                 }
             }
+        return res.json({ 'result': 'failure', 'message': 'service not found' })
+
     })
 });
 var stripe = require("stripe")("sk_test_v2rYv9d1Ka4fzqRBKLptDEr8");
 
 router.post('/checkout', function (req, res) {
-    // Set your secret key: remember to change this to your live secret key in production
-    // See your keys here: https://dashboard.stripe.com/account/apikeys
-
     // Token is created using Stripe.js or Checkout!
     // Get the payment token submitted by the form:
-    var token = req.body.stripeToken; // Using Express
+    var token = req.body.id; // Using Express
     // Charge the user's card:
     var charge = stripe.charges.create({
-        amount: 1000,
+        amount: Number(req.body.price),
         currency: "usd",
         description: "Example charge",
-        source: token,
+        source: req.body.token.id,
     }, function (err, charge) {
         // asynchronously called
     });
@@ -656,7 +625,7 @@ router.get('/nav', function (req, res) {
     if (!req.user) {
         return res.json({ 'result': 'failure', 'message': 'user not logged in' });
     } else {
-        businesses.findOne({ personal_email: req.user.username }, function (err, busi) {
+        businesses.findOne({ personal_email: req.user.personal_email }, function (err, busi) {
             if (busi) {
                 return res.json({ 'result': 'success', 'message': 'business', 'content': busi });
             } else

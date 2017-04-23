@@ -21,6 +21,15 @@ angular.module('adminApp', [])
            $scope.getUsers();
         });
     };
+    $scope.onlyBanUser = function(username){
+        $http.put('/routes/admin/only-ban-user/'+username,{}).then(function(res) {
+           // $timeout(function() {
+           //     $route.reload();
+           // }, 500);
+           $scope.getUsers();
+           $route.reload();
+        });
+    };
     $scope.banBus = function(username){
         $http.put('/routes/admin/ban-bus/'+username,{}).then(function(res) {
             //$timeout(function() {
@@ -30,7 +39,7 @@ angular.module('adminApp', [])
         });
     };
     $scope.deleteReview = function(id){
-        $http.put('/routes/admin/deleteReview/'+id,{}).then(function(res) {
+            $http.put('/routes/admin/deleteReview/'+id,{}).then(function(res) {
             $timeout(function() {
                 $route.reload();
             }, 500);
@@ -54,6 +63,31 @@ angular.module('adminApp', [])
         $http.get('/routes/admin/getBus').then(function(res) {
             if (res.data.result == "success") {
             $scope.busList = res.data.content;
+            }
+        });
+    }
+    $scope.getUnaccepted = function(){
+        $http.get('/routes/admin/view_unaccepted_businesses').then(function(res){
+            if(res.data.result == "success"){
+                $scope.unacceptedBusList = res.data.content;
+            }
+        });
+    }
+    $scope.acceptBus = function(business){
+        //console.log("acceptBus has been reached!");
+        //console.log(business);
+        $http.put('/routes/admin/accept_application/'+business,{}).then(function(res){
+                //console.log(business);
+                $scope.getUnaccepted();
+                $timeout(function() {
+                $route.reload();
+                }, 500);
+        });
+    }
+    $scope.isAdminCheck = function(){
+        $http.get('/routes/admin/isAdmin').then(function(res) {
+            if(res.data.result == "success"){
+                $scope.isAdmin = true;
             }
         });
     }

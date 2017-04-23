@@ -50,21 +50,25 @@
       <h1>Title: {{service_name}}</h1>
     </div>
     <div class="col-md-1 push-md-11">
-      stripe:
-      <form action="/checkout" method="POST">
-          <script
-            src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-            data-key="pk_test_NxzB4uWCnPgIv2pcsnsVEwdd"
-            data-amount="2000"
-            data-name="Demo Site"
-            data-description="2 widgets"
-            data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-            data-locale="auto">
-          </script>
+      <script src="https://checkout.stripe.com/checkout.js"></script>
+
+      <form ng-submit="checkout()">
+        <input type='submit' value='Purchase' id="customButton">
+        <p style="color: red">{{logged}}</p>
       </form>
     </div>
 
   </div><br>
+
+  <div ng-controller="navigation">
+    <div ng-show="type == 'business'">
+      <form ng-submit="advertise()">
+        <p style="color: green">{{advertiseSuccessMessage}}</p>
+        <p style="color: red">{{advertiseFailureMessage}}</p>
+        <input type='submit' value='Advertise' id="review">
+      </form>
+    </div>
+  </div>
 
   <div class="row">
     <div class="col-md-5 push-md-7"> <img src="{{service_pic}}" alt="logo" style="width:300px;height:300px;"></div><br>
@@ -103,16 +107,24 @@
   <h2>Comments:</h2>
   <p style="color: green">{{reportSuccessMessage}}</p>
   <p style="color: red">{{reportFailureMessage}}</p>
-  <div ng-repeat="service in service_reviews">
-    <form ng-submit="reportReview(service)" class="jumbotron" style="border: 1px solid grey">
+  <div ng-repeat="service in service_reviews" class="jumbotron" style="border: 1px solid grey">
+    <form ng-submit="reportReview(service)" >
       <fieldset>
         <div class="row">
-          <legend class="col-md-11 push-md-1">{{service.username}}:</legend>
-          <input ng-model="service.review" class="col-md-1 push-md-11 btn btn-2 btn-2j" onfocus="blur()" type="submit" value="report">
+          <legend class="col-md-11 push-md-1" ng-hide="isAdmin">{{service.username}}:</legend>
+          <a class="col-md-11 push-md-1" ng-show="isAdmin" ng-href="#/client_profile/{{service.username}}">{{service.username}}:</a>
+          <input ng-model="service.review" class="col-md-1 push-md-11 btn btn-2 btn-2j" onfocus="blur()" type="submit" value="report" ng-hide="isAdmin">
+
         </div>
+        </fieldset>
+        </form>
         <div ng-model="service.review">{{service.review}}</div>
-      </fieldset>
-    </form>
+          <button  onfocus="blur()" data-ng-click="deleteReview(service._id)"  ng-show="isAdmin">Delete review</button>
+          <br>
+          <button  onfocus="blur()" data-ng-click="onlyBanUser(service.username)" ng-show="isAdmin">Ban User</button>
+
+      
+    
   </div><br>
 
   <form ng-submit="reviewService(service)">

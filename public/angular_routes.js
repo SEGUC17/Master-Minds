@@ -45,9 +45,18 @@ angular.module('appRoutes', ['ngRoute'])
         controller: 'editbopCtrl'
     })
 
+    .when('/editprofile', {
+        templateUrl: 'partials/editclientprofile.html',
+        controller: 'editClientCtrl'
+    })
+
     .when('/detailedService/:business/:service', {
         templateUrl: function (urlattr){console.log(urlattr.business+" "+urlattr.service);return 'partials/Service/serviceView.html';},
         controller: 'serviceController'
+    })
+    .when('/client_profile/:username', {
+        templateUrl: function (urlattr){ return 'partials/admin_client_profile.html';},
+        controller: 'AdminClientprofileCtrl'
     })
 
     .when('/admin-panel', {
@@ -66,5 +75,16 @@ angular.module('appRoutes', ['ngRoute'])
         templateUrl: 'partials/admin-panel/control-businesses.html',
         controller: 'adminController'
     })
+    .when('/admin-panel/control-applications', {
+        templateUrl: 'partials/admin-panel/control-applications.html',
+        controller: 'adminController'
+    })
+
+       .when('/business/:business_name', {
+        templateUrl: 'partials/viewbusiness.html',
+        controller: 'ViewBusinessCtrl'
+        })
     .otherwise({ redirectTo: '/' });
 }]);
+
+       

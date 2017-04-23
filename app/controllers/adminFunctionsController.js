@@ -8,8 +8,8 @@ let adminFunctionsController = {
     
     //Banning User
     banuser:function(req,res){
-        console.log(req.user);
-        console.log(req.body);
+        //console.log(req.user);
+        //console.log(req.body);
         if(req.isAuthenticated()){
         if (req.user.admin){
         clients.findOne({username: req.param('username')}, function(err, user){
@@ -25,6 +25,39 @@ let adminFunctionsController = {
             user.save(function(err, user){
                 if(err){
                     res.json({"result": "failure","message":"Error in saving banned/unbanned user in database!"});
+                }else{
+                    res.json({"result": "success"}); //Confirm success by returning JSON object with result field set to "Success".
+                }
+            });
+            }else{
+                res.json({"result": "failure","message":"User not found!"}); //Indicates failure to find user by returning JSON object with result field set to "Failed".
+            }
+
+        });
+        }else{
+            res.json({"result": "failure","message":"You are not an admin!"}); //Indicates failure if not admin.
+        }
+
+        }else{
+            res.json({"result": "failure","message":"You are not logged in!"}); //Indicates failure if not admin.
+        }
+    },
+    onlybanuser:function(req,res){
+        //console.log(req.user);
+        //console.log(req.body);
+        if(req.isAuthenticated()){
+        if (req.user.admin){
+        clients.findOne({username: req.param('username')}, function(err, user){
+           // if(err)
+           //     res.send(err);
+
+            if(user){
+            
+            user.ban = true;
+            
+            user.save(function(err, user){
+                if(err){
+                    res.json({"result": "failure","message":"Error in saving banned user in database!"});
                 }else{
                     res.json({"result": "success"}); //Confirm success by returning JSON object with result field set to "Success".
                 }
@@ -79,19 +112,21 @@ let adminFunctionsController = {
         }
     },
     viewReportedReviews:function(req,res){
-        console.log("View reported reviews is requested!");
+        //console.log("View reported reviews is requested!");
        if(req.isAuthenticated()){
        if (req.user.admin){ 
-        console.log("View reported reviews is working correctly!");
+        //console.log("View reported reviews is working correctly!");
             businesses.find({'business_reviews.reported': {$gte: 0}},function(err1, arr1){
                 businesses.find({'services.service_reviews.reported': {$gte: 0}},function(err2, arr2){
 
                     var tempreviewsArr1 = arr1.map(function(a) {return a.business_reviews;});
                     var reviewsArr1 = [].concat.apply([], tempreviewsArr1);
 
-                    var tempreviewsArr2 = arr2.map(function(a) {return a.services.service_reviews;});
+                    var tempServicesArr = arr2.map(function(a) {return a.services;});
+                    var tempServicesArr2 = [].concat.apply([], tempServicesArr);
+                    var tempreviewsArr2 = tempServicesArr2.map(function(a) {return a.service_reviews;});
                     var reviewsArr2 = [].concat.apply([], tempreviewsArr2);
-
+                    //console.log(reviewsArr2);
                     function isNumber(obj) {
                         return obj!== undefined && typeof(obj) === 'number' && !isNaN(obj);
                     }
@@ -131,26 +166,44 @@ let adminFunctionsController = {
             businesses.findOne({'business_reviews._id': req.param('id')},function(err1, bus1){
             //if(err1)
             //    res.send(err1);
-            console.log(bus1);
+            //console.log(bus1);
             if(!bus1){
                 businesses.findOne({'services.service_reviews._id': req.param('id')},function(err2, bus2){
                   //  if(err2)
                   //      res.send(err2);
                     if(bus2){
-                        businesses.update( 
-                        { username: bus2.username },
-                        { $pull: { "services.service_reviews" : { _id : req.param('id') } } },
-                        function removeReviews(err, obj) {
-                                if(err){
-
-                                res.json({"result": "failure","message":"Could not remove review from review list"});
-                                }else{
-                                res.json({"result": "success"}); //I added the result part
-
+                        var i;
+                        var flag = false;
+                        for(i=0;i<bus2.services.length;i++){
+                            for(var j=0;j<bus2.services[i].service_reviews.length;j++){
+                                if(bus2.services[i].service_reviews[j]._id == req.param('id')){
+                                    bus2.services[i].service_reviews[j].remove();
+                                    bus2.save();
+                                    res.json({"result": "success"}); //I added the result part
+                                    flag = true;
+                                    break;
                                 }
-                        });
+                            }
+                        }
+
+                        if(!flag){
+                            res.json({"result": "failure","message":"Could not remove review from review list"});
+                        }
+                        // businesses.update( 
+                        // { username: bus2.username },
+                        // { $pull: { "services[i].service_reviews" : { _id : req.param('id') } } },
+                        // function removeReviews(err, obj) {
+                        //         if(err){
+
+                        //         res.json({"result": "failure","message":"Could not remove review from review list"});
+                        //     }else{
+                        //         console.log("delete review is working!");
+                        //         res.json({"result": "success"}); //I added the result part
+
+                        //         }
+                        // });
                     }else{
-                      res.json(500, {"result": "failure","message":"Could not find review in reviews list"});
+                      res.json({"result": "failure","message":"Could not find review in reviews list"});
 
                     }
                     
@@ -243,6 +296,18 @@ let adminFunctionsController = {
                 
             });
 
+        }else{
+            res.json({"result": "failure","message":"You are not an admin!"}); //Indicates failure if not admin.
+        }
+
+        }else{
+           res.json({"result": "failure","message":"You are not logged in!"}); //Indicates failure if not admin.
+        }
+    },
+    isAdmin:function(req,res){
+        if(req.isAuthenticated()){
+        if (req.user.admin){
+            res.json({"result":"success"});
         }else{
             res.json({"result": "failure","message":"You are not an admin!"}); //Indicates failure if not admin.
         }

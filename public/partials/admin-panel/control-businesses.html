@@ -4,21 +4,28 @@
     <h1>Control Businesses</h1>
 </div>
 <a href="#/admin-panel">Back to Admin Control Panel Home</a>
+<a href="#/admin-panel/control-applications" class="myButton" style="width:300px;">View Businesses Applications</a>
 <br>
 <!--<input type="text" name="username" placeholder="Please enter a name" ng-model="" > -->
 <div ng-hide="busList.length">No businesses in the database yet!</div>
 		<form name="myForm">
-			<input name="myInput" ng-model="searchText" ng-minlength="3" placeholder="Search for a business..">
+			<input name="myInput" ng-model="searchText" ng-minlength="3" placeholder="Search for a business.." ng-show="busList.length">
 			<br>
 			<br>
 <ul ng-if="myForm.myInput.$valid && searchText.length">
 <li data-ng-repeat="bus in busList | filter:{business_name:searchText}" style="margin-bottom:20px;">
 	 Business name: {{bus.business_name}}
 	<br> Owner Fullname: {{bus.fullName}}
-	<br> Owner Email: {{bus.personal_email}}
+	<br> Owner E-mail: {{bus.personal_email}}
 	<br> Banned: {{bus.ban}}
+	<br> Accepted: {{bus.accepted}}
+	<br> Bank: {{bus.associated_bank}}
+	<br> Website: {{bus.business_website}}
+	<br> Business E-mails : <ul><li data-ng-repeat="mail in bus.business_emails"> {{mail.email}} </li></ul>	
+	<br> Address: {{bus.address}}
 	<br> ID: {{bus._id}}
 	<br>
+	<a ng-href="#/{{bus.business_name}}">View Full Profile</a>
 	<button ng-click="banBus(bus.business_name)">Ban/Unban Business</button>
 	<button ng-click="deleteBus(bus.business_name)">Delete Business</button>
 </li>
