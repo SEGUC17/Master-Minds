@@ -122,9 +122,11 @@ let adminFunctionsController = {
                     var tempreviewsArr1 = arr1.map(function(a) {return a.business_reviews;});
                     var reviewsArr1 = [].concat.apply([], tempreviewsArr1);
 
-                    var tempreviewsArr2 = arr2.map(function(a) {return a.services.service_reviews;});
+                    var tempServicesArr = arr2.map(function(a) {return a.services;});
+                    var tempServicesArr2 = [].concat.apply([], tempServicesArr);
+                    var tempreviewsArr2 = tempServicesArr2.map(function(a) {return a.service_reviews;});
                     var reviewsArr2 = [].concat.apply([], tempreviewsArr2);
-
+                    //console.log(reviewsArr2);
                     function isNumber(obj) {
                         return obj!== undefined && typeof(obj) === 'number' && !isNaN(obj);
                     }

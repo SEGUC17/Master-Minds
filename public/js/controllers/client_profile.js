@@ -1,6 +1,6 @@
 angular.module('Ang_Client_profile', [])
 
-.controller('ClientprofileCtrl',function($scope,$http,$location)
+.controller('ClientprofileCtrl',function($scope,$http,$location,$route)
 {
   ///viewprofile
   //  console.log("rolling");
@@ -31,7 +31,7 @@ angular.module('Ang_Client_profile', [])
 
   });
 })
-.controller('AdminClientprofileCtrl',function($scope,$http,$location)
+.controller('AdminClientprofileCtrl',function($scope,$http,$location,$route)
 {var str_url = $location.url().split('/');
   ///viewprofile
   //  console.log("rolling");
@@ -63,11 +63,12 @@ angular.module('Ang_Client_profile', [])
 
       });
   $scope.banUser = function(username){
-        $http.put('/routes/admin/only-ban-user/'+username,{}).then(function(res) {
+        $http.put('/routes/admin/ban-user/'+username,{}).then(function(res) {
            // $timeout(function() {
            //     $route.reload();
            // }, 500);
-           $scope.getUsers();
+           //$scope.getUsers();
+           $route.reload();
         });
     };
 })
