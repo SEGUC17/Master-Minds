@@ -42,6 +42,39 @@ let adminFunctionsController = {
             res.json({"result": "failure","message":"You are not logged in!"}); //Indicates failure if not admin.
         }
     },
+    onlybanuser:function(req,res){
+        //console.log(req.user);
+        //console.log(req.body);
+        if(req.isAuthenticated()){
+        if (req.user.admin){
+        clients.findOne({username: req.param('username')}, function(err, user){
+           // if(err)
+           //     res.send(err);
+
+            if(user){
+            
+            user.ban = true;
+            
+            user.save(function(err, user){
+                if(err){
+                    res.json({"result": "failure","message":"Error in saving banned user in database!"});
+                }else{
+                    res.json({"result": "success"}); //Confirm success by returning JSON object with result field set to "Success".
+                }
+            });
+            }else{
+                res.json({"result": "failure","message":"User not found!"}); //Indicates failure to find user by returning JSON object with result field set to "Failed".
+            }
+
+        });
+        }else{
+            res.json({"result": "failure","message":"You are not an admin!"}); //Indicates failure if not admin.
+        }
+
+        }else{
+            res.json({"result": "failure","message":"You are not logged in!"}); //Indicates failure if not admin.
+        }
+    },
     banbus:function(req,res){
         if(req.isAuthenticated()){
         if (req.user.admin){

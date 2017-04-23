@@ -21,6 +21,14 @@ angular.module('adminApp', [])
            $scope.getUsers();
         });
     };
+    $scope.onlyBanUser = function(username){
+        $http.put('/routes/admin/only-ban-user/'+username,{}).then(function(res) {
+           // $timeout(function() {
+           //     $route.reload();
+           // }, 500);
+           $scope.getUsers();
+        });
+    };
     $scope.banBus = function(username){
         $http.put('/routes/admin/ban-bus/'+username,{}).then(function(res) {
             //$timeout(function() {
