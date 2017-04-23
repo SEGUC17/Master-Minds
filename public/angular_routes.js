@@ -34,6 +34,11 @@ angular.module('appRoutes', ['ngRoute'])
         templateUrl: 'partials/users/login.html',
         controller: 'loginCtrl'
     })
+    .when('/getrateandreview/:business', {
+        templateUrl: function (urlattr){ return 'partials/RateAndReview/ViewRateAndReviewBusiness.html'},
+        controller: 'ViewRateAndReviewCtrl'
+    })
+
 
     .when('/subscribe', {
         templateUrl: 'partials/businessowner/subscribe.html',
@@ -86,5 +91,3 @@ angular.module('appRoutes', ['ngRoute'])
         })
     .otherwise({ redirectTo: '/' });
 }]);
-
-       
