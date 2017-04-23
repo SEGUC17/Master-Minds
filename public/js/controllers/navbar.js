@@ -8,7 +8,8 @@ angular.module('NavigationBar', [])
                     $scope.type = res.data.message;
                 } else {
                     $scope.username = res.data.content.personal_email;
-                    $scope.type = res.data.message
+                    $scope.type = res.data.message;
+                    $scope.business = res.data.content.business_name;
                 }
             }
 

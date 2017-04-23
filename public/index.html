@@ -73,8 +73,8 @@
                         </ul>
                     </li>
                     <li ng-show="username && type == 'client'"><a href="#/client_profile">{{username}}</a></li>
-                    <li ng-show="username && type == 'business'"><a href="#/business_profile">{{username}}</a></li>
-                    <li ng-show="username && type == 'admin'"><a href="#/admin_profile">{{username}}</a></li>
+                    <li ng-show="username && type == 'business'"><a href="#/{{business}}">{{username}}</a></li>
+                    <li ng-show="username && type == 'admin'"><a href="#/admin-panel">{{username}}</a></li>
                     <li ng-show="username"><a ng-click="logout()">Logout</a></li>
                 </ul>
             </div>
