@@ -2,8 +2,6 @@ angular.module('Ang_RateAndReviewCtrl', [])
 
 .controller('RateAndReviewBusinessCtrl',function($scope,$http,$location)
 {
-
-
 /*
  this method posts the rate to the backend for the business
  by putting a rating in body and posting to the /routes/rating/+ last element to url
