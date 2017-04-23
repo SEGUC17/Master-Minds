@@ -1,6 +1,6 @@
 angular.module('Ang_view_rateandreview', [])
 
-.controller('ViewRateAndReviewCtrl',function($scope,$http,$location)
+.controller('ViewRateAndReviewCtrl',function($scope,$http,$location, $window)
 {
 	var str_url = $location.url().split('/');
 	console.log(str_url[str_url.length-1]);
@@ -30,5 +30,15 @@ angular.module('Ang_view_rateandreview', [])
     		console.log('There is no review for this business');
     	}
 	})
+	$scope.reportReview = function (bus_review) {
+					console.log(bus_review);
+					var str_url = $location.url().split('/');
+					$http.post('/routes/reportBusiness/'  + str_url[str_url.length - 1], bus_review)
+					.then(function (res) {
 
+					$scope.Message = res.data.message;
+					if(res.data.result=="success")
+					$window.location.reload();
+					});
+	};
 });
