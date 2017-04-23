@@ -5,7 +5,7 @@
 </div>
 <a href="#/admin-panel">Back to Admin Control Panel Home</a>
 <br>
-<div ng-hide="userList.length">No reported reviews to show.</div>
+<div ng-hide="reviews.length"><h2>No reported reviews to show.</h2></div>
 <ul>
 <li data-ng-repeat="rev in reviews">
 	Review: {{rev.review}}
@@ -13,7 +13,7 @@
 	<br> Number of reports: {{rev.reported}}
 	<br> ID: {{rev._id}}
 	<br>
-	<!--<button ng-click="banUser(rev.username)">Ban User</button> -->
+	<button ng-click="onlyBanUser(rev.username)">Ban User</button>
 	<button data-ng-click="deleteReview(rev._id)">Delete Review</button>
 </li>
 </ul>
