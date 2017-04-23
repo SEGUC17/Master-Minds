@@ -24,7 +24,7 @@ angular.module('Ang_RateAndReviewCtrl', [])
   {
     var str_url = $location.url().split('/');
 
-     $http.post('/routes/reviews/'+str_url[str_url.length-1],$scope.ReviewData).then(function(res)
+     $http.post('/routes/reviews/'+str_url[str_url.length-1],$scope.RateData).then(function(res)
      {
        //$scope.responce =res;
         console.log(res.data.message);
@@ -52,7 +52,7 @@ angular.module('Ang_RateAndReviewCtrl', [])
     {
       var str_url = $location.url().split('/');
 
-       $http.post('/routes/reviews/'+str_url[str_url.length-2]+'/'+str_url[str_url.length-1],$scope.ReviewData)
+       $http.post('/routes/reviews/'+str_url[str_url.length-2]+'/'+str_url[str_url.length-1],$scope.RateData)
        .then(function(res)
        {
          //$scope.responce =res;
