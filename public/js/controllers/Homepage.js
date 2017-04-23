@@ -38,7 +38,7 @@ angular.module('Ang_Homepage', [])
                 alert('The business you are looking for is either banned or not accepted yet');
             }
         }else{
-            $scope.business = undefined;
+            $scope.businesses = undefined;
             alert(res.data.message);
          }
         }
