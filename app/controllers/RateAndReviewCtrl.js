@@ -23,7 +23,7 @@ exports.Post_Rate_Business= function(req,res)
           {
             if(err)
             {
-              console.log(401);
+
               res.json({"result":"failure","message":"error happened in the database"});
             }
             else if(!found_business)
@@ -32,24 +32,24 @@ exports.Post_Rate_Business= function(req,res)
               "username":req.user.username,
               "rating":req.body.rating
             };
-            console.log(new_rate);
-              console.log(req.body.rating);
+
+
               business.findOneAndUpdate({'business_name':req_business},{"$push":{
               'business_rating':new_rate}
               },function(err,found_business)
                       {
                         if(err)
-                        {console.log(err);
+                        {
                          res.json({"result":"failure","message":"error happened in the database"});
                         }
                         else if(!found_business)
                         {
-                          console.log("no business");
+
                           res.json({"result":"failure","message":"not found"});
                         }
                         else
                         {
-                          console.log(200);
+
                           res.json({"result":"success","message":"your rating has been added"});
                         }
                       });
@@ -57,12 +57,12 @@ exports.Post_Rate_Business= function(req,res)
             else
               {
 
-                console.log(200);
+
                 res.json({"result":"success","message":"your rating has been added"});              }});
               }
         else
         {
-            console.log(401);res.json({"result":"failure","message":"please login"});
+           res.json({"result":"failure","message":"please login"});
         }
 }
 
@@ -82,23 +82,23 @@ exports.Post_Review_Business = function(req,res)
   "review":req.body.review,
   "report":0
                 };
-console.log(new_rate);
+
               business.findOneAndUpdate({'business_name':req_business},{"$push":{
               'business_reviews':new_rate}
               },function(err,found_business)
                       {
                         if(err)
-                        {console.log(err);
+                        {
                          res.json({"result":"failure","message":"error happened in the database"});
                         }
                         else if(!found_business)
                         {
-                          console.log("no business");
+
                           res.json({"result":"failure","message":"not found"});
                         }
                         else
                         {
-                          console.log(found_business);
+
                           res.json({"result":"success","message":"your review has been added"});
                         }
                       });
@@ -106,7 +106,7 @@ console.log(new_rate);
             }
         else
         {
-          console.log(401); res.json({"result":"failure","message":"please login"});
+           res.json({"result":"failure","message":"please login"});
         }
 
   }
@@ -130,7 +130,7 @@ exports.Post_Rate_Service=function(req,res)
       //   business.save();
       if(!req.user)
           {
-            console.log(401); res.json({"result":"failure","message":"please login"});
+             res.json({"result":"failure","message":"please login"});
             return;
           }
             if (!req.body.rating)
@@ -141,27 +141,26 @@ exports.Post_Rate_Service=function(req,res)
         "rate":req.body.rating
 
       };
-//      console.log(req.user.username);
-//      console.log("console:this method is not working you know");
+
 
       var ffoundbs = 0;  var ffound = 0;
           businesses.findOne({ business_name: req.param('business') }, function (err, business) {
             if(err)
             {
-              console.log(err);
+
               res.json({"result":"failure","message":"error happened in the database"});
             }
             else if(!business)
             {
-              console.log("found_business");
+
               res.json({"result":"failure","message":"not found"});
             }
             else{
               for (var i = 0; i < business.services.length; i++) {
-              //  console.log(business)
+
                   if (business.services[i].service_name == req.param('service')) {
                   ffoundbs=1;
-              //    console.log(business.services[i])
+
                       for (var j = 0; j < business.services[i].service_rating.length; j++) {
                           if (business.services[i].service_rating[j].username == req.user.username) {
                               business.services[i].service_rating[j].rating=req.body.rating;
@@ -184,7 +183,7 @@ exports.Post_Rate_Service=function(req,res)
               }
               else{
               business.save();
-              console.log(200);
+
               res.json({"result":"success","message":"your rating has been added"});
             }
             }
@@ -206,7 +205,7 @@ exports.Post_Review_Service= function(req,res)
  */
   if(!req.user)
     {
-    console.log(401);
+
     res.json({"result":"failure","message":"please login"});
     return;
     }
@@ -221,17 +220,17 @@ exports.Post_Review_Service= function(req,res)
       businesses.findOne({ business_name: req.param('business') }, function (err, business) {
         if(err)
         {
-          console.log(err);
+
           res.json({"result":"failure","message":"error happened in the database"});
         }
         else if(!business)
         {
-          console.log("found_business");
+
           res.json({"result":"failure","message":"not found"});
         }
         else{
           for (var i = 0; i < business.services.length; i++) {
-          //  console.log(business)
+
               if (business.services[i].service_name == req.param('service')) {
                 for (var j = 0; j<business.services[i].service_reviews.length; j++){
                   if (business.services[i].service_reviews[j].review == req.body.review && business.services[i].service_reviews[j].username == req.user.username){
@@ -239,7 +238,7 @@ exports.Post_Review_Service= function(req,res)
                   }
                 }
               ffoundbs=1;
-          //    console.log(business.services[i])
+
                   business.services[i].service_reviews.push(new_review);
 
 
@@ -255,8 +254,8 @@ exports.Post_Review_Service= function(req,res)
           }
           else{
           business.save();
-          //res.render('detailedProductView');
-          console.log(200);
+
+
           res.json({"result":"success","message":"your review has been added"});
         }
 
@@ -297,7 +296,7 @@ exports.Get_Rate_Business= function(req,res)
           var obj_rate =found_business[0].business_rating;
           if(!obj_rate||!obj_rate[0])
           {
-            console.log(401);
+
             res.json({"result":"failure","message":"not found"});
           }
           else
@@ -306,7 +305,6 @@ exports.Get_Rate_Business= function(req,res)
               {
                 rate+=obj_rate[i].rating;
               }
-              console.log(200);
               rate /=obj_rate.length;
               var content = {"rate":rate};
               res.json({"result":"success","message":"sending the rates","content":content});
@@ -331,15 +329,15 @@ exports.Get_Rate_Service= function(req,res)//tested
   var req_business = req.param('business');
   var req_service = req.param('service');
   business.find({'business_name':req_business},function(err,found_business)
-    { 
+    {
         if(err)
         {
-          console.log(401);
+
           res.json({"result":"failure","message":"error happened in the database"});
         }
         else if(!found_business||!found_business[0])
         {
-          console.log(401);
+
         res.json({"result":"failure","message":"not found"});
         }
         else
@@ -348,7 +346,7 @@ exports.Get_Rate_Service= function(req,res)//tested
             var output =0;
             var obj_ser = found_business[0].services;
             if(!obj_ser)
-            { console.log("no services");
+            {
               res.json({"result":"failure","message":"not found"});
             }
             else{
@@ -373,15 +371,15 @@ exports.Get_Rate_Service= function(req,res)//tested
                 }
               }
               if(fname_of_service_found==1)
-              {   console.log(200);
+              {
                 output/= obj_ser_rating.length;
-                console.log(output);
+
                 var content = {"rate":output};
                 res.json({"result":"success","message":"sending the rates","content":content});
               }
               else
               {
-                console.log('service not found');
+
                   res.json({"result":"failure","message":"not found"});
               }
 
@@ -398,7 +396,7 @@ exports.Get_Review_Business= function(req,res)
  *    search for business_name in the database
  *      if found get all the reviews and put them in a json them togther send them to the user
  *    else send not found to the user
- *    
+ *
  */
   var business = require('mongoose').model('businesses');
   var req_business = req.param('business');
@@ -407,12 +405,12 @@ exports.Get_Review_Business= function(req,res)
    {
        if(err)
        {
-         console.log(401);
+
          res.json({"result":"failure","message":"error happened in the database"});
        }
        else if(!found_business||!found_business[0])
        {
-         console.log(401);
+
         res.json({"result":"failure","message":"not found"});
        }
        else
@@ -420,14 +418,14 @@ exports.Get_Review_Business= function(req,res)
          var total
          if(!reviews||!reviews[0])
          {
-           console.log(404);
+
            res.json({"result":"failure","message":"not found"});
 
          }
          else{
            total =reviews;
 
-         console.log(200);
+
                        res.json({"result":"success","message":"sending the reviews","content":total});
             }
       }
@@ -440,7 +438,7 @@ exports.Get_Review_Service= function(req,res)
    * user stroy [2.14]
    * this method is made to make the client able to get the reviews of particular business_name from the database
    *    search for business_name in the database
-   *      if found search for the service 
+   *      if found search for the service
    *      if found get all the reviews and put them in a json them togther send them to the user
    *    else send not found to the user
    *
@@ -452,11 +450,11 @@ exports.Get_Review_Service= function(req,res)
    {
         if(err)
        {
-         console.log(401);
+
          res.json({"result":"failure","message":"error happened in the database"});       }
        else if(!found_business||!found_business[0])
        {
-         console.log(401);
+
         res.json({"result":"failure","message":"not found"});
        }
        else
@@ -464,7 +462,7 @@ exports.Get_Review_Service= function(req,res)
               var services = found_business[0].services;
                if(!services||!services[0])
                   {
-                    console.log(404);
+
                     res.json({"result":"failure","message":"not found"});
                   }
                else
@@ -478,7 +476,7 @@ exports.Get_Review_Service= function(req,res)
                                             var reviews= services[i].service_reviews
                                             if(!reviews||!reviews[0])
                                             {
-                                              console.log(404);
+
                                 res.json({"result":"failure","message":"not found"});
                                             }
                                             else
@@ -494,13 +492,13 @@ exports.Get_Review_Service= function(req,res)
 
                       if(ffound==1)
                       {
-                      console.log(200);
+
                       res.json({"result":"success","message":"sending the reviews","content":total});
                        }
 
                        else
                        {
-                         console.log(404);
+
                         res.json({"result":"failure","message":"not found"});
 
                        }
@@ -519,32 +517,32 @@ exports.Report_Business_Review = function(req,res)
    *    else send not found
    *    else send not found
    *
-   */ 
+   */
   if(!req.user)
       {
-        console.log(401); res.json({"result":"failure","message":"please login"});
+        res.json({"result":"failure","message":"please login"});
         return;
       }
   var business= require('mongoose').model('businesses');
   var req_business=req.param('business');
   var req_review=req.body.review;
   if(req_review&&req_business)
-  business.findOneAndUpdate({'business_name':req_business,'business_reviews.review':req_review},{'$inc':{'business_reviews.$.report':1}},function(err,found_business)
+  business.findOneAndUpdate({'business_name':req_business,'business_reviews.review':req_review},{'$inc':{'business_reviews.$.reported':1}},function(err,found_business)
   {
         if(err)
        {
-         console.log(401);
+
          res.json({"result":"failure","message":"error happened in the database"});
        }
        else if(!found_business)
        {
-         console.log(401);
+
          res.json({"result":"failure","message":"not found"});
        }
        else
        {
-         console.log(200);
-         res.json({"result":"success","message":"your rating has been added"});
+
+         res.json({"result":"success","message":"your report has been added"});
       }
 });
 }

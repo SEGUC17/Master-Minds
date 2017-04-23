@@ -2,27 +2,29 @@
     <h1>Login</h1>
 </div>
 
+<!--using the loginCtrl fron the frontend controllers-->
 <div ng-controller="loginCtrl">
 
+    <!--responsible for showing the loading word and the loading symbol-->
     <div class="jumbotron text-center" ng-show="loading">
         <span class="glyphicon glyphicon-repeat spinner"></span>
         <p>Loading...</p>
     </div>
 
     <br>
-
+    <!--showing the success message-->
     <div class="row show-hide-message" ng-show="successMsg">
         <div class="alert alert-success">{{successMsg}}</div>
     </div>
 
     <br>
-
+    <!--showing the error message-->
     <div class="row show-hide-message" ng-show="errorMsg">
         <div class="alert alert-danger">{{errorMsg}}</div>
     </div>
 
     <br>
-
+    <!--the form used for the login page with its validations-->
     <form name="userForm" ng-submit="logUser(logData,userForm.$valid)" novalidate>
         <div class="form-group" ng-class="{ 'has-error' : userForm.username.$invalid && !userForm.username.$pristine }">
             <label>write your email if you are a business owner or write your username if you are a client or an admin</label>

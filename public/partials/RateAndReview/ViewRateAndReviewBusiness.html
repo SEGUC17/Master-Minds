@@ -1,0 +1,70 @@
+<div ng-controller="ViewRateAndReviewCtrl">
+<style>
+  .btn {
+    border: none;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    background: none;
+    cursor: pointer;
+    padding: 25px 80px;
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    font-size: 7pt;
+    outline: none;
+    position: relative;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+  }
+
+  .btn-2j {
+    border-radius: 50%;
+    width: 50px;
+    height: 30px;
+    padding: 0;
+  }
+
+  .btn-2 {
+    background: #cb4e4e;
+    color: #fff;
+    box-shadow: 0 6px #ab3c3c;
+    -webkit-transition: none;
+    -moz-transition: none;
+    transition: none;
+  }
+
+  .btn-3 {
+    background: green;
+    color: #fff;
+    box-shadow: 0 6px darkgreen;
+    -webkit-transition: none;
+    -moz-transition: none;
+    transition: none;
+  }
+</style>
+<P ng-init="message=''">
+  <span ng-bind="message"></span>
+  </p>
+
+  <div ng-init="bus_review=''" ng-init="rating=''" ng-init="review=''">
+  <label class="jumbotron">business:</label> <span ng-bind="business"></span></br>
+  <label class="jumbotron">rating:</label> <span ng-bind="resp_rate"></span></br>
+
+  <P ng-init="Message=''">
+    <span ng-bind="Message"></span>
+    </p>
+	<div class="jumbotron" ng-repeat="bus_review in resp_review">
+    <label ><span ng-bind="bus_review.username"></span> : <span ng-bind="bus_review.review"></span></br>
+    <div>
+     <label>this review had  <span ng-bind="bus_review.reported"></span> reports</label>
+    </div>
+    </label>
+
+   <button ng-click="reportReview(bus_review)">report</button>
+  </div>
+
+  </div>
+    </div>

@@ -2,10 +2,11 @@
   <P ng-init="message=''">
   <span ng-bind="message"></span>
   </p>
-  <form class ="form-group" >
-  <input class ="btn btn-primary" type="submit" value = "ban" ng-hide="banned" ng-click="banUser(username)">
-  </form>
   <div ng-show="banned"><h2>This user is banned!</h2></div>
+  <form class ="form-group" >
+  <input class ="btn btn-primary" type="submit" value = "Ban" ng-hide="banned" ng-click="banUser(username)">
+  <input class ="btn btn-primary" type="submit" value = "Unban" ng-show="banned" ng-click="banUser(username)">
+  </form>
   <div ng-init="profile_pic=''" ng-init="fullName=''" ng-init="username=''" ng-init="email=''" ng-init="address=''" ng-init="phone_number=''">
   <img class="img-thumbnail" src="../../client/{{profile_pic}}"  alt="personal photo" class="generic-icon" height="150" width="150" ></br>
   <label class="jumbotron">Full name:</label> <span ng-bind="fullName"></span></br>

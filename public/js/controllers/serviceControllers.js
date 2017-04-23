@@ -15,7 +15,7 @@ angular.module('serviceControllers', [])
                         if (res.data.content.service_pic)
                                 $scope.service_pic = res.data.content.service_pic;
                         else
-                                $scope.service_pic = "../../noimage.svg";
+                                $scope.service_pic = "noimage.svg";
                         if (res.data.content.service_description)
                                 $scope.service_description = res.data.content.service_description;
                         else

@@ -7,18 +7,29 @@ let businesses = require('../../models/businessOwners');
 let  serviceController={
 
 addservice:function(req,res){
+if(req.user){
 
-      var personal_email=req.body.personal_email;
+      var personal_email=req.user.personal_email;
+
       var service_pic = req.body.service_pic;
       var service_name = req.body.service_name;
       var service_Description = req.body.service_Description;
       var service_price = req.body.service_price;
-      var type_flag=req.body.type_flag;
-      var available_flag=req.body.available_flag;
       var promotion_offer=req.body.promotion_offer;
 
+      var type_flag=req.body.type_flag;
+      var available_flag=req.body.available_flag;
+if(type_flag!=true)
+type_flag=false;
+
+if(available_flag!=true)
+available_flag=false;
+
+if(promotion_offer==null)
+promotion_offer=0;
+
       // Validation
-      req.checkBody('personal_email', 'personal_email is required').notEmpty();
+
       req.checkBody('service_name', 'service_name is required').notEmpty();
       req.checkBody('service_Description', 'service_Description is required').notEmpty();
       req.checkBody('service_price', 'service_price is required').notEmpty();
@@ -31,7 +42,8 @@ addservice:function(req,res){
           res.render('service_add', {      // page of services belong to my business
               errors: errors
           });
-          res.send("error happened in adding the service please check your inputs");
+            res.json({'result':'success', 'message':'error happened in adding the service please check your inputs'});
+
       } else {
         businesses.findOne({personal_email:personal_email},function(err,Found_data){
           if(err){
@@ -40,14 +52,16 @@ res.status(500).send(err);
           }else{
             if(Found_data == null){
             // if no matches sending error  because his email not in the database
-                res.send("error happened while editing your service no matched email in the data base please  try again");
+
+                  res.json({'result':'failed', 'message':'error happened while editing your service no matched email in the data base please  try again'});
   //              res.render('service_add');// front end service edit
             }else{
             var x=false;
             for (var i = 0; i < Found_data.services.length; i++) {//checking if owner have service name with the same service name he wants to add
               if(Found_data.services[i].service_name==service_name){
                 x=true;
-                  res.send("error happened in adding the service you already have servic name with this name");
+                  res.json({'result':'failed', 'message':'error happened in adding the service you already have servic name with this name'});
+
               }
             }
             if(x==false){
@@ -68,7 +82,7 @@ res.status(500).send(err);
               console.log(saved);
           //    res.send(Found_data);
             //  res.redirect('/services');// page of services belong to my business
-              res.send("you added your service");
+                res.json({'result':'success', 'message':'you added your service'});
             }
           })
 
@@ -77,12 +91,13 @@ res.status(500).send(err);
     }
       });
           }
+}
 },
 
 editservice:function(req,res){
-
+if(req.user){
   // data we want to edit in the service  business_owner must add personal email so we can get his data from database
-    var personal_email=req.body.personal_email;
+    var personal_email=req.user.personal_email;
     var newservice_pic = req.body.newservice_pic;
     var oldservice_name = req.body.oldservice_name;// business_owner must enter oldservice_name so i can know where to edit
     var newservice_name = req.body.newservice_name;
@@ -92,13 +107,24 @@ editservice:function(req,res){
     var newtype_flag=req.body.newtype_flag;
     var newavailable_flag=req.body.newavailable_flag;
 
+    if(newtype_flag!=true)
+    newtype_flag=false;
+
+    if(newavailable_flag!=true)
+    newavailable_flag=false;
+
+    if(newpromotion_offer==null)
+    newpromotion_offer=0;
+
     // Validation
-    if(personal_email==""||personal_email==null){
-      res.send("you must enter  your personal email to edit ");
+    // if(personal_email==""||personal_email==null){
+    //   res.json({'result':'failed', 'message':'you must enter  your personal email to edit '});
+
     //  res.render('service_edit');// front end service edit
-    }else{
+  // }else{
     if(oldservice_name==""||oldservice_name==null){
-      res.send("you must enter  your old service_name  to edit  it ");
+
+      res.json({'result':'failed', 'message':'you must enter  your old service_name  to edit  it  '});
       //res.render('service_edit');// front end service edit
     }else{
       // finding the business_owner from database
@@ -108,15 +134,16 @@ res.status(500).send(err);
                   }else{
                     if(user == null){
                       // if no matches sending error  because his email not in the database
-                        res.send("error happened while editing your service no matched email in the data base please  try again");
           //              res.render('service_edit');// front end service edit
+          res.json({'result':'failed', 'message':'error happened while editing your service no matched email in the data base please  try again'});
                     }
                     else{
                     var x=false;
                     for (var i = 0; i < user.services.length; i++) {//checking if owner have service name with the same service name he wants to edit
                       if(user.services[i].service_name==newservice_name){
                         x=true;
-                          res.send("error happened in editing the service you already have service name with this name");
+                        res.json({'result':'failed', 'message':'error happened in editing the service you already have service name with this name'});
+
                       }
                     }
                     if(x==false){
@@ -136,13 +163,14 @@ res.status(500).send(err);
      user.save(function(err,saved_service){// save database after editing
      if(err){
        // sending error if did not save the database
-       res.send("error happened while editing your service please try again");
+         res.json({'result':'failed', 'message':'error happened while editing your service please try again'});
+
       // res.render('service_edit');// front end service edit
      }else{
        // confirmation for editing database
        //res.send(saved_service);
        //res.redirect('/services');// page of services belong to my business
-       res.send("you edited your service");
+        res.json({'result':'success', 'message':'you edited your service'});
      }
 
      });
@@ -151,12 +179,12 @@ res.status(500).send(err);
 }
                   });
     }
-  }
+//  }
 
 }
 
 
 }
-
+}
 //Export controller
 module.exports = serviceController;

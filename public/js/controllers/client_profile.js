@@ -1,14 +1,13 @@
 angular.module('Ang_Client_profile', [])
 
-.controller('ClientprofileCtrl',function($scope,$http,$location)
-{
-  ///viewprofile
-  //  console.log("rolling");
+.controller('ClientprofileCtrl',function($scope,$http,$location,$route)
+{/*this controller will be loaded when the page is viewed 
+   automatically it will load the user details
+   and the business that he liked
+ */
   $http.get('/routes/viewprofile').then(function(res)
   {
-  //$scope.responce =res;
-//    console.log($scope.RateData);
-  //console.log(res.data);
+
   if(res.data.result=="success")
   {
     $scope.fullName=res.data.content.fullName;
@@ -31,15 +30,15 @@ angular.module('Ang_Client_profile', [])
 
   });
 })
-.controller('AdminClientprofileCtrl',function($scope,$http,$location)
-{var str_url = $location.url().split('/');
-  ///viewprofile
-  //  console.log("rolling");
+.controller('AdminClientprofileCtrl',function($scope,$http,$location,$route)
+{/*this controller will be loaded when the page is viewed 
+   automatically it will load the user details so the admin can ban him if he wants to
+ */
+ var str_url = $location.url().split('/');
+ 
   $http.get('/routes/viewprofile/'+str_url[str_url.length-1]).then(function(res)
   {
-  //$scope.responce =res;
-//    console.log($scope.RateData);
-  console.log(res.data);
+
       if(res.data.result=="success")
       {
         $scope.fullName=res.data.content.fullName;
@@ -63,11 +62,9 @@ angular.module('Ang_Client_profile', [])
 
       });
   $scope.banUser = function(username){
-        $http.put('/routes/admin/only-ban-user/'+username,{}).then(function(res) {
-           // $timeout(function() {
-           //     $route.reload();
-           // }, 500);
-           $scope.getUsers();
+        $http.put('/routes/admin/ban-user/'+username,{}).then(function(res) {
+
+           $route.reload();
         });
     };
 })

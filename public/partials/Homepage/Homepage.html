@@ -32,24 +32,24 @@
 
   </style>
 
-      <!--<input type="text" placeholder="Search" ng-model="Search" />
+      <input type="text" placeholder="Search" ng-model="Search" />
       <br>
-      <button ng-click="getSearch()">Submit</button>
-      <br><br>-->
+      <!-- <button ng-click="getSearch()">Submit</button> -->
+      <br><br>
       <div ng-repeat="ad in ads" align = "margin-right">
         <p> {{ad.business_name}} </p>
         <p> {{ad.service_name}} </p>
       </div>
 
 	<div class="verticalmenu" >
-		<div ng-repeat="business in businesses">
+		<div ng-repeat="business in businesses | filter:{business_name:Search}">
 		<article >
 			<div class="trialimage">
 				<img src="../../businessowner/{{business.business_logo}}" class="generic-icon" width="80" height="80" align="left">
 			</div>
 			<div class="title">
 				<span class="name">
-					<a href="#/business/{{business.business_name}}"> {{business.business_name}}</a>
+					<a href="#/business/{{business.business_name}}" class="btn btn-default btn-lg"> {{business.business_name}}</a>
 				</span>
         <br>
         <span class="RateAndReview">

@@ -9,9 +9,7 @@
   <label class="jumbotron">address:</label><span ng-bind="address"></span></br>
   <label class="jumbotron">phone_number:</label><span ng-bind="phone_number"></span>
   </div>
-  <form ng-submit ="" class ="form-group" >
-  <input class ="btn btn-primary" type="submit" value = "edit your profile">
-  </form>
+  <a class="btn btn-primary" href="#/editprofile">edit profile</a>
   <div class="h1">you liked these businesses</div>
   <div class="jumbotron" ng-repeat="business in liked">
     <label ><span ng-bind="business.business_names"></span></label>
