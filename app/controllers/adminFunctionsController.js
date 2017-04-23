@@ -172,20 +172,38 @@ let adminFunctionsController = {
                   //  if(err2)
                   //      res.send(err2);
                     if(bus2){
-                        businesses.update( 
-                        { username: bus2.username },
-                        { $pull: { "services.service_reviews" : { _id : req.param('id') } } },
-                        function removeReviews(err, obj) {
-                                if(err){
-
-                                res.json({"result": "failure","message":"Could not remove review from review list"});
-                                }else{
-                                res.json({"result": "success"}); //I added the result part
-
+                        var i;
+                        var flag = false;
+                        for(i=0;i<bus2.services.length;i++){
+                            for(var j=0;j<bus2.services[i].service_reviews.length;j++){
+                                if(bus2.services[i].service_reviews[j]._id == req.param('id')){
+                                    bus2.services[i].service_reviews[j].remove();
+                                    bus2.save();
+                                    res.json({"result": "success"}); //I added the result part
+                                    flag = true;
+                                    break;
                                 }
-                        });
+                            }
+                        }
+
+                        if(!flag){
+                            res.json({"result": "failure","message":"Could not remove review from review list"});
+                        }
+                        // businesses.update( 
+                        // { username: bus2.username },
+                        // { $pull: { "services[i].service_reviews" : { _id : req.param('id') } } },
+                        // function removeReviews(err, obj) {
+                        //         if(err){
+
+                        //         res.json({"result": "failure","message":"Could not remove review from review list"});
+                        //     }else{
+                        //         console.log("delete review is working!");
+                        //         res.json({"result": "success"}); //I added the result part
+
+                        //         }
+                        // });
                     }else{
-                      res.json(500, {"result": "failure","message":"Could not find review in reviews list"});
+                      res.json({"result": "failure","message":"Could not find review in reviews list"});
 
                     }
                     
