@@ -72,10 +72,6 @@ router.post('/advertise/:businessname/:product', productController.addAdvertisme
 router.post('/report/:business/:service', productController.reportServiceReview);
 router.post('/reply', replyController.Post_Reply);
 router.post('/deletebussines', Deletebussinesowner.deleteOwner);
-// // router.get('/logout', function (req, res) {
-// //     req.logout();
-// //     res.redirect('/login');
-// });
 router.post('/service_add', serviceController.addservice);
 router.post('/service_edit', serviceController.editservice);
 
@@ -83,49 +79,35 @@ router.post('/service_edit', serviceController.editservice);
 
 passport.use('local.clientsadmins', new LocalStrategy(
     function (username, password, done) {
-        var already_sent_a_json = 0;
-        UserLoginController.getUserByUsername(username, function (err, user) {
+        UserLoginController.getUserByUsername(username, function (err, user) { //searching for a matching username in the clients using the clientLoginController
             if (err) throw err;
-            if (!user) {
-                // console.log("Reached here!");
-                adminLoginController.getAdminByUsername(username, function (err, admin) {
-                    //console.log("Reached here 1!");
+            if (!user) { // if not found
+                adminLoginController.getAdminByUsername(username, function (err, admin) { //searching for a matching username in the admins using the AdminLoginController
                     if (err) throw err;
-                    if (!admin) {
-                        //console.log("Reached here 2");
-                        //return done(null, false);
-                        console.log('Right before businessowner.findone');
-                        BusinessOwner.findOne({ 'personal_email': username }, function (err, owner) {
+                    if (!admin) { // if not found
+                        BusinessOwner.findOne({ 'personal_email': username }, function (err, owner) { // searching for a matching email in the business owners
                             if (err) {
-                                console.log(err);
                                 return done(err);
                             }
                             if (!owner) {
-                                console.log('business not found');
                                 return done(null, false);
                             }
-                            if (!owner.validPassword(password)) {
-                                console.log('wrong password');
+                            if (!owner.validPassword(password)) { // comparing the password of the business owner and the given password
                                 return done(null, false);
                             }
                             return done(null, owner);
                         });
                     }
                     else {
-                        console.log(admin);
-                        if (!adminLoginController.comparePassword(password, admin.password)) {
+                        if (!adminLoginController.comparePassword(password, admin.password)) { // comparing the password of the admin and the given password
                             return done(null, false);
                         } else {
                             return done(null, admin);
                         }
                     }
                 });
-
-                //return done(null, false);
             } else {
-
-
-                UserLoginController.comparePassword(password, user.password, function (err, isMatch) {
+                UserLoginController.comparePassword(password, user.password, function (err, isMatch) { // comparing the password of the client and the given password
                     if (err) throw err;
                     if (isMatch && !user.ban) {
                         return done(null, user);
@@ -139,11 +121,11 @@ passport.use('local.clientsadmins', new LocalStrategy(
 
 
 
-passport.serializeUser(function (user, done) {
+passport.serializeUser(function (user, done) { // saving the session by the id of the user
     done(null, user.id);
 });
 
-passport.deserializeUser(function (id, done) {
+passport.deserializeUser(function (id, done) { // return the logged in user using the saved id
     adminLoginController.getAdminById(id, function (err, admin) {
         if (!admin) {
             UserLoginController.getUserById(id, function (err, user) {
@@ -263,14 +245,13 @@ router.get('/login', function (req, res) {
 
 // Register User
 router.post('/register', function (req, res) {
-    var already_sent_a_json = 0;
+    var already_sent_a_json = 0; // this flag is for making sure that this method don't send 2 res.json to the frontend
     var fullName = req.body.fullName;
     var email = req.body.email;
     var username = req.body.username;
     var address = req.body.address;
     var phone_number = req.body.phone_number;
     var password = req.body.password;
-    //  var password2 = req.body.password2;
 
     // Validation
     req.checkBody('fullName', 'Name is required').notEmpty();
@@ -280,16 +261,15 @@ router.post('/register', function (req, res) {
     req.checkBody('address', 'Address is required').notEmpty();
     req.checkBody('phone_number', 'Phone Number is required').notEmpty();
     req.checkBody('password', 'Password is required').notEmpty();
-    //    req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
 
     var errors = req.validationErrors();
     if (errors) {
         if (already_sent_a_json == 0) {
             already_sent_a_json = 1
-            return res.json({ result: "failure", message: "The email is not valid" });
+            return res.json({ result: "failure", message: "The email is not valid" }); // this is the only validator error that will be sent from the backend because the others are handled properly in the frontend
         }
     } else {
-        var newClient = new User({
+        var newClient = new User({ // making a new client with the given attributes
             fullName: fullName,
             email: email,
             username: username,
@@ -298,7 +278,7 @@ router.post('/register', function (req, res) {
             password: password
         });
 
-        var query1 = { username: newClient.username };
+        var query1 = { username: newClient.username }; // making sure that the username is unique
         User.findOne(query1, function (err, user) {
             if (err) {
                 if (already_sent_a_json == 0) {
@@ -310,7 +290,7 @@ router.post('/register', function (req, res) {
                     already_sent_a_json = 1
                     return res.json({ result: "failure", message: "this username has been already taken" });
                 }
-            } else {
+            } else { // making sure that the email is unique
                 var query2 = { email: newClient.email };
                 User.findOne(query2, function (err1, user2) {
                     if (err1) {
@@ -329,7 +309,7 @@ router.post('/register', function (req, res) {
 
         });
 
-        UserRegisterController.createUser(newClient, function (err2, client) {
+        UserRegisterController.createUser(newClient, function (err2, client) { // making a new client in the clientRegisterController
             if (err2) {
                 if (already_sent_a_json == 0) {
                     already_sent_a_json = 1
@@ -338,8 +318,6 @@ router.post('/register', function (req, res) {
             } else {
                 if (already_sent_a_json == 0) {
                     already_sent_a_json = 1
-                    console.log(client);
-                    console.log("backend");
                     return res.json({ result: "success", message: "The registration was successful" });
                 }
             }
@@ -347,20 +325,21 @@ router.post('/register', function (req, res) {
     }
 });
 
+// the login route that will call the passport method from up there and will redirect to successjson if the user has successfully logged in and will redirect to failurejson if the user has failed to log in
 router.post('/login',
 
     passport.authenticate('local.clientsadmins', { successRedirect: '/routes/successjson', failureRedirect: '/routes/failurejson' }));
 
 
-router.get('/successjson', function (req, res) {
+router.get('/successjson', function (req, res) { // if the user has successfully logged in
     res.json({ result: "success", message: "You have successfully logged in" })
 });
 
-router.get('/failurejson', function (req, res) {
+router.get('/failurejson', function (req, res) { // if the user has failed to log in
     res.json({ result: "failure", message: "Unknown User" });
 });
 
-router.post('/logout', function (req, res) {
+router.post('/logout', function (req, res) { // the logout route 
     req.logout();
     res.json({ result: "success", message: "You have successfully logged out" });
 });

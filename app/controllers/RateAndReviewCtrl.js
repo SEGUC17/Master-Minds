@@ -3,7 +3,19 @@ var clients= require('../../models/clients.js');
 var student_schema= require('../../models/businessOwners.js');
 let businesses = require('../../models/businessOwners');
 exports.Post_Rate_Business= function(req,res)
-{if(req.user){
+{/**
+ * user stroy [2.5]
+ * this method is made to make the client able to add ratings to database or modifing it
+ * search for business_name in the database
+ *  if found  then search whether the rating by this man is in the database or not
+ *                 if the rating is in the database just modife it
+ *                 else add new one
+ *    else send not found to the user
+ *    then search whether the rating by this man is in the database or not
+ *      if the rating is in the database just modife it
+ *       else add new one
+ */
+  if(req.user){
   var business = require('mongoose').model('businesses');
   var req_business = req.param('business');
   business.findOneAndUpdate({'business_name':req_business,'business_rating.username':req.user.username},{'$set': {
@@ -55,7 +67,13 @@ exports.Post_Rate_Business= function(req,res)
 }
 
 exports.Post_Review_Business = function(req,res)
-{
+{/**
+ * user stroy [2.4]
+ * this method is made to make the client able to add review to database
+ *    search for business_name in the database
+ *    if found add the review
+ *    else send not found to the user
+ */
   if(req.user){
   var business = require('mongoose').model('businesses');
   var req_business = req.param('business');
@@ -178,7 +196,14 @@ exports.Post_Rate_Service=function(req,res)
 
 
 exports.Post_Review_Service= function(req,res)
-{
+{/**
+ * user stroy [2.7]
+ * this method is made to make the client able to add review to database
+ *    search for business_name in the database
+ *    if found look inside it for service_name
+ *    if found add the review
+ *    else send not found to the user
+ */
   if(!req.user)
     {
     console.log(401);
@@ -245,7 +270,13 @@ exports.Post_Review_Service= function(req,res)
 
 exports.Get_Rate_Business= function(req,res)
 {
-
+  /**
+   * user stroy [2.14]
+   * this method is made to make the client able to get the rating of particular business_name from the database
+   *    search for business_name in the database
+   *     if found get all the ratings and add them togther then divide it by the number of ratings and send it to the user
+   *    else send not found to the user
+   */
    var business = require('mongoose').model('businesses');
    var req_business = req.param('business');
 
@@ -287,12 +318,20 @@ exports.Get_Rate_Business= function(req,res)
 
 
 exports.Get_Rate_Service= function(req,res)//tested
-{
+{/**
+ * user stroy [2.14]
+ * this method is made to make the client able to get the rating of particular business_name from the database
+ *    search for business_name in the database
+ *     then look for service_name
+ *     if found get all the ratings and add them togther then divide it by the number of ratings and send it to the user
+ *    else send not found to the user
+ *    else send not found to the user
+ */
   var business = require('mongoose').model('businesses');
   var req_business = req.param('business');
   var req_service = req.param('service');
   business.find({'business_name':req_business},function(err,found_business)
-    {
+    { 
         if(err)
         {
           console.log(401);
@@ -353,7 +392,14 @@ exports.Get_Rate_Service= function(req,res)//tested
 
 
 exports.Get_Review_Business= function(req,res)
-{
+{/**
+ * user stroy [2.14]
+ * this method is made to make the client able to get the reviews of particular business_name from the database
+ *    search for business_name in the database
+ *      if found get all the reviews and put them in a json them togther send them to the user
+ *    else send not found to the user
+ *    
+ */
   var business = require('mongoose').model('businesses');
   var req_business = req.param('business');
 
@@ -390,6 +436,15 @@ exports.Get_Review_Business= function(req,res)
 }
 exports.Get_Review_Service= function(req,res)
 {
+  /**
+   * user stroy [2.14]
+   * this method is made to make the client able to get the reviews of particular business_name from the database
+   *    search for business_name in the database
+   *      if found search for the service 
+   *      if found get all the reviews and put them in a json them togther send them to the user
+   *    else send not found to the user
+   *
+   */
   var business = require('mongoose').model('businesses');
   var req_business = req.param('business');
   var req_service = req.param('service');
@@ -455,7 +510,17 @@ exports.Get_Review_Service= function(req,res)
 });
 }
 exports.Report_Business_Review = function(req,res)
-{   if(!req.user)
+{ /**
+   * user stroy [2.15]
+   * this method is made to make the client able to get the reviews of particular business_name from the database
+   *    search for business_name in the database
+   *    if found search for review that was passed in the body
+   *    if found add +1 to the reported part
+   *    else send not found
+   *    else send not found
+   *
+   */ 
+  if(!req.user)
       {
         console.log(401); res.json({"result":"failure","message":"please login"});
         return;
