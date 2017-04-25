@@ -13,7 +13,7 @@ if(req.user){
 
       var service_pic = req.body.service_pic;
       var service_name = req.body.service_name;
-      var service_description = req.body.service_description;
+      var service_Description = req.body.service_Description;
       var service_price = req.body.service_price;
       var promotion_offer=req.body.promotion_offer;
 
