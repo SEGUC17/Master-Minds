@@ -6,9 +6,9 @@ let session = require('express-session');
 let productContoller = {
     reportServiceReview: function (req, res) {
         /*
-        I will get a post request from the detailed product view when the button of the report on 
-        a certain review is clicked. The product name, the business name and the review content 
-        will be passed from the view to this function in the product controller. 
+        I will get a post request from the detailed product view when the button of the report on
+        a certain review is clicked. The product name, the business name and the review content
+        will be passed from the view to this function in the product controller.
         This function should search for the review in the business and set the reported flag true.
         */
 
@@ -46,12 +46,12 @@ let productContoller = {
 
     addAdvertisment: function (req, res) {
         /*
-        Get a post request from the view from the business owner on a service he wants to advertise and 
+        Get a post request from the view from the business owner on a service he wants to advertise and
         save it in the database or reject it
         */
         var found = false;
         if (req.user) {  //If business owner press the 'advertise' button
-            businesses.findOne({ personal_email: req.user.username }, function (err, business) { //Get the business
+            businesses.findOne({ personal_email: req.user.personal_email }, function (err, business) { //Get the business
                 if (err) return res.json({ 'result': 'failure', 'message': 'error on database' });
                 if (!business)
                     return res.json({ 'result': 'failure', 'message': 'business not found' })
@@ -133,13 +133,13 @@ let productContoller = {
             }
             // console.log(adArray);
             res.json({ 'result': 'success', 'message': 'advertisementsView', 'content': adArray });    //Pass the chosen ads to the view
-        }   
+        }
      })
-    
+
 }
         })
 
-        
+
      }
     }
 
