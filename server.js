@@ -11,7 +11,7 @@ var flash = require('connect-flash');
 var validator = require('express-validator');
 var multer = require('multer');
 var fs = require('fs');
-var DB_URI = "mongodb://BreakOut:root@ds117251.mlab.com:17251/heroku_gj9hvr81";
+var DB_URI = "mongodb://777_x_amr_x_777:777505777505amr@ds062059.mlab.com:62059/breakout";
 var expressValidator = require('express-validator');
 var flash = require('connect-flash');
 var session = require('express-session');
@@ -139,8 +139,10 @@ app.use(function(req, res, next) {
     res.locals.client = req.client || null;
     next();
 });
+
+var port = process.env.PORT || 8080;
 //Start the server
-app.listen(8080, function(){
+app.listen(port, function(){
     console.log("server is listening on port 8080");
 
 })
