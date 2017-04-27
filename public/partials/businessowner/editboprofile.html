@@ -9,12 +9,12 @@
         </div>
         <div class="form-group">
             <label for="new_email">New E-Mail</label>
-            <input type="email" ng-model="data.new_email" name="new_email" class="form-control">
+            <input type="email" ng-model="data.personal_email" name="new_email" class="form-control">
             <span class="error-message" ng-show="form.new_email.$dirty && form.new_email.$error.email">Must be an email</span>
         </div>
         <div class="form-group">
             <label for="new_password">New Password</label>
-            <input type="password" ng-model="data.new_password" name="new_password" class="form-control">
+            <input type="password" ng-model="data.password" name="new_password" class="form-control">
             <span class="error-message" ng-show="form.new_password.$dirty && form.new_password.$error.minlength">Minimum 6 Characters</span>
         </div>
         <div class="form-group">
@@ -47,7 +47,7 @@
         </div>
         <div class="form-group">
             <label for="business_logo">Business Logo</label>
-            <input type="file" name="business_logo" class="form-control">
+            <input type="file" ng-model="data.business_logo" name="business_logo" class="form-control">
         </div>
         <button type="submit" ng-click="cancel()" class="btn btn-primary">Cancel Changes</button>
         <button type="submit" ng-click="edit()" class="btn btn-primary">Edit Profile</button>

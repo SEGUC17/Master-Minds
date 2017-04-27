@@ -99,6 +99,7 @@ let profileController = {
                 res.json({"result":"failure","message":"User not found"});
             }else{
 
+                if (req.body.password){
         bcrypt.genSalt(10, function(err, salt) {
         bcrypt.hash(password, salt, function(err, hash) { //encrypts new password and saves it to the user
             user.password = hash;
@@ -110,11 +111,31 @@ let profileController = {
         user.profile_pic = profile_pic;
     }
     if (!dupMail){
- user.email = email; // if the mail is not duplicate save it
+        if (req.body.email){
+user.email = email; // if the mail is not duplicate save it
+        }
+        else{
+            user.email = user.email;
+        }
+ 
     }
+    if (req.body.address){
         user.address = address;
+    }
+    else{
+        user.address = user.address;
+    }
+    if (req.body.phone_number){
         user.phone_number = phone_number;
+    }else{
+        user.phone_number = user.phone_number;
+    }
+    if(req.body.fullName){
         user.fullName = fullname;
+    }
+    else{
+        user.fullName = user.fullName;
+    }
         user.save(function (err, editUser){// saves the rest of the data to the database (except for password as it was already saved)
             if(err){
                 console.log(err);
@@ -130,6 +151,52 @@ let profileController = {
 
         });
     });
+                }else{
+                     if(user){
+        if(req.file){
+            if(user.profile_pic)// if there is a file and this user has an existing profile picture delete the old one.
+        fs.unlink('./public/businessowner/' + user.profile_pic);
+        user.profile_pic = profile_pic;
+    }
+   if (!dupMail){
+        if (req.body.email){
+user.email = email; // if the mail is not duplicate save it
+        }
+        else{
+            user.email = user.email;
+        }
+ 
+    }
+    if (req.body.address){
+        user.address = address;
+    }
+    else{
+        user.address = user.address;
+    }
+    if (req.body.phone_number){
+        user.phone_number = phone_number;
+    }else{
+        user.phone_number = user.phone_number;
+    }
+    if(req.body.fullName){
+        user.fullName = fullname;
+    }
+    else{
+        user.fullName = user.fullName;
+    }
+        user.save(function (err, editUser){// saves the rest of the data to the database (except for password as it was already saved)
+            if(err){
+                console.log(err);
+                res.status(400).json({"result":"failure","message":"error happened in the database"});
+            }else{
+                res.json({"result":"success","message":"Found user and updated successfully"});
+            }
+        });
+            }else{
+                res.json({"result":"failure","message":"User not found, purging database!"});
+            }
+
+                }
 
             }
         });
