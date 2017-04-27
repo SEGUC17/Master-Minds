@@ -8,7 +8,7 @@ let clientsController = {
       var name = req.body.name;
       //checks if user is logged in
       if(!req.user){
-        res.json({"result":"failure","message":"You need to login"});
+        return res.json({"result":"failure","message":"You need to login"});
       }else{
       //var email = "client1";  Was used for testing
 
@@ -17,10 +17,10 @@ let clientsController = {
       //locates the current client
       clients.findOne({email:email},function(err,client){
         if(err){
-          res.json({"result":"failure","message":"There was a problem"});
+          return res.json({"result":"failure","message":"There was a problem"});
         }else{
           if (!client){
-            res.json({"result":"failure","message":"You are not a client"})
+            return res.json({"result":"failure","message":"You are not a client"})
           }
           // checks for duplicate likes
           for(var i = 0; i<client.liked.length;i++){
@@ -34,10 +34,10 @@ let clientsController = {
           //Updates the client in the database
           client.save(function(err){
             if(err){
-              res.json({"result":"failure","message":"There was a problem"});
+              return res.json({"result":"failure","message":"There was a problem"});
             }else{
               console.log("Business added to favorites");
-              res.json({"result":"success","message":"successfully added"});
+              return res.json({"result":"success","message":"successfully added"});
             }
           });
 
