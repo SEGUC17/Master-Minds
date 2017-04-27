@@ -1,0 +1,66 @@
+<div class="page-header">
+    <h1>business owner adding service </h1>
+</div>
+
+<div ng-controller="addCtrl">
+
+      <div class="jumbotron text-center" ng-show="loading">
+          <span class="glyphicon glyphicon-repeat spinner"></span>
+          <p>Loading...</p>
+      </div>
+
+      <br>
+
+      <div class="row show-hide-message" ng-show="successMsg">
+          <div class="alert alert-success">{{successMsg}}</div>
+      </div>
+
+      <br>
+
+      <div class="row show-hide-message" ng-show="errorMsg">
+          <div class="alert alert-danger">{{errorMsg}}</div>
+      </div>
+
+      <br>
+
+      <form name="serviceform" ng-submit="addService(regData,serviceform.$valid)" novalidate>
+          <div class="form-group" ng-class="{ 'has-error' : serviceform.service_name.$invalid && !serviceform.service_name.$pristine }">
+              <label>service name</label>
+              <input class="form-control" type="text" name="service_name" placeholder="please enter your service name" ng-model="regData.service_name" required>
+              <p ng-show="serviceform.service_name.$invalid && !serviceform.service_name.$pristine" class="help-block">service  name is required.</p>
+          </div>
+          <br>
+
+          <div class="form-group" ng-class="{ 'has-error' : serviceform.service_Description.$invalid && !serviceform.service_Description.$pristine }">
+              <label>service Description</label>
+              <input class="form-control" type="text" name="service_Description" placeholder="please enter your service Description" ng-model="regData.service_Description" required>
+
+          </div>
+
+          <br>
+
+          <div class="form-group" ng-class="{ 'has-error' : serviceform.service_price.$invalid && !serviceform.service_price.$pristine }">
+              <label>service price</label>
+              <input class="form-control" type="number" name="service_price" placeholder="please enter your service price " ng-model="regData.service_price" required>
+              <p ng-show="serviceform.service_price.$invalid && !serviceform.service_price.$pristine" class="help-block">Your service price is required.</p>
+          </div>
+          <br>
+          <div class="form-group" ng-class="{ 'has-error' : serviceform.promotion_offer.$invalid && !serviceform.promotion_offer.$pristine }">
+              <label>promotion offer</label>
+              <input class="form-control" type="number" name="promotion_offer" placeholder="please enter your percentage dicount on service if available  " ng-model="regData.promotion_offer" >
+              <p ng-show="serviceform.promotion_offer.$invalid && !serviceform.promotion_offer.$pristine" class="help-block"></p>
+          </div>
+          <br>
+          <div class="form-group" >
+              <label>service type</label>
+              <input class="form-control" type="checkbox" name="type_flag"  value="true"  ng-model="regData.type_flag" >please  if service type is time-based (check) or product-based (uncheck)
+          </div>
+          <br>
+          <div class="form-group" >
+              <label>availability</label>
+              <input class="form-control" type="checkbox" name="available_flag"  value="true" ng-model="regData.available_flag" >  please if  service is available (check) or not available (uncheck)
+          </div>
+          <button class="btn btn-primary" type="submit" ng-disabled="serviceform.$invalid">Submit</button>
+
+      </form>
+  </div>

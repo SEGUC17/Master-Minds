@@ -1,0 +1,60 @@
+<div ng-controller="subCtrl">
+    <h1>Subscribe to add your business to the directory!</h1>
+    <form name="form" action="/subscribe" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="personal_email">E-Mail</label>
+            <input type="email" name="personal_email" ng-model="data.personal_email" ng-required="true" class="form-control">
+            <p ng-show="form.personal_email.$invalid && !form.personal_email.$pristine" class="help-block">Enter a valid email</p>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" ng-model="data.password" name="password" ng-required="true" ng-minlength="6" ng-maxlength="25" class="form-control">
+            <p ng-show="form.password.$invalid && !form.password.$pristine" class="help-block">Enter a password of 6-25 characters</p>
+        </div>
+        <div class="form-group">
+            <label for="confirm_password">Confirm Password</label>
+            <input type="password" ng-model="data.confirm_password" name="confirm_password" ng-required="true" ng-minlength="6" class="form-control">
+            <p ng-show="form.confirm_password.$invalid && !form.confirm_password.$pristine" class="help-block">Required</p>
+        </div>
+        <div class="form-group">
+            <label for="fullName">Owner's Full Name</label>
+            <input type="text" ng-model="data.fullName" name="fullName" ng-required="true" class="form-control">
+            <p ng-show="form.fullName.$invalid && !form.fullName.$pristine" class="help-block">Required</p>
+        </div>
+        <div class="form-group">
+            <label for="business_name">Business Name</label>
+            <input type="text" ng-model="data.business_name" name="business_name" ng-required="true" class="form-control">
+            <p ng-show="form.business_name.$invalid && !form.business_name.$pristine" class="help-block">Required</p>
+        </div>
+        <div class="form-group">
+            <label for="address">Business Address</label>
+            <input type="text" ng-model="data.address" name="address" ng-required="true" class="form-control">
+            <p ng-show="form.address.$invalid && !form.address.$pristine" class="help-block">Required</p>
+        </div>
+        <div class="form-group">
+            <label for="business_emails">Business E-mail(s)</label>
+            <input type="text" ng-model="data.business_emails" name="business_emails" ng-required="true" class="form-control">
+            <p ng-show="form.business_emails.$invalid && !form.business_emails.$pristine" class="help-block">Required</p>
+        </div>
+        <div class="form-group">
+            <label for="business_description">Business Description</label>
+            <input type="text" ng-model="data.business_description" name="business_description" ng-required="true" class="form-control">
+            <p ng-show="form.business_description.$invalid && !form.business_description.$pristine" class="help-block">Required</p>
+        </div>
+        <div class="form-group">
+            <label for="associated_bank">Associated Bank</label>
+            <input type="text" ng-model="data.associated_bank" name="associated_bank" ng-required="true" class="form-control">
+            <p ng-show="form.associated_bank.$invalid && !form.associated_bank.$pristine" class="help-block">Required</p>
+        </div>
+        <div class="form-group">
+            <label for="business_website">Business Website</label>
+            <input type="text" ng-model="data.business_website" name="business_website" ng-required="true" class="form-control">
+            <p ng-show="form.business_website.$invalid && !form.business_website.$pristine" class="help-block">Required</p>
+        </div>
+        <div class="form-group">
+            <label for="business_logo">Business Logo</label>
+            <input type="file" name="business_logo" required class="form-control">
+        </div>
+        <button type="submit" ng-click="subscribe()" ng-disabled="form.$invalid" class="btn btn-primary">Subscribe</button>
+    </form>
+</div>

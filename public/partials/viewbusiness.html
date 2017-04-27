@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head ng-controller ='ViewBusinessCtrl as business'>
+  <div >
+    <img src=../businessowner/{{business_logo}} class="logo" style="width:500px;height:350px;"> </img>
+    <h1>{{business_name}}</h1>
+    <button type="button" class="btn btn-default" ng-hide="isAdmin" ng-click="getLikeBusiness()">Like</button>
+    <br>
+  </div>
+  <form class ="form-group" ng-show="isAdmin">
+  <input class ="btn btn-primary" type="submit" value = "Ban" ng-hide="banned" ng-click="banBus(business_name)">
+  <input class ="btn btn-primary" type="submit" value = "Unban" ng-show="banned" ng-click="banBus(business_name)">
+  <input class ="btn btn-primary" type="submit" value = "Delete Business"  ng-click="deleteBus(business_name)">
+  </form>
+
+  <section ng-controller = "tabController as tab">
+    <ul class="nav nav-pills">
+      <li ng-class = "{active: tab.isSelected(1)}">
+        <a href ng-click = "tab.selectTab(1)">Description</a>
+      </li>
+      <li ng-class = "{active: tab.isSelected(2)}">
+        <a href ng-click = "tab.selectTab(2)">Services</a>
+      </li>
+      <li ng-class = "{active: tab.isSelected(3)}">
+        <a href ng-click = "tab.selectTab(3)">FAQ</a>
+      </li>
+    </ul>
+
+    <div class="tab" ng-show ="tab.isSelected(1)">
+      <h2>Description</h2>
+      <p>{{business_description}}</p>
+    </div>
+
+      <h3 ng-show ="tab.isSelected(2)">Services</h3>
+    <div class="tab" ng-show ="tab.isSelected(2)" ng-repeat="service in services">
+      <img src=../businessowner/{{service.service_pic}} class="service_logo" style="width:70px;height:50px;"></img>
+      <a href="#/detailedService/{{location}}/{{service.service_name}}">{{service.service_name}}</a>
+
+    </div>
+
+    <div class="tab" ng-show ="tab.isSelected(3)">
+      <h4>FAQ</h4>
+      <p>{{FAQ}}</p>
+
+    </div>
+  </section><br><br>
+</head>

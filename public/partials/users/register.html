@@ -1,0 +1,81 @@
+<div class="page-header">
+    <h1>Register</h1>
+</div>
+<!--using the register controller from the frontend controllers-->
+<div ng-controller="regCtrl">
+    <!--showing the loading word and its symbol-->
+    <div class="jumbotron text-center" ng-show="loading">
+        <span class="glyphicon glyphicon-repeat spinner"></span>
+        <p>Loading...</p>
+    </div>
+
+    <br>
+    <!--showing the success message-->
+    <div class="row show-hide-message" ng-show="successMsg">
+        <div class="alert alert-success">{{successMsg}}</div>
+    </div>
+
+    <br>
+    <!--showing the error message-->
+    <div class="row show-hide-message" ng-show="errorMsg">
+        <div class="alert alert-danger">{{errorMsg}}</div>
+    </div>
+
+    <br>
+    <!--the registration form with its validations-->
+    <form name="userForm" ng-submit="regUser(regData,userForm.$valid)" novalidate>
+        <div class="form-group" ng-class="{ 'has-error' : userForm.fullName.$invalid && !userForm.fullName.$pristine }">
+            <label>Full name</label>
+            <input class="form-control" type="text" name="fullName" placeholder="please enter your name" ng-model="regData.fullName" required>
+            <p ng-show="userForm.fullName.$invalid && !userForm.fullName.$pristine" class="help-block">Your name is required.</p>
+        </div>
+
+        <br>
+
+        <div class="form-group" ng-class="{ 'has-error' : userForm.email.$invalid && !userForm.email.$pristine }">
+            <label>Email</label>
+            <input class="form-control" type="text" name="email" placeholder="please enter your email" ng-model="regData.email" required>
+            <p ng-show="userForm.email.$invalid && !userForm.email.$pristine" class="help-block">Enter a valid email.</p>
+        </div>
+
+        <br>
+
+        <div class="form-group" ng-class="{ 'has-error' : userForm.username.$invalid && !userForm.username.$pristine }">
+            <label>username</label>
+            <input class="form-control" type="text" name="username" placeholder="please enter your username" ng-model="regData.username" ng-minlength="3" ng-maxlength="15" required>
+            <p ng-show="userForm.username.$error.minlength" class="help-block">Username is too short.</p>
+            <p ng-show="userForm.username.$error.maxlength" class="help-block">Username is too long.</p>
+        </div>
+
+        <br>
+
+        <div class="form-group" ng-class="{ 'has-error' : userForm.address.$invalid && !userForm.address.$pristine }">
+            <label>Address</label>
+            <input class="form-control" type="text" name="address" placeholder="please enter your Address" ng-model="regData.address" required>
+            <p ng-show="userForm.address.$invalid && !userForm.address.$pristine" class="help-block">Your Address is required.</p>
+        </div>
+
+        <br>
+
+        <div class="form-group" ng-class="{ 'has-error' : userForm.phone_number.$invalid && !userForm.phone_number.$pristine }">
+            <label>Phone Number</label>
+            <input class="form-control" type="number" name="phone_number" placeholder="please enter your Phone Number" ng-model="regData.phone_number" required>
+            <p ng-show="userForm.phone_number.$invalid && !userForm.phone_number.$pristine" class="help-block">Your phone number is required.</p>
+        </div>
+
+        <br>
+
+        <div class="form-group" ng-class="{ 'has-error' : userForm.password.$invalid && !userForm.password.$pristine }">
+            <label>Password</label>
+            <input class="form-control" type="password" name="password" placeholder="please enter your password" ng-model="regData.password" required ng-minlength="6" ng-maxlength="30">
+            <p ng-show="userForm.password.$error.minlength" class="help-block">password is too short.</p>
+            <p ng-show="userForm.password.$error.maxlength" class="help-block">password is too long.</p>
+            <p ng-show="userForm.password.$invalid && !userForm.password.$pristine" class="help-block">Your password is required.</p>
+        </div>
+
+        <br>
+
+        <button class="btn btn-primary" type="submit" ng-disabled="userForm.$invalid">Submit</button>
+
+    </form>
+</div>
