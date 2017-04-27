@@ -67,7 +67,7 @@ res.status(500).send(err);
             if(x==false){
           Found_data.services.push({service_pic:service_pic,
             service_name:service_name,
-          service_Description:service_Description,
+          service_description:service_Description,
           service_price:service_price,
           promotion_offer:promotion_offer,
           type_flag:type_flag,
@@ -152,7 +152,7 @@ res.status(500).send(err);
      if(user.services[i].service_name==oldservice_name){
       user.services[i].service_pic=newservice_pic;
       user.services[i].service_name=newservice_name;
-      user.services[i].service_Description=newservice_Description;
+      user.services[i].service_description=newservice_Description;
       user.services[i].service_price=newservice_price;
       user.services[i].promotion_offer=newpromotion_offer;
       user.services[i].type_flag=newtype_flag;

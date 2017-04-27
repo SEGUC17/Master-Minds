@@ -58,7 +58,7 @@ angular.module('Ang_view_rateandreview', [])
       if ($scope.isAdmin) {
         console.log(id);
         $http.put('/routes/admin/deleteReview/' + id, {}).then(function (res) {
-                                       
+
           $route.reload();
                                        
          });
@@ -70,8 +70,13 @@ angular.module('Ang_view_rateandreview', [])
         console.log(username);
         $http.put('/routes/admin/only-ban-user/' + username, {}).then(function (res) {
                                       
-          $route.reload();
-                                       
+        if(res.data.result == "success"){
+            $scope.msg = 'The user has been banned!';
+            }else{
+            $scope.msg = 'Banning user not successful!';
+            }
+            
+            $window.alert($scope.msg);                                       
         });
       }
     };

@@ -1,6 +1,6 @@
 angular.module('adminApp', [])
 
-.controller('adminController', function($scope, $http,$location,$timeout,$route) {
+.controller('adminController', function($scope, $http,$location,$timeout,$route,$window) {
             //$scope.loading = true;
     $scope.isAdmin = false;
             //console.log("login form submitted");
@@ -26,8 +26,16 @@ angular.module('adminApp', [])
            // $timeout(function() {
            //     $route.reload();
            // }, 500);
+           if(res.data.result == "success"){
+            $scope.msg = 'The user has been banned!';
+            }else{
+            $scope.msg = 'Banning user not successful!';
+            }
+            
+            $window.alert($scope.msg);
+            
+
            $scope.getUsers();
-           $route.reload();
         });
     };
     $scope.banBus = function(username){

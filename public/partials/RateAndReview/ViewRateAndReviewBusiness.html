@@ -58,7 +58,7 @@
     <span ng-bind="Message"></span>
     </p>
 	<div class="jumbotron" ng-repeat="bus_review in resp_review">
-    <label ><span ng-bind="bus_review.username"></span> : <span ng-bind="bus_review.review"></span></br>
+    <label ><a ng-show="isAdmin" ng-href="#/client_profile/{{bus_review.username}}">{{bus_review.username}}</a> : <span ng-bind="bus_review.review"></span></br>
     <div>
      <label>This review has  <span ng-bind="bus_review.reported"></span> reports.</label>
     </div>
