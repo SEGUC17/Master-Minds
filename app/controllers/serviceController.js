@@ -13,7 +13,7 @@ if(req.user){
 
       var service_pic = req.body.service_pic;
       var service_name = req.body.service_name;
-      var service_Description = req.body.service_Description;
+      var service_description = req.body.service_description;
       var service_price = req.body.service_price;
       var promotion_offer=req.body.promotion_offer;
 
@@ -31,7 +31,7 @@ promotion_offer=0;
       // Validation
 
       req.checkBody('service_name', 'service_name is required').notEmpty();
-      req.checkBody('service_Description', 'service_Description is required').notEmpty();
+      req.checkBody('service_description', 'service_description is required').notEmpty();
       req.checkBody('service_price', 'service_price is required').notEmpty();
 
 
@@ -67,7 +67,7 @@ res.status(500).send(err);
             if(x==false){
           Found_data.services.push({service_pic:service_pic,
             service_name:service_name,
-          service_description:service_Description,
+          service_description:service_description,
           service_price:service_price,
           promotion_offer:promotion_offer,
           type_flag:type_flag,
@@ -101,7 +101,7 @@ if(req.user){
     var newservice_pic = req.body.newservice_pic;
     var oldservice_name = req.body.oldservice_name;// business_owner must enter oldservice_name so i can know where to edit
     var newservice_name = req.body.newservice_name;
-    var newservice_Description = req.body.newservice_Description;
+    var newservice_description = req.body.newservice_description;
     var newservice_price = req.body.newservice_price;
     var newpromotion_offer=req.body.newpromotion_offer;
     var newtype_flag=req.body.newtype_flag;
@@ -116,12 +116,7 @@ if(req.user){
     if(newpromotion_offer==null)
     newpromotion_offer=0;
 
-    // Validation
-    // if(personal_email==""||personal_email==null){
-    //   res.json({'result':'failed', 'message':'you must enter  your personal email to edit '});
-
-    //  res.render('service_edit');// front end service edit
-  // }else{
+    
     if(oldservice_name==""||oldservice_name==null){
 
       res.json({'result':'failed', 'message':'you must enter  your old service_name  to edit  it  '});
@@ -152,7 +147,7 @@ res.status(500).send(err);
      if(user.services[i].service_name==oldservice_name){
       user.services[i].service_pic=newservice_pic;
       user.services[i].service_name=newservice_name;
-      user.services[i].service_description=newservice_Description;
+      user.services[i].service_description=newservice_description;
       user.services[i].service_price=newservice_price;
       user.services[i].promotion_offer=newpromotion_offer;
       user.services[i].type_flag=newtype_flag;
