@@ -1,6 +1,6 @@
 angular.module('NavigationBar', [])
 
-    .controller('navigation', function ($scope, $http, $location) {
+    .controller('navigation', function ($scope, $http, $location, $window) {
         $http.get('/routes/nav').then(function (res) {
             if (res.data.result == 'success') {
                 if (res.data.message != 'business') {
@@ -8,7 +8,8 @@ angular.module('NavigationBar', [])
                     $scope.type = res.data.message;
                 } else {
                     $scope.username = res.data.content.personal_email;
-                    $scope.type = res.data.message
+                    $scope.type = res.data.message;
+                    $scope.business = res.data.content.business_name;
                 }
             }
 
@@ -17,6 +18,7 @@ angular.module('NavigationBar', [])
                 $http.post('/routes/logout').then(function (res) {
                     $scope.username = null;
                     $scope.type = null;
+                    $window.location.reload();
                 });
             };
         });

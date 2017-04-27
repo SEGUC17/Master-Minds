@@ -13,7 +13,7 @@
 			<br>
 			<ul ng-if="myForm.myInput.$valid && searchText.length">
 				<li data-ng-repeat="user in userList | filter:{username:searchText}" style="margin-bottom:20px;">
-	 				Username: {{user.username}}
+	 				Username: <a ng-href="#/client_profile/{{user.username}}">{{user.username}}</a>
 					<br> Fullname: {{user.fullname}}
 					<br> Email: {{user.reported}}
 					<br> Banned: {{user.ban}}

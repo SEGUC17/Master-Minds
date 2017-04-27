@@ -3,9 +3,44 @@ var fs = require('fs');
 var bcrypt = require('bcryptjs');
 
 let Clients = require('../../models/clients');
-
+let Admin = require('../../models/admins');
 let profileController = {
 
+  viewProfileWithUsername:function(req,res)
+ {console.log(req.user);
+   if(req.user){
+       Admin.findOne({ username: req.user.username }, function (err, adm) {
+
+         if (adm) {console.log("admin");
+           var user = req.param("username");
+           Clients.findOne({username: user}, function(err, user){
+               if(err){
+                   res.status(200).json({"result":"failure","message":"error happened in the database"});
+               }else{
+                   if(user){
+                   res.json({"result":"success","message":"Found user", "content": user});
+               }
+               else{
+                   res.status(200).json({"result":"failure","message":"User not found"});
+               }
+               }
+           });
+         }
+
+         else
+         {console.log("not admin");
+           res.json({"result":"failure","message":"you are not admin"});
+         }
+     });
+   }
+     else
+     {console.log(" not user admin");
+         res.json({"result":"failure","message":"you didn't login"});
+     }
+
+   }
+
+ ,
     viewProfile: function(req, res){
         if(!req.user){
             res.status(200).json({"result":"failure","message":"Unauthorized user detected, purging database!"});
@@ -33,7 +68,7 @@ let profileController = {
 
     editProfile: function(req, res){
         if(!req.user){
-            res.status(401).json({"result":"failure","message":"Unauthorized user detected, purging database!"});
+            res.status(401).send('Unauthorized user');
         }
         else{
         var username = req.user.username;
@@ -49,7 +84,7 @@ let profileController = {
         Clients.findOne({'username': username}, function(err, user){
             if(err){
                 console.log(err);
-                res.status(404).json({"result":"failure","message":" user not found, purging database!"});
+                res.status(404).send('user not found')
             }else{
 
         bcrypt.genSalt(10, function(err, salt) {
@@ -69,9 +104,7 @@ let profileController = {
         user.save(function (err, editUser){
             if(err){
                 console.log(err);
-                res.status(400).json({"result":"failure","message":"An error occured, purging database!"});
-            }else{
-                res.json({"result":"success","message":"The new data has been save", "content": editUser});
+                res.status(400).send('An error occured');
             }
         });
             }else{

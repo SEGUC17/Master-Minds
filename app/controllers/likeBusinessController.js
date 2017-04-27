@@ -5,33 +5,42 @@ let clientsController = {
 
     likeBusiness:function(req,res){
       //Get name of business to be liked from the request
-      var business = req.body.name;
-
-      //var email = "client1";  //Was used for testing
-      //var email = "client2";
+      var name = req.body.name;
+      //checks if user is logged in
+      if(!req.user){
+        res.json({"result":"failure","message":"You need to login"});
+      }else{
+      //var email = "client1";  Was used for testing
 
       //Get current user's email
       var email = req.user.email;
-      if(email == null){
-        res.json({"result":"failure","message":"You are not logged in"});
-      }else{
-        //locates the current client
-        clients.findOne({email:email},function(err,client){
-          if(err){
-            res.json({"result":"failure","message":"Client not found in database"});
-          }else{
-            //adds the liked business to the liked Array
-            client.liked.push({"business_names":business});
-            //Updates the client in the database
-            client.save(function(err){
-              if(err){
-                res.json({"result":"failure","message":"Business could not be liked"});
-              }else{
-                console.log("Business added to favorites");
-                res.json({"result":"success","message":"Business Liked"});
-              }
-            });
+      //locates the current client
+      clients.findOne({email:email},function(err,client){
+        if(err){
+          res.json({"result":"failure","message":"There was a problem"});
+        }else{
+          // checks for duplicate likes
+          for(var i = 0; i<client.liked.length;i++){
+                if(client.liked[i].business_names == name){
+                  res.json({"result":"failure","message":"This Business is already liked"})
+                  return;
+                }
+          };
+          //adds the liked business to the liked Array
+          client.liked.push({"business_names":name});
+          //Updates the client in the database
+          client.save(function(err){
+            if(err){
+              res.json({"result":"failure","message":"There was a problem"});
+            }else{
+              console.log("Business added to favorites");
+              res.json({"result":"success","message":"successfully added"});
+            }
+          });
 
+        }
+      });
+      }
           }
         });
       }

@@ -1,6 +1,6 @@
 angular.module('adminApp', [])
 
-.controller('adminController', function($scope, $http,$location,$timeout,$route) {
+.controller('adminController', function($scope, $http,$location,$timeout,$route,$window) {
             //$scope.loading = true;
     $scope.isAdmin = false;
             //console.log("login form submitted");
@@ -21,6 +21,23 @@ angular.module('adminApp', [])
            $scope.getUsers();
         });
     };
+    $scope.onlyBanUser = function(username){
+        $http.put('/routes/admin/only-ban-user/'+username,{}).then(function(res) {
+           // $timeout(function() {
+           //     $route.reload();
+           // }, 500);
+           if(res.data.result == "success"){
+            $scope.msg = 'The user has been banned!';
+            }else{
+            $scope.msg = 'Banning user not successful!';
+            }
+            
+            $window.alert($scope.msg);
+            
+
+           $scope.getUsers();
+        });
+    };
     $scope.banBus = function(username){
         $http.put('/routes/admin/ban-bus/'+username,{}).then(function(res) {
             //$timeout(function() {
@@ -30,7 +47,7 @@ angular.module('adminApp', [])
         });
     };
     $scope.deleteReview = function(id){
-        $http.put('/routes/admin/deleteReview/'+id,{}).then(function(res) {
+            $http.put('/routes/admin/deleteReview/'+id,{}).then(function(res) {
             $timeout(function() {
                 $route.reload();
             }, 500);
@@ -54,6 +71,31 @@ angular.module('adminApp', [])
         $http.get('/routes/admin/getBus').then(function(res) {
             if (res.data.result == "success") {
             $scope.busList = res.data.content;
+            }
+        });
+    }
+    $scope.getUnaccepted = function(){
+        $http.get('/routes/admin/view_unaccepted_businesses').then(function(res){
+            if(res.data.result == "success"){
+                $scope.unacceptedBusList = res.data.content;
+            }
+        });
+    }
+    $scope.acceptBus = function(business){
+        //console.log("acceptBus has been reached!");
+        //console.log(business);
+        $http.put('/routes/admin/accept_application/'+business,{}).then(function(res){
+                //console.log(business);
+                $scope.getUnaccepted();
+                $timeout(function() {
+                $route.reload();
+                }, 500);
+        });
+    }
+    $scope.isAdminCheck = function(){
+        $http.get('/routes/admin/isAdmin').then(function(res) {
+            if(res.data.result == "success"){
+                $scope.isAdmin = true;
             }
         });
     }

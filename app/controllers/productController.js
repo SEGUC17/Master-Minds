@@ -6,9 +6,9 @@ let session = require('express-session');
 let productContoller = {
     reportServiceReview: function (req, res) {
         /*
-        I will get a post request from the detailed product view when the button of the report on 
-        a certain review is clicked. The product name, the business name and the review content 
-        will be passed from the view to this function in the product controller. 
+        I will get a post request from the detailed product view when the button of the report on
+        a certain review is clicked. The product name, the business name and the review content
+        will be passed from the view to this function in the product controller.
         This function should search for the review in the business and set the reported flag true.
         */
 
@@ -46,13 +46,15 @@ let productContoller = {
 
     addAdvertisment: function (req, res) {
         /*
-        Get a post request from the view from the business owner on a service he wants to advertise and 
+        Get a post request from the view from the business owner on a service he wants to advertise and
         save it in the database or reject it
         */
         var found = false;
-        if (req.param('ad') == 'true' && session.username != null) {  //If business owner press the 'advertise' button
-            businesses.findOne({ personal_email: session.username }, function (err, business) { //Get the business
-                if (err) err.message('You are not a business owner');
+        if (req.user) {  //If business owner press the 'advertise' button
+            businesses.findOne({ personal_email: req.user.personal_email }, function (err, business) { //Get the business
+                if (err) return res.json({ 'result': 'failure', 'message': 'error on database' });
+                if (!business)
+                    return res.json({ 'result': 'failure', 'message': 'business not found' })
                 for (var i = 0; i < business.services.length; i++) {
                     if (business.services[i].service_name == req.param('product')) {
                         found = true;
@@ -61,8 +63,7 @@ let productContoller = {
                 if (found == true) {
                     advertisements.find({}, function (err, ads) {
                         if (ads.length > 12) {  //Cannot advertise more than 12 advertisements on the website
-                            err.message('Cannot add another advertisement at the moment');
-                            res.render('detailedProductView');
+                            return res.json({ 'result': 'failure', 'message': 'number of ads on website exceeded' })
                         } else {
                             var advertised = false;
                             for (var i = 0; i < ads.length; i++) {
@@ -84,18 +85,18 @@ let productContoller = {
                                 ad.service_name = req.param('product');
                                 ad.date = new Date();
                                 ad.save();  //Saving the new advertisement to the database
+                                return res.json({ 'result': 'success', 'message': 'advertisement successful' });
                             } else {
-                                res.json({ 'result': 'failed', 'message': 'You already have a service advertised' });
+                                return res.json({ 'result': 'failure', 'message': 'you already have a service advertised' });
                             }
                         }
                     })
                 } else {
-                    res.json({ 'result': 'failed', 'message': 'This is not one of your products' });
+                    return res.json({ 'result': 'failure', 'message': 'this is not one of your products' });
                 }
             })
 
         }
-        res.json({ 'result': 'success', 'message': 'detailedProductView' });
     },
 
     viewAdvertisements: function (req, res) {
@@ -104,14 +105,23 @@ let productContoller = {
         Should be view in the directory page
         */
         advertisements.find({}, function (err, ad) {
+            if(ad.length == 0){
+                res.json({ 'result': 'failure', 'message': 'There are no ads to view' });
+                return;
+            }
+            else{
             for (var i = 0; i < ad.length; i++) {
                 if (((new Date().getDate()) - ad[i].date.getDate()) > 7 || ((new Date().getDate()) - ad[i].date.getDate()) >= -24 || ((new Date().getMonth()) - ad[i].date.getMonth()) > 1) {
                     ad[i].remove();
                 }
             }
-        })
-        var adArray = [];   //Array of 4 randomly chosen advertisements
+                var adArray = [];   //Array of 4 randomly chosen advertisements
         advertisements.find({}, function (err, ads) {
+              if(ads.length == 0){
+                res.json({ 'result': 'failure', 'message': 'There are no ads to view' });
+                return;
+            }
+            else{
             if (ads.length > 1) {   //There must be atleast 1 advertisement in the database
                 for (var i = 0; i < 4;) {   //To add only 4 ads to the view
                     var random = Math.floor(Math.random() * 11);    //Choose a random from the max. of 12 ads you can have in the database
@@ -123,10 +133,17 @@ let productContoller = {
             }
             // console.log(adArray);
             res.json({ 'result': 'success', 'message': 'advertisementsView', 'content': adArray });    //Pass the chosen ads to the view
-        })
-    }
+        }
+     })
 
 }
+        })
+
+
+     }
+    }
+
+
 
 //Export controller
 module.exports = productContoller;
