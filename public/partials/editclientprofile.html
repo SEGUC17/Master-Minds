@@ -1,6 +1,6 @@
 <div ng-controller="editClientCtrl">
     <h1>Edit Your Profile</h1>
-    <form name="userForm" action="/editprofile" method="post" enctype="multipart/form-data">
+    <form name="userForm" action="/editprofile" method="post" enctype="multipart/form-data" Content-Type = "application/json">
         <div>
             {{message}}
         </div>
@@ -31,10 +31,10 @@
         </div>
         <div class="form-group">
             <label for="profile_pic">Profile Picture</label>
-            <input type="file" name="profile_pic" required class="form-control">
+            <input type="file" name="profile_pic" ng-model="data.profile_pic" required class="form-control">
         </div>
         <button type="submit" ng-click="cancel()" class="btn btn-primary">Cancel</button>
-        <button type="submit" ng-click="editProfile()" ng-disabled="userForm.$invalid" class="btn btn-primary">Edit Profile</button>
+        <button type="submit" ng-click="editProfile()" class="btn btn-primary">Edit Profile</button>
     </form>
 </div>
 

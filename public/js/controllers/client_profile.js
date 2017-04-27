@@ -69,7 +69,7 @@ angular.module('Ang_Client_profile', [])
     };
 })
 
-.controller('editClientCtrl', function($scope,$http,$location,$timeout){
+.controller('editClientCtrl', function($scope,$http,$location,$timeout,$window){
   $scope.message = "";
   // var fullName="";
   // var username="";
@@ -96,6 +96,7 @@ angular.module('Ang_Client_profile', [])
   }
 
   $scope.editProfile = function(){
+    console.log($scope.data);
     if($scope.userForm.$pristine){
       $scope.message = "Fill at least one field to edit your profile."
     }else{
@@ -109,15 +110,17 @@ angular.module('Ang_Client_profile', [])
       //   $scope.data.address = address;
       // if(!$scope.data.phone_number)
       //   $scope.data.phone_number = phone_number;
-      // $http.post('/routes/editprofile', $scope.data).then(function(res){
-      //     if (res.data.result == "success"){
-              $timeout(function(){
-                  $location.path('#/');
-              }, 2000);
-          // }else{
-          //     $scope.message = res.data.message;
-          // }
-      //});
+      $http.post('/routes/editprofile', $scope.data).then(function(res){
+        console.log(res.data.result)
+          if (res.data.result == "success"){
+           console.log(res.data.result)
+           $window.location.href = '#/client_profile';
+           $window.location.href;
+           
+          }else{
+              $scope.message = res.data.message;
+          }
+      });
     }
   }
 });
