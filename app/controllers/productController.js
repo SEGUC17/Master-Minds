@@ -111,7 +111,7 @@ let productContoller = {
             }
             else{
             for (var i = 0; i < ad.length; i++) {
-                if (((new Date().getDate()) - ad[i].date.getDate()) > 7 || ((new Date().getDate()) - ad[i].date.getDate()) >= -24 || ((new Date().getMonth()) - ad[i].date.getMonth()) > 1) {
+                if (((new Date().getDate()) - ad[i].date.getDate()) > 7 || ((new Date().getDate()) - ad[i].date.getDate()) <= -24 || ((new Date().getMonth()) - ad[i].date.getMonth()) > 1) {
                     ad[i].remove();
                 }
             }

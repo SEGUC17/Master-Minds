@@ -19,6 +19,9 @@ let clientsController = {
         if(err){
           res.json({"result":"failure","message":"There was a problem"});
         }else{
+          if (!client){
+            res.json({"result":"failure","message":"You are not a client"})
+          }
           // checks for duplicate likes
           for(var i = 0; i<client.liked.length;i++){
                 if(client.liked[i].business_names == name){
