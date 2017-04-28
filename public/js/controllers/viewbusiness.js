@@ -154,7 +154,7 @@ angular.module('Ang_viewbusiness', [])
           $http.post('/routes/like', { name: $scope.name }).then(function (res) {
 
             alert(res.data.message);
-            $window.location.reload();
+            $scope.liked = !$scope.liked
           });
         }
         $scope.getUnlikeBusiness = function () {
@@ -167,7 +167,7 @@ angular.module('Ang_viewbusiness', [])
           $http.post('/routes/unlike', { name: $scope.name }).then(function (res) {
 
             alert(res.data.message);
-            $window.location.reload();
+            $scope.liked = !$scope.liked
           });
         }
 
