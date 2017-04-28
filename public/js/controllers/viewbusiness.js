@@ -1,5 +1,5 @@
 angular.module('Ang_viewbusiness', [])
-  .controller('ViewBusinessCtrl', function ($scope, $http, $location, $route) {
+  .controller('ViewBusinessCtrl', function ($scope, $http, $location, $route, $window) {
     var str_url = $location.url().split('/');
     var index = str_url.length - 1;
     var element = str_url[index];
@@ -10,6 +10,18 @@ angular.module('Ang_viewbusiness', [])
       if (res.data.result == "success") {
         $scope.isAdmin = true;
       }
+    });
+
+    $http.get('/routes/liked/' + element.replace('%20', ' ')).then(function (res) {
+      $scope.liked == null;
+      $scope.isClient == false;
+      if (res.data.result == "success")
+        $scope.liked = true;
+      else
+        if (res.data.message == 'like')
+          $scope.liked = false;
+      if (res.data.message != 'you are not a client')
+        $scope.isClient = true;
     });
 
     $scope.rateBusiness = function (service) {
@@ -27,7 +39,7 @@ angular.module('Ang_viewbusiness', [])
       });
     };
 
-    $http.get("/routes/viewbusiness", { params: { "search": element.replace('%20',' ') } })
+    $http.get("/routes/viewbusiness", { params: { "search": element.replace('%20', ' ') } })
       .then(function (res) {
 
         console.log(res.data.content);
@@ -105,7 +117,7 @@ angular.module('Ang_viewbusiness', [])
         $scope.reviewBusiness = function (business) {
           console.log(business);
           var str_url = $location.url().split('/');
-          $http.post('/routes/reviews/'+ str_url[str_url.length - 1], business).then(function (res) {
+          $http.post('/routes/reviews/' + str_url[str_url.length - 1], business).then(function (res) {
             console.log(res.data.message);
             $scope.reviewFailureMessage = null;
             $scope.reviewSuccessMessage = null;
@@ -118,19 +130,19 @@ angular.module('Ang_viewbusiness', [])
         };
 
         $scope.reportReview = function (business) {
-                        console.log(business);
-                        var str_url = $location.url().split('/');
-                        $http.post('/routes/reportBusiness/'+ str_url[str_url.length - 1], business).then(function (res) {
-                                console.log(res.data.message);
-                                $scope.reportFailureMessage = null;
-                                $scope.reportSuccessMessage = null;
-                                if (res.data.result == "failure")
-                                        $scope.reportFailureMessage = res.data.message;
-                                else
-                                        $scope.reportSuccessMessage = res.data.message;
+          console.log(business);
+          var str_url = $location.url().split('/');
+          $http.post('/routes/reportBusiness/' + str_url[str_url.length - 1], business).then(function (res) {
+            console.log(res.data.message);
+            $scope.reportFailureMessage = null;
+            $scope.reportSuccessMessage = null;
+            if (res.data.result == "failure")
+              $scope.reportFailureMessage = res.data.message;
+            else
+              $scope.reportSuccessMessage = res.data.message;
 
-                        });
-                };
+          });
+        };
 
         $scope.getLikeBusiness = function () {
           likeBusiness($scope.name);
@@ -142,6 +154,20 @@ angular.module('Ang_viewbusiness', [])
           $http.post('/routes/like', { name: $scope.name }).then(function (res) {
 
             alert(res.data.message);
+            $window.location.reload();
+          });
+        }
+        $scope.getUnlikeBusiness = function () {
+          unlikeBusiness($scope.name);
+        }
+
+        function unlikeBusiness(name) {
+          console.log($scope.name);
+
+          $http.post('/routes/unlike', { name: $scope.name }).then(function (res) {
+
+            alert(res.data.message);
+            $window.location.reload();
           });
         }
 

@@ -69,6 +69,7 @@ let clientsController = {
           client.save(function(err){
            // Now client is saved, save function runs asynchronously
            console.log('business unliked');
+           return res.json({"result":"success","message":"successfully unliked"});
           });
         }
       });
