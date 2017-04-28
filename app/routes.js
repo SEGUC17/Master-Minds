@@ -510,7 +510,10 @@ router.post('/like', function (req, res) {
 
 })
 
-router.post('/unlike', likeBusinessController.unlikeBusiness);
+router.post('/unlike', function(req,res){
+    console.log('in unlike')
+    likeBusinessController.unlikeBusiness(req, res);
+});
 
 router.post('/viewliked', function (req, res) {
     likeBusinessController.viewLikedBusinesses(req, res);
@@ -575,6 +578,20 @@ router.get('/nav', function (req, res) {
         });
     }
 });
+
+router.get('/liked/:business', function (req, res) {
+    Client.findOne({username:req.user.username}, function(err, client){
+        if (err) return res.json({ 'result': 'failure', 'message': 'Database Error!' });
+        if (!client){
+            return res.json({ 'result': 'failure', 'message': 'you are not a client' });
+        }
+        for (var i = 0; i<client.liked.length; i++){
+            if (client.liked[i].business_names == req.param('business'))
+            return res.json({ 'result': 'success', 'message': 'unlike' });
+        }
+        return res.json({ 'result': 'failure', 'message': 'like' });
+    })
+})
 
 //Export router
 module.exports = router;
