@@ -27,7 +27,7 @@ angular.module('Ang_viewbusiness', [])
       });
     };
 
-    $http.get("/routes/viewbusiness", { params: { "search": element } })
+    $http.get("/routes/viewbusiness", { params: { "search": element.replace('%20',' ') } })
       .then(function (res) {
 
         console.log(res.data.content);

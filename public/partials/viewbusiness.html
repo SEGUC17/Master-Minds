@@ -30,7 +30,7 @@
   <input class ="btn btn-primary" type="submit" value = "Unban" ng-show="banned" ng-click="banBus(business_name)">
   <input class ="btn btn-primary" type="submit" value = "Delete Business"  ng-click="deleteBus(business_name)">
   </form>
-
+<br>
   <section ng-controller = "tabController as tab">
     <ul class="nav nav-pills">
       <li ng-class = "{active: tab.isSelected(1)}">
@@ -49,10 +49,10 @@
       <p>{{business_description}}</p>
     </div>
 
-      <h3 ng-show ="tab.isSelected(2)">Services</h3>
-    <div class="tab jumbotron" ng-show ="tab.isSelected(2)" ng-repeat="service in services">
-      <img src=../businessowner/{{service.service_pic}} class="service_logo" style="width:70px;height:50px;"></img>
-      <a href="#/detailedService/{{location}}/{{service.service_name}}">{{service.service_name}}</a>
+      <h3 ng-show ="tab.isSelected(2)">Services:</h3>
+    <div class="tab jumbotron row" ng-show ="tab.isSelected(2)" ng-repeat="service in services">
+      <a class="col-md-2 push-md-10" href="#/detailedService/{{location}}/{{service.service_name}}"><img src={{service.service_pic}} class="service_logo" style="width:100px;height:70px;"></img></a>
+      <h3><a href="#/detailedService/{{location}}/{{service.service_name}}">   {{service.service_name}}</a></h3>
 
     </div>
 
