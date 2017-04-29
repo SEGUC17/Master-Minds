@@ -25,7 +25,7 @@
 
       <br>
 
-      <form name="serviceeditform" ng-submit="editservice(regData,serviceeditform.$valid)" novalidate>
+      <form name="serviceeditform" ng-submit="editservice(regData)" novalidate>
           <div class="form-group" ng-class="{ 'has-error' : serviceeditform.oldservice_name.$invalid && !serviceeditform.oldservice_name.$pristine }">
               <label>old service name</label>
               <input class="form-control" type="text" name="oldservice_name" placeholder="please enter your old service name" ng-model="regData.oldservice_name" required>
@@ -57,6 +57,11 @@
               <label>new service price</label>
               <input class="form-control" type="number" name="newservice_price" placeholder="please enter your new  service price " ng-model="regData.newservice_price" required>
               <p ng-show="serviceeditform.newservice_price.$invalid && !serviceeditform.newservice_price.$pristine" class="help-block">Your new service price is required.</p>
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="service_pic">Service Picture</label>
+            <input type="file" name="service_pic" id="file" required class="form-control">
           </div>
           <br>
           <div class="form-group" ng-class="{ 'has-error' : serviceeditform.newpromotion_offer.$invalid && !serviceeditform.newpromotion_offer.$pristine }">

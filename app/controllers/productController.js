@@ -105,7 +105,7 @@ let productContoller = {
         Should be view in the directory page
         */
         advertisements.find({}, function (err, ad) {
-            if(ad.length == 0){
+            if(ad.length==0){
                 res.json({ 'result': 'failure', 'message': 'There are no ads to view' });
                 return;
             }
