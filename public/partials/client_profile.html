@@ -2,16 +2,30 @@
   <P ng-init="message=''">
   <span ng-bind="message"></span>
   </p>
+    <div class="row">
+        <img src=../businessowner/{{profile_pic}} class="logo col-md-6 push-md-6" style="width:500px;height:350px;"> </img>
+        <div class="row col-md-6 push-md-6">
+          <h1 class="col-md-10 push-md-2">{{username}}</h1><br><br>
+          <div class="row col-md-12 push-md-6">
+            <h3 class="col-md-12 push-md-2"><strong>Fullname: </strong> <span>{{fullName}}</span></h3>
+            <h3 class="col-md-12 push-md-2"><strong>Email: </strong><span>{{email}}</span></h3>
+            <h3 class="col-md-12 push-md-2"><strong>Address: </strong><span>{{address}}</span></h3>
+            <h3 class="col-md-12 push-md-2"><strong>Phone number: </strong><span>{{phone_number}}</span></h3>
+            <blockquote>  <a class="btn btn-primary" href="#/editprofile">edit profile</a></blockquote>          </div>
+
+        </div>
+    </div>
   <div ng-init="fullName=''" ng-init="username=''" ng-init="email=''" ng-init="address=''" ng-init="phone_number=''">
-  <label class="jumbotron">full name:</label> <span ng-bind="fullName"></span></br>
-  <label class="jumbotron">username:</label><span ng-bind="username"></span></br>
-  <label class="jumbotron">email:</label><span ng-bind="email"></span></br>
-  <label class="jumbotron">address:</label><span ng-bind="address"></span></br>
-  <label class="jumbotron">phone_number:</label><span ng-bind="phone_number"></span>
   </div>
-  <a class="btn btn-primary" href="#/editprofile">edit profile</a>
-  <div class="h1">you liked these businesses</div>
-  <div class="jumbotron" ng-repeat="business in liked">
-    <label ><span ng-bind="business.business_names"></span></label>
-  </div>
+
+  <div class="h1"><span ng-bind="like_message"></div>
+
+
+          <div ng-repeat="business in liked"  class="col-md-12 push-md-2">
+            <blockquote>
+              <a class="btn btn-primary" href="#/business/{{business.business_names}}">{{business.business_names}}</a>
+            </blockquote>
+          </div
+    </div>
+
 </div>

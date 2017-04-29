@@ -40,7 +40,7 @@
   </div><br>
   <form ng-submit="rateService(service)">
     <span class="rating" ng-model="service.review">
-  Please Rate: 
+  Please Rate:
   <p style="color: green">{{rateSuccessMessage}}</p>
   <p style="color: red">{{rateFailureMessage}}</p>
   <input ng-model="service.rating" id="rating1" type="radio" name="rating" value="1">
@@ -77,8 +77,8 @@
           <br>
           <button  onfocus="blur()" data-ng-click="onlyBanUser(service.username)" ng-show="isAdmin">Ban User</button>
 
-      
-    
+
+
   </div><br>
 
   <form ng-submit="reviewService(service)">

@@ -1,7 +1,7 @@
 angular.module('Ang_Client_profile', [])
 
 .controller('ClientprofileCtrl',function($scope,$http,$location,$route)
-{/*this controller will be loaded when the page is viewed 
+{/*this controller will be loaded when the page is viewed
    automatically it will load the user details
    and the business that he liked
  */
@@ -17,11 +17,12 @@ angular.module('Ang_Client_profile', [])
     $scope.phone_number=res.data.content.phone_number;
     $scope.liked = res.data.content.liked;
     $scope.profile_pic=res.data.content.profile_pic;
+    $scope.like_message="liked businesses";
     if(res.data.content.liked.length==0)
     {
-      $scope.liked=[{business_names:"you didn't like any pages"}];
+      $scope.like_message="you didn't like any pages";
     }
-
+  //  console.log($scope.liked);
   }
   else
   {
@@ -31,11 +32,11 @@ angular.module('Ang_Client_profile', [])
   });
 })
 .controller('AdminClientprofileCtrl',function($scope,$http,$location,$route)
-{/*this controller will be loaded when the page is viewed 
+{/*this controller will be loaded when the page is viewed
    automatically it will load the user details so the admin can ban him if he wants to
  */
  var str_url = $location.url().split('/');
- 
+
   $http.get('/routes/viewprofile/'+str_url[str_url.length-1]).then(function(res)
   {
 
@@ -116,7 +117,7 @@ angular.module('Ang_Client_profile', [])
            console.log(res.data.result)
            $window.location.href = '#/client_profile';
            $window.location.href;
-           
+
           }else{
               $scope.message = res.data.message;
           }
@@ -124,5 +125,3 @@ angular.module('Ang_Client_profile', [])
     }
   }
 });
-
-
