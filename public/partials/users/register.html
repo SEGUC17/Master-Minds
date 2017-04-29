@@ -59,7 +59,7 @@
 
         <div class="form-group" ng-class="{ 'has-error' : userForm.phone_number.$invalid && !userForm.phone_number.$pristine }">
             <label>Phone Number</label>
-            <input class="form-control" type="number" name="phone_number" placeholder="please enter your Phone Number" ng-model="regData.phone_number" required>
+            <input class="form-control" type="text" name="phone_number" placeholder="please enter your Phone Number" ng-model="regData.phone_number" required>
             <p ng-show="userForm.phone_number.$invalid && !userForm.phone_number.$pristine" class="help-block">Your phone number is required.</p>
         </div>
 
