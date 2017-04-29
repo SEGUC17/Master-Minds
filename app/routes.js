@@ -213,7 +213,10 @@ router.post('/register', function (req, res) {
                     already_sent_a_json = 1
                     return res.json({ result: "failure", message: "this username has been already taken" });
                 }
-            } else { // making sure that the email is unique
+            } 
+
+        });
+        // making sure that the email is unique
                 var query2 = { email: newClient.email };
                 User.findOne(query2, function (err1, user2) {
                     if (err1) {
@@ -228,9 +231,6 @@ router.post('/register', function (req, res) {
                         }
                     }
                 });
-            }
-
-        });
 
         UserRegisterController.createUser(newClient, function (err2, client) { // making a new client in the clientRegisterController
             if (err2) {
