@@ -26,6 +26,12 @@ var expressValidator = require('express-validator');
 var LocalStrategy = require('passport-local').Strategy;
 var path = require('path');
 
+app.use(function(req,res,next){
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, sid");
+    res.header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
+    next();
+});
 
 // Express Session
 

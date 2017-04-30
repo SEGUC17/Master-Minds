@@ -8,7 +8,7 @@ var ClientSchema = mongoose.Schema({
     username: {type: String, unique: true},
     fullName: String,
     address: String,
-    profile_pic: String,
+    profile_pic: {type: String, default: "noimage.svg"},
     phone_number: String,
     liked: [{ business_names: String }],
     businesses_ratings: [{ business_name: String, business_rating: Number }],// not sure to do with this

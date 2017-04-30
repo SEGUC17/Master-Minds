@@ -105,43 +105,51 @@ let productContoller = {
         Should be view in the directory page
         */
         advertisements.find({}, function (err, ad) {
-            if(ad.length == 0){
+            if (err)
+                return res.json({ 'result': 'failure', 'message': 'Error accessing database' });
+            if (!ad)
+                return res.json({ 'result': 'failure', 'message': 'No advertisements' });
+            if (ad.length == 0) {
                 res.json({ 'result': 'failure', 'message': 'There are no ads to view' });
                 return;
             }
-            else{
-            for (var i = 0; i < ad.length; i++) {
-                if (((new Date().getDate()) - ad[i].date.getDate()) > 7 || ((new Date().getDate()) - ad[i].date.getDate()) <= -24 || ((new Date().getMonth()) - ad[i].date.getMonth()) > 1) {
-                    ad[i].remove();
-                }
-            }
-                var adArray = [];   //Array of 4 randomly chosen advertisements
-        advertisements.find({}, function (err, ads) {
-              if(ads.length == 0){
-                res.json({ 'result': 'failure', 'message': 'There are no ads to view' });
-                return;
-            }
-            else{
-            if (ads.length > 1) {   //There must be atleast 1 advertisement in the database
-                for (var i = 0; i < 4;) {   //To add only 4 ads to the view
-                    var random = Math.floor(Math.random() * 11);    //Choose a random from the max. of 12 ads you can have in the database
-                    if (random < ads.length) {  //To assure no array index out of bounds
-                        adArray[i] = ads[random];  // Add the randomly chosen ad to the array of ads
-                        i++;    //Start seeking the next ad to be viewed
+            else {
+                for (var i = 0; i < ad.length; i++) {
+                    if (((new Date().getDate()) - ad[i].date.getDate()) > 7 || (((new Date().getDate()) - ad[i].date.getDate()) <= -24 && ((new Date().getMonth()) - ad[i].date.getMonth()) > 1)) {
+                        ad[i].remove();
                     }
                 }
-            }
-            // console.log(adArray);
-            res.json({ 'result': 'success', 'message': 'advertisementsView', 'content': adArray });    //Pass the chosen ads to the view
-        }
-     })
+                var adArray = [];   //Array of 4 randomly chosen advertisements
+                advertisements.find({}, function (err, ads) {
+                    if (err)
+                        return res.json({ 'result': 'failure', 'message': 'Error accessing database' });
+                    if (!ads)
+                        return res.json({ 'result': 'failure', 'message': 'No Advertisements' });
+                    if (ads.length == 0) {
+                        res.json({ 'result': 'failure', 'message': 'There are no ads to view' });
+                        return;
+                    }
+                    else {
+                        if (ads.length > 1) {   //There must be atleast 1 advertisement in the database
+                            for (var i = 0; i < 4;) {   //To add only 4 ads to the view
+                                var random = Math.floor(Math.random() * 11);    //Choose a random from the max. of 12 ads you can have in the database
+                                if (random < ads.length) {  //To assure no array index out of bounds
+                                    adArray[i] = ads[random];  // Add the randomly chosen ad to the array of ads
+                                    i++;    //Start seeking the next ad to be viewed
+                                }
+                            }
+                        }
+                        // console.log(adArray);
+                        res.json({ 'result': 'success', 'message': 'advertisementsView', 'content': adArray });    //Pass the chosen ads to the view
+                    }
+                })
 
-}
+            }
         })
 
 
-     }
     }
+}
 
 
 

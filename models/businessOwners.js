@@ -22,7 +22,7 @@ var BusinessSchema = mongoose.Schema({
 
     //Business Services
     services: [{
-        service_pic: String,
+        service_pic: {type: String, default: "noimage.svg"},
         service_name: String,
         service_description: String, 
         service_price: Number,
