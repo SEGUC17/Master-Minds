@@ -1,6 +1,6 @@
 angular.module('serviceControllers', [])
 
-        .controller('serviceController', function ($scope, $http, $location, $route,$window) {
+        .controller('serviceController', function ($scope, $http, $location, $route, $window) {
                 var str_url = $location.url().split('/');
                 $http.get('/routes/admin/isAdmin').then(function (res) {
                         if (res.data.result == "success") {
@@ -32,8 +32,10 @@ angular.module('serviceControllers', [])
                         }
                         if (res.data.content.service_rating.length != 0) {
                                 var num = 0;
-                                for (var i = 0; i < res.data.content.service_rating.length; i++)
-                                        num += Number(res.data.content.service_rating[i].rating);
+                                for (var i = 0; i < res.data.content.service_rating.length; i++) {
+                                        if (res.data.content.service_rating[i].rating)
+                                                num += Number(res.data.content.service_rating[i].rating);
+                                }
                                 $scope.service_rating = num / Number(res.data.content.service_rating.length);
                         } else {
                                 $scope.service_rating = "No Rating";
@@ -103,7 +105,7 @@ angular.module('serviceControllers', [])
                                 console.log(id);
                                 $http.put('/routes/admin/deleteReview/' + id, {}).then(function (res) {
 
-                                                $route.reload();
+                                        $route.reload();
 
                                 });
                         }
@@ -114,13 +116,13 @@ angular.module('serviceControllers', [])
                                 console.log(username);
                                 $http.put('/routes/admin/only-ban-user/' + username, {}).then(function (res) {
 
-                                if(res.data.result == "success"){
-                                    $scope.msg = 'The user has been banned!';
-                                    }else{
-                                    $scope.msg = 'Banning user not successful!';
-                                    }
+                                        if (res.data.result == "success") {
+                                                $scope.msg = 'The user has been banned!';
+                                        } else {
+                                                $scope.msg = 'Banning user not successful!';
+                                        }
 
-                                    $window.alert($scope.msg);
+                                        $window.alert($scope.msg);
 
                                 });
                         }
