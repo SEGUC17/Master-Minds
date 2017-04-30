@@ -6,7 +6,7 @@ app.controller('regCtrl', function ($scope, $http, $location, $timeout) {
         if (isValid) {
             $scope.loading = true;
             $scope.errorMsg = false;
-//             console.log("form submitted");
+            //             console.log("form submitted");
             $http.post('/routes/register', $scope.regData).then(function (res) {
                 if (res.data.result == "success") {
                     $scope.loading = false;
@@ -30,14 +30,14 @@ app.controller('loginCtrl', function ($scope, $http, $location, $timeout, $route
         if (isValid) {
             $scope.loading = true;
             $scope.errorMsg = false;
-//             console.log("login form submitted");
+            //             console.log("login form submitted");
             $http.post('/routes/login', $scope.logData).then(function (res) {
                 if (res.data.result == "success") {
                     $scope.loading = false;
                     $scope.successMsg = res.data.message + '......Redirecting to the homepage'; // showing the success message
                     $timeout(function () {
-                        $location.path('#/'); // on success redirect to the homepage
                         $window.location.reload(); // refresh the page
+                        $location.path('#/'); // on success redirect to the homepage
                     }, 2000); // 2 seonds delay
                 } else {
                     $scope.loading = false;

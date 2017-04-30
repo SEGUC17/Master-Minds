@@ -2,17 +2,28 @@
   <P ng-init="message=''">
   <span ng-bind="message"></span>
   </p>
+
+  </form>
+  <div class="row">
+      <img src=../businessowner/{{profile_pic}} class="logo col-md-6 push-md-6" style="width:500px;height:350px;"> </img>
+
+      <div class="row col-md-6 push-md-6">
+        <h1 class="col-md-10 push-md-2">{{username}}</h1><br><br>
+        <div class="row col-md-12 push-md-6">
+          <h3 class="col-md-12 push-md-2"><strong>Fullname: </strong> <span>{{fullName}}</span></h3>
+          <h3 class="col-md-12 push-md-2"><strong>Email: </strong><span>{{email}}</span></h3>
+          <h3 class="col-md-12 push-md-2"><strong>Address: </strong><span>{{address}}</span></h3>
+          <h3 class="col-md-12 push-md-2"><strong>Phone number: </strong><span>{{phone_number}}</span></h3>
+
+      </div>
+
+  </div>
+</div>
+<div ng-init="fullName=''" ng-init="username=''" ng-init="email=''" ng-init="address=''" ng-init="phone_number=''">
+</div>
+
   <div ng-show="banned"><h2>This user is banned!</h2></div>
   <form class ="form-group" >
   <input class ="btn btn-primary" type="submit" value = "Ban" ng-hide="banned" ng-click="banUser(username)">
   <input class ="btn btn-primary" type="submit" value = "Unban" ng-show="banned" ng-click="banUser(username)">
-  </form>
-  <div ng-init="profile_pic=''" ng-init="fullName=''" ng-init="username=''" ng-init="email=''" ng-init="address=''" ng-init="phone_number=''">
-  <img class="img-thumbnail" src="../../client/{{profile_pic}}"  alt="personal photo" class="generic-icon" height="150" width="150" ></br>
-  <label class="jumbotron">Full name:</label> <span ng-bind="fullName"></span></br>
-  <label class="jumbotron">Username:</label><span ng-bind="username"></span></br>
-  <label class="jumbotron">email:</label><span ng-bind="email"></span></br>
-  <label class="jumbotron">address:</label><span ng-bind="address"></span></br>
-  <label class="jumbotron">Phone number:</label><span ng-bind="phone_number"></span>
-  </div>
 </div>

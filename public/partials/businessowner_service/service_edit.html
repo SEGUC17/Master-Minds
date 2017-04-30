@@ -25,7 +25,7 @@
 
       <br>
 
-      <form name="serviceeditform" ng-submit="editservice(regData,serviceeditform.$valid)" novalidate>
+      <form name="serviceeditform" ng-submit="editservice(regData)" novalidate>
           <div class="form-group" ng-class="{ 'has-error' : serviceeditform.oldservice_name.$invalid && !serviceeditform.oldservice_name.$pristine }">
               <label>old service name</label>
               <input class="form-control" type="text" name="oldservice_name" placeholder="please enter your old service name" ng-model="regData.oldservice_name" required>
@@ -43,9 +43,9 @@
 
 
 
-          <div class="form-group" ng-class="{ 'has-error' : serviceeditform.newservice_Description.$invalid && !serviceeditform.newservice_Description.$pristine }">
-              <label>new service Description</label>
-              <input class="form-control" type="text" name="newservice_Description" placeholder="please enter your new service Description" ng-model="regData.newservice_Description" required >
+          <div class="form-group" ng-class="{ 'has-error' : serviceeditform.newservice_description.$invalid && !serviceeditform.newservice_description.$pristine }">
+              <label>new service description</label>
+              <input class="form-control" type="text" name="newservice_description" placeholder="please enter your new service description" ng-model="regData.newservice_description" required >
 
           </div>
 
@@ -59,9 +59,14 @@
               <p ng-show="serviceeditform.newservice_price.$invalid && !serviceeditform.newservice_price.$pristine" class="help-block">Your new service price is required.</p>
           </div>
           <br>
+          <div class="form-group">
+            <label for="service_pic">Service Picture</label>
+            <input type="file" name="service_pic" id="file" required class="form-control">
+          </div>
+          <br>
           <div class="form-group" ng-class="{ 'has-error' : serviceeditform.newpromotion_offer.$invalid && !serviceeditform.newpromotion_offer.$pristine }">
               <label>new promotion offer</label>
-              <input class="form-control" type="number" name="newpromotion_offer" placeholder="please enter your new percentage dicount on service if available  " ng-model="regData.promotion_offer" >
+              <input class="form-control" type="number" name="promotion_offer" placeholder="please enter your new percentage dicount on service if available  " ng-model="regData.promotion_offer" >
               <p ng-show="serviceeditform.newpromotion_offer.$invalid && !serviceeditform.newpromotion_offer.$pristine" class="help-block"></p>
           </div>
           <br>

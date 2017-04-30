@@ -23,7 +23,7 @@
 
       <br>
 
-      <form name="serviceform" ng-submit="addService(regData,serviceform.$valid)" novalidate>
+      <form name="serviceform" ng-submit="addService(regData)" novalidate>
           <div class="form-group" ng-class="{ 'has-error' : serviceform.service_name.$invalid && !serviceform.service_name.$pristine }">
               <label>service name</label>
               <input class="form-control" type="text" name="service_name" placeholder="please enter your service name" ng-model="regData.service_name" required>
@@ -31,9 +31,9 @@
           </div>
           <br>
 
-          <div class="form-group" ng-class="{ 'has-error' : serviceform.service_Description.$invalid && !serviceform.service_Description.$pristine }">
-              <label>service Description</label>
-              <input class="form-control" type="text" name="service_Description" placeholder="please enter your service Description" ng-model="regData.service_Description" required>
+          <div class="form-group" ng-class="{ 'has-error' : serviceform.service_description.$invalid && !serviceform.service_description.$pristine }">
+              <label>service description</label>
+              <input class="form-control" type="text" name="service_description" placeholder="please enter your service description" ng-model="regData.service_description" required>
 
           </div>
 
@@ -43,6 +43,12 @@
               <label>service price</label>
               <input class="form-control" type="number" name="service_price" placeholder="please enter your service price " ng-model="regData.service_price" required>
               <p ng-show="serviceform.service_price.$invalid && !serviceform.service_price.$pristine" class="help-block">Your service price is required.</p>
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="service_pic">Service Picture</label>
+            <input type="file" name="service_pic" id="file" required class="form-control">
+            <p class="help-block">{{picture}}</p>
           </div>
           <br>
           <div class="form-group" ng-class="{ 'has-error' : serviceform.promotion_offer.$invalid && !serviceform.promotion_offer.$pristine }">
