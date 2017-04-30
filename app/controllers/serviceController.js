@@ -10,13 +10,11 @@ addservice:function(req,res){
 if(req.user){
 
       var personal_email=req.user.personal_email;
-
       var service_pic = req.file.filename;
       var service_name = req.body.service_name;
       var service_description = req.body.service_description;
       var service_price = req.body.service_price;
       var promotion_offer=req.body.promotion_offer;
-
       var type_flag=req.body.type_flag;
       var available_flag=req.body.available_flag;
 // if(type_flag!=true)
@@ -25,8 +23,13 @@ if(req.user){
 // if(available_flag!=true)
 // available_flag=false;
 
-if(promotion_offer==null)
+
+if(!promotion_offer)
 promotion_offer=0;
+
+console.log(promotion_offer);
+console.log(type_flag);
+console.log(available_flag);
 
       // Validation
 
@@ -117,10 +120,14 @@ if(req.user){
     // if(newavailable_flag!=true)
     // newavailable_flag=false;
 
-    if(newpromotion_offer==null)
+
+    if(!newpromotion_offer)
     newpromotion_offer=0;
 
-    
+    console.log(newpromotion_offer);
+    console.log(newtype_flag);
+    console.log(newavailable_flag);
+
     if(oldservice_name==""||oldservice_name==null){
 
       res.json({'result':'failed', 'message':'you must enter  your old service_name  to edit  it  '});

@@ -61,11 +61,12 @@ angular.module('Ang_viewbusiness', [])
         else
           $scope.business_reviews = "No Comments";
 
-        console.log(res.data.content[0].business_rating)
         if (res.data.content[0].business_rating.length != 0) {
           var num = 0;
-          for (var i = 0; i < res.data.content[0].business_rating.length; i++)
-            num += Number(res.data.content[0].business_rating[i].rating);
+          for (var i = 0; i < res.data.content[0].business_rating.length; i++) {
+            if (res.data.content[0].business_rating[i].rating)
+              num += Number(res.data.content[0].business_rating[i].rating);
+          }
           $scope.business_rating = num / Number(res.data.content[0].business_rating.length);
         } else {
           $scope.business_rating = "No Rating";
