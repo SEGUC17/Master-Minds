@@ -4,7 +4,7 @@ let advertisements = require('../../models/advertisements');
 let session = require('express-session');
 
 let productContoller = {
-    reportServiceReview: function(req, res) {
+    reportServiceReview: function (req, res) {
         /*
         I will get a post request from the detailed product view when the button of the report on
         a certain review is clicked. The product name, the business name and the review content
@@ -22,8 +22,7 @@ let productContoller = {
         console.log(req.body)
         if (!req.user)
             return res.json({ 'result': 'failure', 'message': 'please login' });
-        businesses.findOne({ business_name: req.param('business') }, function(err, business) {
-            var service_review_test;
+        businesses.findOne({ business_name: req.param('business') }, function (err, business) {
             if (err)
                 return res.json({ 'result': 'failure', 'message': 'business not found' });
             if (!business)
@@ -32,20 +31,9 @@ let productContoller = {
                 if (business.services[i].service_name == req.param('service')) {
                     for (var j = 0; j < business.services[i].service_reviews.length; j++) {
                         if (business.services[i].service_reviews[j].review == req.body.review && req.body.username == business.services[i].service_reviews[j].username) {
-                            if (req.user.username == business.services[i].service_reviews[j].username) {
-                                service_review_test = business.services[i].service_reviews[j];
+                            if (req.user.username == business.services[i].service_reviews[j].username)
                                 return res.json({ 'result': 'failure', 'message': 'you cannot report yourself' });
-                            }
-                            for (k = 0; k < business.services[i].service_reviews[j].reportedArray.length; k++) {
-                                if (req.user.username == business.services[i].service_reviews[j].reportedArray[k].usernames) {
-                                    console.log(business.services[i].service_reviews[j].reportedArray[k].usernames);
-                                    res.json({ "result": "failure", "message": "you have already reported once" });
-                                    return;
-                                }
-                            }
                             business.services[i].service_reviews[j].reported++;
-                            var newUsername = { "usernames": req.user.username };
-                            business.services[i].service_reviews[j].reportedArray.push(newUsername);
                             business.save();
                             return res.json({ 'result': 'success', 'message': 'reported successfully' });
                         }
@@ -56,14 +44,14 @@ let productContoller = {
         });
     },
 
-    addAdvertisment: function(req, res) {
+    addAdvertisment: function (req, res) {
         /*
         Get a post request from the view from the business owner on a service he wants to advertise and
         save it in the database or reject it
         */
         var found = false;
-        if (req.user) { //If business owner press the 'advertise' button
-            businesses.findOne({ personal_email: req.user.personal_email }, function(err, business) { //Get the business
+        if (req.user) {  //If business owner press the 'advertise' button
+            businesses.findOne({ personal_email: req.user.personal_email }, function (err, business) { //Get the business
                 if (err) return res.json({ 'result': 'failure', 'message': 'error on database' });
                 if (!business)
                     return res.json({ 'result': 'failure', 'message': 'business not found' })
@@ -73,17 +61,17 @@ let productContoller = {
                     }
                 }
                 if (found == true) {
-                    advertisements.find({}, function(err, ads) {
-                        if (ads.length > 12) { //Cannot advertise more than 12 advertisements on the website
+                    advertisements.find({}, function (err, ads) {
+                        if (ads.length > 12) {  //Cannot advertise more than 12 advertisements on the website
                             return res.json({ 'result': 'failure', 'message': 'number of ads on website exceeded' })
                         } else {
                             var advertised = false;
                             for (var i = 0; i < ads.length; i++) {
-                                if (ads[i].business_name == business.business_name) { //check that the same business doesn't advertise twice
+                                if (ads[i].business_name == business.business_name) {    //check that the same business doesn't advertise twice
                                     advertised = true;
                                 }
                             }
-                            if (advertised == false) { //The business did not make a previous advertisment
+                            if (advertised == false) {   //The business did not make a previous advertisment
                                 // businesses.findOne({ business_name: business.business_name }, function (err, business) {
                                 //     //Check whether the service to be advertised has a picture not
                                 //     for (var i = 0; i < business.services.length; i++) {
@@ -96,7 +84,7 @@ let productContoller = {
                                 ad.business_name = business.business_name;
                                 ad.service_name = req.param('product');
                                 ad.date = new Date();
-                                ad.save(); //Saving the new advertisement to the database
+                                ad.save();  //Saving the new advertisement to the database
                                 return res.json({ 'result': 'success', 'message': 'advertisement successful' });
                             } else {
                                 return res.json({ 'result': 'failure', 'message': 'you already have a service advertised' });
@@ -111,7 +99,7 @@ let productContoller = {
         }
     },
 
-    viewAdvertisements: function(req, res) {
+    viewAdvertisements: function (req, res) {
         /*
         Choose random 4 ads from the database and send them to the view.
         Should be view in the directory page
@@ -152,7 +140,8 @@ let productContoller = {
                             }
                         }
                         // console.log(adArray);
-                        res.json({ 'result': 'success', 'message': 'advertisementsView', 'content': adArray });    //Pass the chosen ads to the view                    }
+                        res.json({ 'result': 'success', 'message': 'advertisementsView', 'content': adArray });    //Pass the chosen ads to the view
+                    }
                 })
 
             }
