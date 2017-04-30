@@ -14,21 +14,21 @@ var BusinessSchema = mongoose.Schema({
     business_logo: String,
     associated_bank : String,   //The bank the business deals with
     business_website : String,
-    FAQ : String, 
-    business_reviews : [{username:String ,review : String , reported : {type: Number, default: 0}}],   //Array of reviews and reports
+    FAQ : String,
+    business_reviews : [{username:String ,review : String , reported : {type: Number, default: 0}, reportedArray: [{ usernames: String }] }],   //Array of reviews and reports
     business_rating : [{username:String ,rating : Number}],
     accepted: Boolean, // whether or not the business's application to the directory has been accepted by the admin
     ban: Boolean,    //Whether the business owner has been banned by an admin or not
-                                     
+
     //Business Services
-    services: [{ 
-        service_pic: String,
-        service_name: String, 
-        service_Description: String, 
-        service_price: Number, 
+    services: [{
+        service_pic: {type: String, default: "noimage.svg"},
+        service_name: String,
+        service_description: String, 
+        service_price: Number,
         promotion_offer : Number,   //Percentage dicount on service
         service_rating  : [{username:String,rating : Number}],   //Array of ratings to get average
-        service_reviews: [{username:String , review: String, reported: { type: Number, default: 0 }}], //Array of reviews and corresponding reported number
+        service_reviews: [{username:String , review: String, reported: { type: Number, default: 0 } , reportedArray: [{ usernames: String }] }], //Array of reviews and corresponding reported number
         type_flag : Boolean,    //Whether sevice type is time-based (true) or product-based (false)
         available_flag : Boolean    //Whether service is available or not
 
@@ -39,7 +39,7 @@ var BusinessSchema = mongoose.Schema({
 BusinessSchema.methods.encryptPassword = function(password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(5), null);
  };
- 
+
 BusinessSchema.methods.validPassword = function(password) {
     return bcrypt.compareSync(password, this.password);
  };

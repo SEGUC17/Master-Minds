@@ -171,7 +171,9 @@ let adminFunctionsController = {
                 businesses.findOne({'services.service_reviews._id': req.param('id')},function(err2, bus2){
                   //  if(err2)
                   //      res.send(err2);
+                    //console.log("Did not find business review: "+req.param('id'));
                     if(bus2){
+                        //console.log("Found service review:"+req.param('id'));
                         var i;
                         var flag = false;
                         for(i=0;i<bus2.services.length;i++){
@@ -211,8 +213,9 @@ let adminFunctionsController = {
                 });
 
             }else{  //new ObjectId(req.param('id'))
+                    //console.log("Found business review:"+req.param('id'));
                     businesses.update( 
-                        { username: bus1.username },
+                        { business_name: bus1.business_name },
                         { $pull: { "business_reviews" : { _id : req.param('id')} } },
                         function removeReviews(err, obj) {
                                 if(err){

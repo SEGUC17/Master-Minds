@@ -11,7 +11,7 @@ var flash = require('connect-flash');
 var validator = require('express-validator');
 var multer = require('multer');
 var fs = require('fs');
-var DB_URI = "mongodb://localhost:27017/BreakOut";
+var DB_URI = "mongodb://777_x_amr_x_777:777505777505amr@ds062059.mlab.com:62059/breakout";
 var expressValidator = require('express-validator');
 var flash = require('connect-flash');
 var session = require('express-session');
@@ -26,6 +26,12 @@ var expressValidator = require('express-validator');
 var LocalStrategy = require('passport-local').Strategy;
 var path = require('path');
 
+app.use(function(req,res,next){
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, sid");
+    res.header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
+    next();
+});
 
 // Express Session
 
@@ -139,8 +145,10 @@ app.use(function(req, res, next) {
     res.locals.client = req.client || null;
     next();
 });
+
+var port = process.env.PORT || 8080;
 //Start the server
-app.listen(8080, function(){
+app.listen(port, function(){
     console.log("server is listening on port 8080");
 
 })

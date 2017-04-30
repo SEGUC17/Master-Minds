@@ -10,28 +10,31 @@ addservice:function(req,res){
 if(req.user){
 
       var personal_email=req.user.personal_email;
-
-      var service_pic = req.body.service_pic;
+      var service_pic = req.file.filename;
       var service_name = req.body.service_name;
-      var service_Description = req.body.service_Description;
+      var service_description = req.body.service_description;
       var service_price = req.body.service_price;
       var promotion_offer=req.body.promotion_offer;
-
       var type_flag=req.body.type_flag;
       var available_flag=req.body.available_flag;
-if(type_flag!=true)
-type_flag=false;
+// if(type_flag!=true)
+// type_flag=false;
 
-if(available_flag!=true)
-available_flag=false;
+// if(available_flag!=true)
+// available_flag=false;
 
-if(promotion_offer==null)
+
+if(!promotion_offer)
 promotion_offer=0;
+
+console.log(promotion_offer);
+console.log(type_flag);
+console.log(available_flag);
 
       // Validation
 
       req.checkBody('service_name', 'service_name is required').notEmpty();
-      req.checkBody('service_Description', 'service_Description is required').notEmpty();
+      req.checkBody('service_description', 'service_description is required').notEmpty();
       req.checkBody('service_price', 'service_price is required').notEmpty();
 
 
@@ -67,7 +70,7 @@ res.status(500).send(err);
             if(x==false){
           Found_data.services.push({service_pic:service_pic,
             service_name:service_name,
-          service_Description:service_Description,
+          service_description:service_description,
           service_price:service_price,
           promotion_offer:promotion_offer,
           type_flag:type_flag,
@@ -97,31 +100,34 @@ res.status(500).send(err);
 editservice:function(req,res){
 if(req.user){
   // data we want to edit in the service  business_owner must add personal email so we can get his data from database
+    var pic = false;
     var personal_email=req.user.personal_email;
-    var newservice_pic = req.body.newservice_pic;
+    if(req.file.filename){
+      pic = true;
+      var newservice_pic = req.file.filename;
+    }
     var oldservice_name = req.body.oldservice_name;// business_owner must enter oldservice_name so i can know where to edit
     var newservice_name = req.body.newservice_name;
-    var newservice_Description = req.body.newservice_Description;
+    var newservice_description = req.body.newservice_description;
     var newservice_price = req.body.newservice_price;
-    var newpromotion_offer=req.body.newpromotion_offer;
+    var newpromotion_offer=req.body.promotion_offer;
     var newtype_flag=req.body.newtype_flag;
     var newavailable_flag=req.body.newavailable_flag;
 
-    if(newtype_flag!=true)
-    newtype_flag=false;
+    // if(newtype_flag!=true)
+    // newtype_flag=false;
 
-    if(newavailable_flag!=true)
-    newavailable_flag=false;
+    // if(newavailable_flag!=true)
+    // newavailable_flag=false;
 
-    if(newpromotion_offer==null)
+
+    if(!newpromotion_offer)
     newpromotion_offer=0;
 
-    // Validation
-    // if(personal_email==""||personal_email==null){
-    //   res.json({'result':'failed', 'message':'you must enter  your personal email to edit '});
+    console.log(newpromotion_offer);
+    console.log(newtype_flag);
+    console.log(newavailable_flag);
 
-    //  res.render('service_edit');// front end service edit
-  // }else{
     if(oldservice_name==""||oldservice_name==null){
 
       res.json({'result':'failed', 'message':'you must enter  your old service_name  to edit  it  '});
@@ -130,7 +136,7 @@ if(req.user){
       // finding the business_owner from database
       businesses.findOne({personal_email: personal_email}, function(err, user){
                   if(err){
-res.status(500).send(err);
+                    res.json({'result':'failed', 'message':'error happened please try again'});
                   }else{
                     if(user == null){
                       // if no matches sending error  because his email not in the database
@@ -150,9 +156,11 @@ res.status(500).send(err);
    for(var i=0;i< user.services.length;i++){
      // searching for his specific service from the array of Services and then edit his data
      if(user.services[i].service_name==oldservice_name){
-      user.services[i].service_pic=newservice_pic;
+      if(pic){
+        user.services[i].service_pic=newservice_pic;
+      }
       user.services[i].service_name=newservice_name;
-      user.services[i].service_Description=newservice_Description;
+      user.services[i].service_description=newservice_description;
       user.services[i].service_price=newservice_price;
       user.services[i].promotion_offer=newpromotion_offer;
       user.services[i].type_flag=newtype_flag;
