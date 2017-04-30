@@ -486,6 +486,7 @@ exports.Report_Business_Review = function (req, res) { /**
   var req_review = req.body.review;
   if (req_review && req_business)
     business.findOneAndUpdate({ 'business_name': req_business, 'business_reviews.review': req_review }, { '$inc': { 'business_reviews.$.reported': 1 } }, function (err, found_business) {
+      var business_review_test = 0;
       if (err) {
 
         res.json({ "result": "failure", "message": "error happened in the database" });
@@ -495,8 +496,41 @@ exports.Report_Business_Review = function (req, res) { /**
         res.json({ "result": "failure", "message": "not found" });
       }
       else {
+                var reportedArray_test;
+                //var business_review_test;
+                var j = 0;
+                var i = 0;
+                var req_review = req.body.review;
+                for (j = 0; j < found_business.business_reviews.length; j++) {
+                    if (req_review == found_business.business_reviews[j].review && found_business.business_reviews[j].username == req.user.username) {
+                        return res.json({ "result": "failure", "message": "you can't report yourself" });
+                    }
+                    if (req_review == found_business.business_reviews[j].review) {
+                        business_review_test = j;
+                        console.log(found_business.business_reviews[j].review);
+                        for (i = 0; i < found_business.business_reviews[j].reportedArray.length; i++) {
+                            reportedArray_test = found_business.business_reviews[j].reportedArray[i];
+                            if (req.user.username == found_business.business_reviews[j].reportedArray[i].usernames) {
+                                console.log(found_business.business_reviews[j].reportedArray[i].usernames);
+                                res.json({ "result": "failure", "message": "you have already reported once" });
+                                return;
+                            }
+                        }
+                    }
+                    // else {
+                    //     console.log("saving again");
+                    //     res.json({ "result": "success", "message": "your report has been added" });
+                    //     var newUsername = { "usernames": req.user.username };
+                    //     found_business.business_reviews[business_review_test].reportedArray.push(newUsername);
+                    //     found_business.save();
+                    //     return;
+                    // }
+                }
 
-        res.json({ "result": "success", "message": "your report has been added" });
+                res.json({ "result": "success", "message": "your report has been added" });
+                var newUsername = { "usernames": req.user.username };
+                found_business.business_reviews[business_review_test].reportedArray.push(newUsername);
+                found_business.save();
       }
     });
 }

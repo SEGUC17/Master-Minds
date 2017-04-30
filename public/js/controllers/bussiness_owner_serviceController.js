@@ -11,9 +11,24 @@ app.controller('addCtrl', function($scope, $http, $location, $timeout) {
             $scope.picture = "";
             var formData = new FormData;
 
+            var type = false;
+            var available = false;
+
+            console.log($scope.regData.type_flag);
+            console.log($scope.regData.available_flag);
+
             for(key in $scope.regData){
                 formData.append(key, $scope.regData[key]);
             }
+
+            if($scope.regData.type_flag){
+                type = true;
+            }
+            if($scope.regData.available_flag){
+                available = true;
+            }
+            formData.append('type_flag', type);
+            formData.append('available_flag', available);
 
             var image = files[0];
             formData.append('service_pic', image);
@@ -31,7 +46,8 @@ app.controller('addCtrl', function($scope, $http, $location, $timeout) {
                             $location.path('#/');
                     }, 2000);
                 }else{
-                    $scope.message = res.data.message;
+                    $scope.loading = false;
+                    $scope.errorMsg = res.data.message;
                 }
             });
         }
@@ -45,9 +61,24 @@ app.controller('editCtrl', function($scope, $http, $location, $timeout) {
         if(files.length>0){
             var formData = new FormData;
 
+            var type = false;
+            var available = false;
+
+            console.log($scope.regData.newtype_flag);
+            console.log($scope.regData.newavailable_flag);
+
             for(key in $scope.regData){
                 formData.append(key, $scope.regData[key]);
             }
+
+            if($scope.regData.newtype_flag){
+                type = true;
+            }
+            if($scope.regData.newavailable_flag){
+                available = true;
+            }
+            formData.append('newtype_flag', type);
+            formData.append('newavailable_flag', available);
 
             var image = files[0];
             formData.append('service_pic', image);
@@ -65,7 +96,8 @@ app.controller('editCtrl', function($scope, $http, $location, $timeout) {
                             $location.path('#/');
                     }, 2000);
                 }else{
-                    $scope.message = res.data.message;
+                    $scope.loading = false;
+                    $scope.errorMsg = res.data.message;
                 }
             });
         }else{
