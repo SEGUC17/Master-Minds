@@ -23,6 +23,7 @@ let productContoller = {
         if (!req.user)
             return res.json({ 'result': 'failure', 'message': 'please login' });
         businesses.findOne({ business_name: req.param('business') }, function (err, business) {
+            var service_review_test;
             if (err)
                 return res.json({ 'result': 'failure', 'message': 'business not found' });
             if (!business)
@@ -31,9 +32,20 @@ let productContoller = {
                 if (business.services[i].service_name == req.param('service')) {
                     for (var j = 0; j < business.services[i].service_reviews.length; j++) {
                         if (business.services[i].service_reviews[j].review == req.body.review && req.body.username == business.services[i].service_reviews[j].username) {
-                            if (req.user.username == business.services[i].service_reviews[j].username)
+                            if (req.user.username == business.services[i].service_reviews[j].username){
+                                service_review_test = business.services[i].service_reviews[j];
                                 return res.json({ 'result': 'failure', 'message': 'you cannot report yourself' });
+                            }
+                            for (k = 0; k < business.services[i].service_reviews[j].reportedArray.length; k++) {
+                                if (req.user.username == business.services[i].service_reviews[j].reportedArray[k].usernames) {
+                                    console.log(business.services[i].service_reviews[j].reportedArray[k].usernames);
+                                    res.json({ "result": "failure", "message": "you have already reported once" });
+                                    return;
+                                }
+                            }
                             business.services[i].service_reviews[j].reported++;
+                            var newUsername = { "usernames": req.user.username };
+                            business.services[i].service_reviews[j].reportedArray.push(newUsername);
                             business.save();
                             return res.json({ 'result': 'success', 'message': 'reported successfully' });
                         }

@@ -17,17 +17,12 @@ if(req.user){
       var promotion_offer=req.body.promotion_offer;
       var type_flag=req.body.type_flag;
       var available_flag=req.body.available_flag;
+// if(type_flag!=true)
+// type_flag=false;
 
+// if(available_flag!=true)
+// available_flag=false;
 
-console.log(promotion_offer);
-console.log(type_flag);
-console.log(available_flag);
-
-if(!type_flag)
-type_flag=false;
-
-if(!available_flag)
-available_flag=false;
 
 if(!promotion_offer)
 promotion_offer=0;
@@ -115,19 +110,16 @@ if(req.user){
     var newservice_name = req.body.newservice_name;
     var newservice_description = req.body.newservice_description;
     var newservice_price = req.body.newservice_price;
-    var newpromotion_offer=req.body.newpromotion_offer;
+    var newpromotion_offer=req.body.promotion_offer;
     var newtype_flag=req.body.newtype_flag;
     var newavailable_flag=req.body.newavailable_flag;
 
-    console.log(newpromotion_offer);
-    console.log(newtype_flag);
-    console.log(newavailable_flag);
+    // if(newtype_flag!=true)
+    // newtype_flag=false;
 
-    if(!newtype_flag)
-    newtype_flag=false;
+    // if(newavailable_flag!=true)
+    // newavailable_flag=false;
 
-    if(!newavailable_flag)
-    newavailable_flag=false;
 
     if(!newpromotion_offer)
     newpromotion_offer=0;
@@ -169,9 +161,7 @@ if(req.user){
       }
       user.services[i].service_name=newservice_name;
       user.services[i].service_description=newservice_description;
-      console.log('before');
       user.services[i].service_price=newservice_price;
-      console.log('after');
       user.services[i].promotion_offer=newpromotion_offer;
       user.services[i].type_flag=newtype_flag;
       user.services[i].available_flag=newavailable_flag;
