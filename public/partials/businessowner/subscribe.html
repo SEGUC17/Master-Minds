@@ -1,6 +1,7 @@
 <div ng-controller="subCtrl">
     <h1>Subscribe to add your business to the directory!</h1>
-    <form name="form" action="/subscribe" method="post" enctype="multipart/form-data">
+    <form name="form" novalidate>
+    {{message}}
         <div class="form-group">
             <label for="personal_email">E-Mail</label>
             <input type="email" name="personal_email" ng-model="data.personal_email" ng-required="true" class="form-control">
@@ -53,8 +54,9 @@
         </div>
         <div class="form-group">
             <label for="business_logo">Business Logo</label>
-            <input type="file" name="business_logo" required class="form-control">
+            <input type="file" name="business_logo" id="file" required class="form-control">
+            <p class="help-block">{{logo}}</p>
         </div>
-        <button type="submit" ng-click="subscribe()" ng-disabled="form.$invalid" class="btn btn-primary">Subscribe</button>
+        <button type="submit" ng-click="subscribe(data)" ng-disabled="form.$invalid" class="btn btn-primary">Subscribe</button>
     </form>
 </div>

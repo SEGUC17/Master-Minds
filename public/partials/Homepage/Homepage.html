@@ -30,37 +30,50 @@
     background-color: #7c7c7c;
   }
 
+  .divider{
+    width:200px;
+    display:inline-block;
+  }
+
+
   </style>
+  <div class="jumbotron" style="margin-bottom: 0px;
+    background-image: url(Masterminds.jpg);
+    background-position: 0% 0%;
+    background-size: 1150px 300px;
+    background-repeat: no-repeat;
+    height: 300px;
+    background-color: white;
+    color: white;
+    text-shadow: black 0.1em 0.1em 0.1em;"></div><br>
 
       <input type="text" placeholder="Search" ng-model="Search" />
       <br>
-      <!-- <button ng-click="getSearch()">Submit</button> -->
       <br><br>
-      <div ng-repeat="ad in ads" align = "margin-right">
-        <p> {{ad.business_name}} </p>
-        <p> {{ad.service_name}} </p>
-      </div>
+<div class="row">
+  <div class="col-md-3 push-md-9">
+    <div class="jumbotron" ng-repeat="ad in ads" align = "middle" style="margin-bottom: 0px;
+    background-image: url(../../circle.png);
+    background-position: 0% 25%;
+    background-size: 260px 180px;
+    background-repeat: no-repeat;
+    background-color: white;
+    color: white;
+    text-shadow: black 0.1em 0.1em 0.1em;">
+      <a href="#/detailedService/{{ad.business_name}}/{{ad.service_name}}"><p style="text-decoration: underline;"> {{ad.business_name}} </p>
+      <p> {{ad.service_name}} </p></a>
+    </div>
+  </div>
+  <div class="col-md-6 push-md-6">
+    <div class="tab jumbotron row" ng-repeat="business in businesses | filter:{business_name:Search}">
+      <a class="col-md-2 push-md-10" href="#/business/{{business.business_name}}"> <img src="../../businessowner/{{business.business_logo}}" style="width:200px;height:140px;"> </img>
+      </a>
+      <br><br>
+      <div class="divider"></div>
+      <span class="name">
+        <a href="#/business/{{business.business_name}}" class="btn btn-info btn-lg"> {{business.business_name}}</a>
+      </span>
 
-	<div class="verticalmenu" >
-		<div ng-repeat="business in businesses | filter:{business_name:Search}">
-		<article >
-			<div class="trialimage">
-				<img src="../../businessowner/{{business.business_logo}}" class="generic-icon" width="80" height="80" align="left">
-			</div>
-			<div class="title">
-				<span class="name">
-					<a href="#/business/{{business.business_name}}" class="btn btn-default btn-lg"> {{business.business_name}}</a>
-				</span>
-        <br>
-        <span class="RateAndReview">
-          <a href="#/Rate_Review_Business/{{business.business_name}}" class="btn btn-default btn-lg">Rate And Review</a>
-          <a href="#/getrateandreview/{{business.business_name}}" class="btn btn-default btn-lg">View reviews</a>
-        </span>
-        <br>
-			</div>
-		</article>
-		</div>
-	</div>
-
+    </div>
+  </div>
 </div>
-
